@@ -109,8 +109,18 @@ export const AuthorizationRequestPayloadV1SchemaObj = {
           "items": {
             "$ref": "#/definitions/RelyingPartyAttestation"
           }
+        },
+        "wallet_nonce": {
+          "type": "string"
+        },
+        "expected_origins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
-      }
+      },
+      "deprecated": "Use AuthorizationRequestPayloadV1_0 from './V1_0.types' for full OID4VP 1.0 compliance.\nThis simplified version is kept for backward compatibility."
     },
     "RPRegistrationMetadataPayload": {
       "type": "object",
@@ -509,7 +519,9 @@ export const AuthorizationRequestPayloadV1SchemaObj = {
         "query",
         "direct_post.jwt",
         "query.jwt",
-        "fragment.jwt"
+        "fragment.jwt",
+        "dc_api",
+        "dc_api.jwt"
       ]
     },
     "ClaimPayloadCommon": {

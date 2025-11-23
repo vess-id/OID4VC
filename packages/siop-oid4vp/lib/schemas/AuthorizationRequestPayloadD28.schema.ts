@@ -105,9 +105,11 @@ export const AuthorizationRequestPayloadD28SchemaObj = {
           "type": "array",
           "items": {
             "$ref": "#/definitions/RelyingPartyAttestation"
-          }
+          },
+          "deprecated": "Renamed to verifier_info in OID4VP 1.0 (Draft 29). Use verifier_info instead."
         }
-      }
+      },
+      "deprecated": "Use AuthorizationRequestPayloadV1_0 instead. Draft 28 is superseded by OID4VP 1.0.\nKept for backward compatibility with existing Draft 28 clients."
     },
     "RPRegistrationMetadataPayload": {
       "type": "object",
@@ -506,7 +508,9 @@ export const AuthorizationRequestPayloadD28SchemaObj = {
         "query",
         "direct_post.jwt",
         "query.jwt",
-        "fragment.jwt"
+        "fragment.jwt",
+        "dc_api",
+        "dc_api.jwt"
       ]
     },
     "ClaimPayloadCommon": {

@@ -523,6 +523,9 @@ export enum ResponseMode {
   DIRECT_POST_JWT = 'direct_post.jwt',
   QUERY_JWT = 'query.jwt',
   FRAGMENT_JWT = 'fragment.jwt',
+  // OID4VP 1.0 - Digital Credentials API modes
+  DC_API = 'dc_api',
+  DC_API_JWT = 'dc_api.jwt',
 }
 
 export enum VerifiedDataMode {
