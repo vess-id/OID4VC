@@ -20,7 +20,7 @@ import {
 } from '../types'
 
 import { getJson } from './HttpUtils'
-import { base64urlToString } from '@sphereon/oid4vc-common'
+import { base64urlToString } from '@vess-id/oid4vc-common'
 
 const logger = Loggers.DEFAULT.get('sphereon:oid4vci:offer')
 

@@ -1,4 +1,4 @@
-import { CreateDPoPClientOpts, JWK } from '@sphereon/oid4vc-common'
+import { CreateDPoPClientOpts, JWK } from '@vess-id/oid4vc-common'
 import {
   AccessTokenRequestOpts,
   AccessTokenResponse,

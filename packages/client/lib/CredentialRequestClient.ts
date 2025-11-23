@@ -1,4 +1,4 @@
-import { createDPoP, CreateDPoPClientOpts, getCreateDPoPOptions } from '@sphereon/oid4vc-common'
+import { createDPoP, CreateDPoPClientOpts, getCreateDPoPOptions } from '@vess-id/oid4vc-common'
 import {
   acquireDeferredCredential,
   AuthorizationDetailsV1_0_15,

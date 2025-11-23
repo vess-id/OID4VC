@@ -1,6 +1,6 @@
 {
   "name": "@vess-id/oid4vci-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "OpenID for Verifiable Credential Issuance (OpenID4VCI) client - OID4VCI 1.0 (Draft 16) Support",
   "source": "./src/index.ts",
   "type": "module",
@@ -27,8 +27,8 @@
     "build": "tsup --config ../../tsup.config.ts --tsconfig ../../tsconfig.tsup.json"
   },
   "dependencies": {
-    "@vess-id/oid4vc-common": "workspace:^",
-    "@vess-id/oid4vci-common": "workspace:^",
+    "@vess-id/oid4vc-common": "^1.0.0",
+    "@vess-id/oid4vci-common": "^1.0.1",
     "@sphereon/ssi-types": "0.34.1-feature.SSISDK.78.280",
     "cross-fetch": "^4.1.0",
     "debug": "^4.4.0"

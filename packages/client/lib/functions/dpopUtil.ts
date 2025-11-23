@@ -1,4 +1,4 @@
-import { dpopTokenRequestNonceError } from '@sphereon/oid4vc-common'
+import { dpopTokenRequestNonceError } from '@vess-id/oid4vc-common'
 import { OpenIDResponse } from '@vess-id/oid4vci-common'
 
 export type RetryRequestWithDPoPNonce = { ok: true; dpopNonce: string } | { ok: false }

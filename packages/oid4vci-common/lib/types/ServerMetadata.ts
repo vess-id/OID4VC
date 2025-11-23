@@ -1,4 +1,4 @@
-import { DynamicRegistrationClientMetadata, SigningAlgo } from '@sphereon/oid4vc-common'
+import { DynamicRegistrationClientMetadata, SigningAlgo } from '@vess-id/oid4vc-common'
 
 export type OAuthResponseType = 'code' | 'token' | 'id_token' | 'code token' | 'code id_token' | 'token id_token' | 'code token id_token'
 

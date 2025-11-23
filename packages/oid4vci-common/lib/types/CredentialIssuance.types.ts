@@ -1,4 +1,4 @@
-import { BaseJWK } from '@sphereon/oid4vc-common'
+import { BaseJWK } from '@vess-id/oid4vc-common'
 
 import { ExperimentalSubjectIssuance } from '../experimental/holder-vci'
 
