@@ -200,6 +200,9 @@ export const getStateFromCredentialOfferPayload = (credentialOffer: CredentialOf
 
 export function determineSpecVersionFromOffer(offer: CredentialOfferPayload | CredentialOffer): OpenId4VCIVersion {
   if (isCredentialOfferV1_0_15(offer)) {
+    // Both v1.0 and v1.0.15 have credential_configuration_ids
+    // For now, we default to v1.0.15 as they are structurally compatible
+    // A more sophisticated check could be added in the future if needed
     return OpenId4VCIVersion.VER_1_0_15
   }
   return OpenId4VCIVersion.VER_UNKNOWN
@@ -326,7 +329,8 @@ export function toUniformCredentialOfferPayload(
 
   // todo: create test to check idempotence once a payload is already been made uniform.
   const version = opts?.version ?? determineSpecVersionFromOffer(offer)
-  if (version >= OpenId4VCIVersion.VER_1_0_15) {
+  // v1.0 and v1.0.15 both use the same credential_configuration_ids structure
+  if (version >= OpenId4VCIVersion.VER_1_0_15 || version === OpenId4VCIVersion.VER_1_0) {
     const orig = offer as UniformCredentialOfferPayload
     return {
       ...orig,
