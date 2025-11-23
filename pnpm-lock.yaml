@@ -85,12 +85,12 @@ importers:
       '@sphereon/oid4vci-common':
         specifier: workspace:^
         version: link:../oid4vci-common
-      '@sphereon/oid4vci-issuer':
-        specifier: workspace:^
-        version: link:../issuer
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vci-issuer':
+        specifier: workspace:^
+        version: link:../issuer
       jose:
         specifier: ^4.10.0
         version: 4.15.9
@@ -214,9 +214,6 @@ importers:
 
   packages/did-auth-siop-adapter:
     dependencies:
-      '@sphereon/did-auth-siop':
-        specifier: workspace:^
-        version: link:../siop-oid4vp
       '@sphereon/did-uni-client':
         specifier: ^0.6.4
         version: 0.6.4(encoding@0.1.13)
@@ -226,6 +223,9 @@ importers:
       '@sphereon/wellknown-dids-client':
         specifier: ^0.1.3
         version: 0.1.3(encoding@0.1.13)(typescript@5.8.3)
+      '@vess-id/did-auth-siop':
+        specifier: workspace:^
+        version: link:../siop-oid4vp
       did-jwt:
         specifier: 6.11.6
         version: 6.11.6(patch_hash=273724dfda88826ea701236dab63df8edf4ac66af32e92c95c1dd3b2c1f58942)
@@ -285,15 +285,15 @@ importers:
       '@sphereon/oid4vci-common':
         specifier: workspace:^
         version: link:../oid4vci-common
-      '@sphereon/oid4vci-issuer':
-        specifier: workspace:^
-        version: link:../issuer
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vci-issuer':
+        specifier: workspace:^
+        version: link:../issuer
       awesome-qr:
         specifier: ^2.1.5-rc.0
         version: 2.1.5-rc.0(encoding@0.1.13)
@@ -2781,6 +2781,7 @@ packages:
 
   '@sphereon/kmp-mdoc-core@0.2.0-SNAPSHOT.26':
     resolution: {integrity: sha512-QXJ6R8ENiZV2rPMbn06cw5JKwqUYN1kzVRbYfONqE1PEXx1noQ4md7uxr2zSczi0ubKkNcbyYDNtIMTZIhGzmQ==}
+    bundledDependencies: []
 
   '@sphereon/pex-models@2.3.2':
     resolution: {integrity: sha512-foFxfLkRwcn/MOp/eht46Q7wsvpQGlO7aowowIIb5Tz9u97kYZ2kz6K2h2ODxWuv5CRA7Q0MY8XUBGE2lfOhOQ==}

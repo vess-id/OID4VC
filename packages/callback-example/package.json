@@ -29,7 +29,7 @@
     "@sphereon/oid4vc-common": "workspace:^",
     "@sphereon/oid4vci-client": "workspace:^",
     "@sphereon/oid4vci-common": "workspace:^",
-    "@sphereon/oid4vci-issuer": "workspace:^",
+    "@vess-id/oid4vci-issuer": "workspace:^",
     "@sphereon/ssi-types": "0.34.1-feature.SSISDK.78.280",
     "jose": "^4.10.0"
   },
