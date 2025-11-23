@@ -30,6 +30,7 @@ import {
   VerifiedDataOptsSchema,
 } from '../schemas'
 import { Json } from './Json.types'
+import type { AuthorizationRequestPayloadV1_0 } from './V1_0.types'
 
 export const DEFAULT_EXPIRATION_TIME = 10 * 60
 
@@ -79,6 +80,10 @@ export interface RequestCommonPayload extends JWTPayload {
   response_mode?: ResponseMode // This specification introduces a new response mode post in accordance with [OAuth.Responses]. This response mode is used to request the Self-Issued OP to deliver the result of the authentication process to a certain endpoint using the HTTP POST method. The additional parameter response_mode is used to carry this value.
 }
 
+/**
+ * @deprecated Use AuthorizationRequestPayloadV1_0 instead. Draft 28 is superseded by OID4VP 1.0.
+ * Kept for backward compatibility with existing Draft 28 clients.
+ */
 export interface AuthorizationRequestPayloadD28
   extends AuthorizationRequestCommonPayload,
     RequestClientMetadataPayloadProperties,
@@ -87,21 +92,26 @@ export interface AuthorizationRequestPayloadD28
   response_uri?: string // New since OID4VP18 OPTIONAL. The Response URI to which the Wallet MUST send the Authorization Response using an HTTPS POST request as defined by the Response Mode direct_post. The Response URI receives all Authorization Response parameters as defined by the respective Response Type. When the response_uri parameter is present, the redirect_uri Authorization Request parameter MUST NOT be present. If the redirect_uri Authorization Request parameter is present when the Response Mode is direct_post, the Wallet MUST return an invalid_request Authorization Response error.
   dcql_query?: Record<string, any> // A JSON object containing a DCQL query as defined in Section 6. // see https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#dcql_query
   transaction_data?: string[]
+  /** @deprecated Renamed to verifier_info in OID4VP 1.0 (Draft 29). Use verifier_info instead. */
   verifier_attestations?: RelyingPartyAttestation[]
 }
 
+/**
+ * @deprecated Use AuthorizationRequestPayloadV1_0 from './V1_0.types' for full OID4VP 1.0 compliance.
+ * This simplified version is kept for backward compatibility.
+ */
 export interface AuthorizationRequestPayloadV1
   extends AuthorizationRequestCommonPayload,
     RequestClientMetadataPayloadProperties,
     RequestIdTokenPayloadProperties {
-  claims?: ClaimPayloadCommon // OPTIONAL. As specified in Section 5.5 of [OpenID.Core]
-  response_uri?: string // New since OID4VP18 OPTIONAL. The Response URI to which the Wallet MUST send the Authorization Response using an HTTPS POST request as defined by the Response Mode direct_post. The Response URI receives all Authorization Response parameters as defined by the respective Response Type. When the response_uri parameter is present, the redirect_uri Authorization Request parameter MUST NOT be present. If the redirect_uri Authorization Request parameter is present when the Response Mode is direct_post, the Wallet MUST return an invalid_request Authorization Response error.
-  dcql_query?: Record<string, any> // A JSON object containing a DCQL query as defined in Section 6. // see https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#dcql_query
-  request_uri_method?: RequestUriMethod // OPTIONAL. A string determining the HTTP method to be used when the request_uri parameter is included in the same request.
-  // TODO SSISDK-37
+  claims?: ClaimPayloadCommon
+  response_uri?: string
+  dcql_query?: Record<string, any>
+  request_uri_method?: RequestUriMethod
   transaction_data?: string[]
-  // TODO SSISDK-38
   verifier_info?: RelyingPartyAttestation[]
+  wallet_nonce?: string
+  expected_origins?: string[]
 }
 
 export type RelyingPartyAttestation = {
@@ -116,8 +126,12 @@ export type TransactionData = {
   [x: string]: any
 }
 
+// Re-export AuthorizationRequestPayloadV1_0 from V1_0.types for convenience
+export type { AuthorizationRequestPayloadV1_0 } from './V1_0.types'
+
 // https://openid.bitbucket.io/connect/openid-connect-self-issued-v2-1_0.html#section-10
-export type AuthorizationRequestPayload = AuthorizationRequestPayloadV1 | AuthorizationRequestPayloadD28
+// Main type union - supports OID4VP 1.0 and Draft 28 for backward compatibility
+export type AuthorizationRequestPayload = AuthorizationRequestPayloadV1_0 | AuthorizationRequestPayloadV1 | AuthorizationRequestPayloadD28
 
 export interface RequestIdTokenPayloadProperties {
   id_token_type?: string // OPTIONAL. Space-separated string that specifies the types of ID token the RP wants to obtain, with the values appearing in order of preference. The allowed individual values are subject_signed and attester_signed (see Section 8.2). The default value is attester_signed. The RP determines the type if ID token returned based on the comparison of the iss and sub claims values (see(see Section 12.1). In order to preserve compatibility with existing OpenID Connect deployments, the OP MAY return an ID token that does not fulfill the requirements as expressed in this parameter. So the RP SHOULD be prepared to reliably handle such an outcome.
@@ -660,8 +674,12 @@ export interface RevocationOpts {
 }
 
 export enum SupportedVersion {
+  /** @deprecated Use OID4VP_v1_0 instead. Draft 28 is superseded by OID4VP 1.0. */
   SIOPv2_OID4VP_D28 = 280,
+  /** @deprecated Use OID4VP_v1_0 instead. This was an intermediate version. */
   OID4VP_v1 = 1000,
+  /** OID4VP 1.0 Final specification */
+  OID4VP_v1_0 = 10000,
 }
 
 export interface SIOPResonse<T> {

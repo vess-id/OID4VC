@@ -10,6 +10,7 @@ export const LOG: ISimpleLogger<string> = VCI_LOGGERS.options('sphereon:siop-oid
 export { SIOPErrors }
 export * from './JWT.types'
 export * from './SIOP.types'
+export * from './V1_0.types'
 export * from './Events'
 export * from './SessionManager'
 export * from './VpJwtIssuer'
