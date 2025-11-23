@@ -84,6 +84,7 @@ export interface CredentialIssuerMetadataOpts {
 //todo: investigate if these values are enough.
 export type AlgValue = 'RS256' | 'ES256' | 'PS256' | 'HS256' | string
 export type EncValue = 'A128GCM' | 'A256GCM' | 'A128CBC-HS256' | 'A256CBC-HS512' | string
+export type ZipValue = 'DEF' | string // Compression algorithms for JWE (NEW in OID4VCI v1.0)
 
 export interface ResponseEncryption {
   /**
