@@ -1,4 +1,4 @@
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import {
   AuthorizationServerMetadata,
   OAuthGrantType,

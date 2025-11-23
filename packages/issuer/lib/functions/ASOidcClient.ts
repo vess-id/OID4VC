@@ -1,4 +1,4 @@
-import { decodeJwt, decodeProtectedHeader } from '@sphereon/oid4vc-common'
+import { decodeJwt, decodeProtectedHeader } from '@vess-id/oid4vc-common'
 import { ClientMetadata, JWTHeader, JWTVerifyCallback, JwtVerifyResult } from '@vess-id/oid4vci-common'
 import { oidcDiscoverIssuer, oidcGetClient } from '@sphereon/ssi-express-support'
 

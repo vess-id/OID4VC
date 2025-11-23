@@ -1,4 +1,4 @@
-import { uuidv4 } from '@sphereon/oid4vc-common'
+import { uuidv4 } from '@vess-id/oid4vc-common'
 import { CredentialConfigurationSupportedV1_0_15, IssueStatus, TokenErrorResponse } from '@vess-id/oid4vci-common'
 import { describe, expect, it } from 'vitest'
 

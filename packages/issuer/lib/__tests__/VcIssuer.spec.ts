@@ -1,4 +1,4 @@
-import { uuidv4 } from '@sphereon/oid4vc-common'
+import { uuidv4 } from '@vess-id/oid4vc-common'
 import { OpenID4VCIClientV1_0_15 } from '@sphereon/oid4vci-client'
 
 import { IProofPurpose, IProofType } from '@sphereon/ssi-types'

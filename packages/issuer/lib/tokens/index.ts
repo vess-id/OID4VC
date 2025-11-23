@@ -1,4 +1,4 @@
-import { calculateJwkThumbprint, JWK, uuidv4 } from '@sphereon/oid4vc-common'
+import { calculateJwkThumbprint, JWK, uuidv4 } from '@vess-id/oid4vc-common'
 import {
   AccessTokenRequest,
   AccessTokenResponse,

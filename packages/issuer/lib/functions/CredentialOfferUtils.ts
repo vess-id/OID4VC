@@ -1,4 +1,4 @@
-import { uuidv4 } from '@sphereon/oid4vc-common'
+import { uuidv4 } from '@vess-id/oid4vc-common'
 import {
   AssertedUniformCredentialOffer,
   AuthorizationDetailsV1_0_15,

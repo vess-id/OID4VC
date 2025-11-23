@@ -1,4 +1,4 @@
-import { uuidv4 } from '@sphereon/oid4vc-common'
+import { uuidv4 } from '@vess-id/oid4vc-common'
 import { CNonceState, IStateManager, STATE_MISSING_ERROR } from '@vess-id/oid4vci-common'
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 

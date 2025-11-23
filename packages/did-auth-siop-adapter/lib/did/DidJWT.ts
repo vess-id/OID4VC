@@ -9,7 +9,7 @@ import {
   SIOPResonse,
   VerifiedJWT,
 } from '@vess-id/did-auth-siop'
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import {
   createJWT,
   decodeJWT,
