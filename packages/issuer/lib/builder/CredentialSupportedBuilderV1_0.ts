@@ -11,7 +11,7 @@ import {
   ProofTypesSupported,
   validateClaimsArray,
   validateDisplayArray,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 /**
  * Builder for OID4VCI 1.0 (Draft 16) Credential Configuration

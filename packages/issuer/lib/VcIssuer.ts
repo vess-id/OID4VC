@@ -41,7 +41,7 @@ import {
   TxCode,
   TYP_ERROR,
   URIState,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { CompactSdJwtVc, CredentialMapper, InitiatorType, SubSystem, System, W3CVerifiableCredential } from '@sphereon/ssi-types'
 import ShortUUID from 'short-uuid'
 

@@ -1,7 +1,7 @@
 {
-  "name": "@sphereon/oid4vci-client",
-  "version": "0.20.0",
-  "description": "OpenID for Verifiable Credential Issuance (OpenID4VCI) client",
+  "name": "@vess-id/oid4vci-client",
+  "version": "1.0.0",
+  "description": "OpenID for Verifiable Credential Issuance (OpenID4VCI) client - OID4VCI 1.0 (Draft 16) Support",
   "source": "./src/index.ts",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@sphereon/oid4vc-common": "workspace:^",
-    "@sphereon/oid4vci-common": "workspace:^",
+    "@vess-id/oid4vci-common": "workspace:^",
     "@sphereon/ssi-types": "0.34.1-feature.SSISDK.78.280",
     "cross-fetch": "^4.1.0",
     "debug": "^4.4.0"

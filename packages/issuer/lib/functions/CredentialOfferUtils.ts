@@ -14,7 +14,7 @@ import {
   PIN_NOT_MATCH_ERROR,
   PRE_AUTH_GRANT_LITERAL,
   UniformCredentialOffer,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 export interface CredentialOfferGrantInput {
   authorization_code?: Partial<GrantAuthorizationCode>

@@ -1,4 +1,4 @@
-import { NotificationErrorResponse, NotificationRequest, NotificationResponseResult, post } from '@sphereon/oid4vci-common'
+import { NotificationErrorResponse, NotificationRequest, NotificationResponseResult, post } from '@vess-id/oid4vci-common'
 
 import { CredentialRequestOpts } from '../CredentialRequestClient'
 import { LOG } from '../types'

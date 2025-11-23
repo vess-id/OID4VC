@@ -16,7 +16,7 @@ import {
   GrantTypes,
   IssueStatus,
   STATE_MISSING_ERROR,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { createAccessTokenResponse } from '../tokens'
 
 const IDENTIPROOF_ISSUER_URL = 'https://issuer.research.identiproof.io'

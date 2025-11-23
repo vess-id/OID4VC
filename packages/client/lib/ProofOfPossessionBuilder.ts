@@ -12,7 +12,7 @@ import {
   ProofOfPossession,
   ProofOfPossessionCallbacks,
   Typ,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 export class ProofOfPossessionBuilder<DIDDoc = never> {
   private readonly proof?: ProofOfPossession

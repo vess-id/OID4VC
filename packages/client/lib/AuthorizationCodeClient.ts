@@ -27,7 +27,7 @@ import {
   PushedAuthorizationResponse,
   RequestObjectOpts,
   ResponseType,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { Loggers } from '@sphereon/ssi-types'
 
 import { MetadataClient } from './MetadataClient'

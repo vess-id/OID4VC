@@ -5,7 +5,7 @@ import {
   determineSpecVersionFromURI,
   OpenId4VCIVersion,
   WellKnownEndpoints,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import nock from 'nock'

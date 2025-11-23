@@ -5,7 +5,7 @@ import {
   PRE_AUTH_CODE_LITERAL,
   PRE_AUTH_GRANT_LITERAL,
   UniformCredentialOfferRequest,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import fetch from 'cross-fetch'
 
 export function isUriEncoded(str: string): boolean {

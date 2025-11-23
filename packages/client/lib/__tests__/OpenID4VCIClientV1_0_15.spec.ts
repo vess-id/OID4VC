@@ -1,4 +1,4 @@
-import { CodeChallengeMethod, WellKnownEndpoints } from '@sphereon/oid4vci-common'
+import { CodeChallengeMethod, WellKnownEndpoints } from '@vess-id/oid4vci-common'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import nock from 'nock'

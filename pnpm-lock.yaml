@@ -79,15 +79,15 @@ importers:
       '@sphereon/oid4vc-common':
         specifier: workspace:^
         version: link:../common
-      '@sphereon/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vci-client':
+        specifier: workspace:^
+        version: link:../client
+      '@vess-id/oid4vci-common':
+        specifier: workspace:^
+        version: link:../oid4vci-common
       '@vess-id/oid4vci-issuer':
         specifier: workspace:^
         version: link:../issuer
@@ -125,12 +125,12 @@ importers:
       '@sphereon/oid4vc-common':
         specifier: workspace:^
         version: link:../common
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vci-common':
+        specifier: workspace:^
+        version: link:../oid4vci-common
       cross-fetch:
         specifier: ^4.1.0
         version: 4.1.0(encoding@0.1.13)
@@ -242,15 +242,15 @@ importers:
       '@sphereon/oid4vc-common':
         specifier: workspace:^
         version: link:../common
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vci-common':
+        specifier: workspace:^
+        version: link:../oid4vci-common
       awesome-qr:
         specifier: ^2.1.5-rc.0
         version: 2.1.5-rc.0(encoding@0.1.13)
@@ -261,15 +261,15 @@ importers:
         specifier: ^9.0.0
         version: 9.0.1
     devDependencies:
-      '@sphereon/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
       '@types/node':
         specifier: ^20.17.30
         version: 20.19.24
       '@types/uuid':
         specifier: ^9.0.8
         version: 9.0.8
+      '@vess-id/oid4vci-client':
+        specifier: workspace:^
+        version: link:../client
       did-resolver:
         specifier: ^4.1.0
         version: 4.1.0
@@ -282,15 +282,15 @@ importers:
       '@sphereon/oid4vc-common':
         specifier: workspace:^
         version: link:../common
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vci-common':
+        specifier: workspace:^
+        version: link:../oid4vci-common
       '@vess-id/oid4vci-issuer':
         specifier: workspace:^
         version: link:../issuer
@@ -322,9 +322,6 @@ importers:
       '@digitalcredentials/did-method-key':
         specifier: ^2.0.3
         version: 2.0.3
-      '@sphereon/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
       '@types/body-parser':
         specifier: ^1.19.2
         version: 1.19.6
@@ -349,6 +346,9 @@ importers:
       '@types/supertest':
         specifier: ^6.0.3
         version: 6.0.3
+      '@vess-id/oid4vci-client':
+        specifier: workspace:^
+        version: link:../client
       did-resolver:
         specifier: ^4.1.0
         version: 4.1.0

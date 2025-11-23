@@ -7,7 +7,7 @@ import {
   ResponseEncryption,
   validateAuthorizationServersArray,
   validateDisplayArray,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { CredentialSupportedBuilderV1_0 } from './CredentialSupportedBuilderV1_0'
 import { DisplayBuilder } from './DisplayBuilder'

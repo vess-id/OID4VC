@@ -3,7 +3,7 @@ import {
   getIssuerFromCredentialOfferPayload,
   PRE_AUTH_GRANT_LITERAL,
   WellKnownEndpoints,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import nock from 'nock'

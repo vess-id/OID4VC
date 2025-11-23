@@ -1,4 +1,4 @@
-import { VCI_LOGGERS } from '@sphereon/oid4vci-common'
+import { VCI_LOGGERS } from '@vess-id/oid4vci-common'
 import { ISimpleLogger } from '@sphereon/ssi-types'
 
 export const LOG: ISimpleLogger<string> = VCI_LOGGERS.get('sphereon:oid4vci:client')

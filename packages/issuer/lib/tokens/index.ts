@@ -24,7 +24,7 @@ import {
   USER_PIN_NOT_REQUIRED_ERROR,
   USER_PIN_REQUIRED_ERROR,
   USER_PIN_TX_CODE_SPEC_ERROR,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { generateCredentialIdentifiers, isPreAuthorizedCodeExpired } from '../functions'
 

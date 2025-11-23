@@ -1,5 +1,5 @@
 import { uuidv4 } from '@sphereon/oid4vc-common'
-import { CNonceState, IStateManager, STATE_MISSING_ERROR } from '@sphereon/oid4vci-common'
+import { CNonceState, IStateManager, STATE_MISSING_ERROR } from '@vess-id/oid4vci-common'
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 
 import { MemoryStates } from '../state-manager'

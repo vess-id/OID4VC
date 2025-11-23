@@ -1,4 +1,4 @@
-import { ImageInfo, MetadataDisplay } from '@sphereon/oid4vci-common'
+import { ImageInfo, MetadataDisplay } from '@vess-id/oid4vci-common'
 
 export class DisplayBuilder {
   name?: string

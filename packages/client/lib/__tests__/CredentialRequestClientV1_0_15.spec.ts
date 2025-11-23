@@ -10,7 +10,7 @@ import {
   CredentialRequest,
   URL_NOT_VALID,
   WellKnownEndpoints,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import * as jose from 'jose'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

@@ -21,7 +21,7 @@ import {
   toUniformCredentialOfferRequest,
   TxCodeAndPinRequired,
   UniformCredentialOfferPayload,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { ObjectUtils } from '@sphereon/ssi-types'
 
 import { createJwtBearerClientAssertion } from './functions'

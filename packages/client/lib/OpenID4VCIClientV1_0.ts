@@ -12,7 +12,7 @@ import {
   getClientIdFromCredentialOfferPayload,
   getIssuerFromCredentialOfferPayload,
   PKCEOpts,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { Loggers } from '@sphereon/ssi-types'
 
 import { CredentialOfferClientV1_0 } from './CredentialOfferClientV1_0'
