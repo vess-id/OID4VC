@@ -1,4 +1,4 @@
-import { defaultHasher } from '@sphereon/oid4vc-common'
+import { defaultHasher } from '@vess-id/oid4vc-common'
 import { CreateAuthorizationRequestOpts, PropertyTarget, PropertyTargets, RequestPropertyWithTargets } from '../authorization-request'
 import { VerifyAuthorizationResponseOpts } from '../authorization-response'
 import { RPBuilder } from './RPBuilder'

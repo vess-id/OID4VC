@@ -76,12 +76,12 @@ importers:
       '@digitalcredentials/vc':
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(expo@48.0.21(@babel/core@7.28.5)(encoding@0.1.13))(react-native@0.71.19(@babel/core@7.28.5)(@babel/preset-env@7.28.5(@babel/core@7.28.5))(encoding@0.1.13)(react@18.3.1))(web-streams-polyfill@3.3.3)
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       '@vess-id/oid4vci-client':
         specifier: workspace:^
         version: link:../client
@@ -122,12 +122,12 @@ importers:
 
   packages/client:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       '@vess-id/oid4vci-common':
         specifier: workspace:^
         version: link:../oid4vci-common
@@ -217,15 +217,15 @@ importers:
       '@sphereon/did-uni-client':
         specifier: ^0.6.4
         version: 0.6.4(encoding@0.1.13)
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/wellknown-dids-client':
         specifier: ^0.1.3
         version: 0.1.3(encoding@0.1.13)(typescript@5.8.3)
       '@vess-id/did-auth-siop':
         specifier: workspace:^
         version: link:../siop-oid4vp
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       did-jwt:
         specifier: 6.11.6
         version: 6.11.6(patch_hash=273724dfda88826ea701236dab63df8edf4ac66af32e92c95c1dd3b2c1f58942)
@@ -239,15 +239,15 @@ importers:
 
   packages/issuer:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       '@vess-id/oid4vci-common':
         specifier: workspace:^
         version: link:../oid4vci-common
@@ -279,15 +279,15 @@ importers:
 
   packages/issuer-rest:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       '@vess-id/oid4vci-common':
         specifier: workspace:^
         version: link:../oid4vci-common
@@ -367,7 +367,7 @@ importers:
 
   packages/jarm:
     dependencies:
-      '@sphereon/oid4vc-common':
+      '@vess-id/oid4vc-common':
         specifier: workspace:^
         version: link:../common
       valibot:
@@ -380,12 +380,12 @@ importers:
 
   packages/oid4vci-common:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       cross-fetch:
         specifier: ^4.1.0
         version: 4.1.0(encoding@0.1.13)
@@ -417,18 +417,18 @@ importers:
       '@astronautlabs/jsonpath':
         specifier: ^1.1.2
         version: 1.1.2
-      '@sphereon/jarm':
-        specifier: workspace:^
-        version: link:../jarm
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/pex':
         specifier: 5.0.0-unstable.28
         version: 5.0.0-unstable.28(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/jarm':
+        specifier: workspace:^
+        version: link:../jarm
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
       cross-fetch:
         specifier: ^4.0.0
         version: 4.1.0(encoding@0.1.13)

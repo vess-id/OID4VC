@@ -6,7 +6,7 @@
  */
 
 import { ResponseEncryptionMetadataV1_0 } from '../types/V1_0.types'
-import { JWK } from '@sphereon/oid4vc-common'
+import { JWK } from '@vess-id/oid4vc-common'
 
 /**
  * Default encryption algorithms supported

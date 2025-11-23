@@ -21,7 +21,7 @@
     "build": "tsup --config ../../tsup.config.ts --tsconfig ../../tsconfig.tsup.json"
   },
   "dependencies": {
-    "@sphereon/oid4vc-common": "workspace:^",
+    "@vess-id/oid4vc-common": "workspace:^",
     "@vess-id/oid4vci-common": "workspace:^",
     "@sphereon/ssi-express-support": "0.34.1-next.3",
     "@sphereon/ssi-types": "0.34.1-feature.SSISDK.78.280",

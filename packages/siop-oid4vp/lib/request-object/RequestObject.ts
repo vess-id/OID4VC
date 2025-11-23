@@ -1,4 +1,4 @@
-import { JwtHeader, JwtIssuer, parseJWT } from '@sphereon/oid4vc-common'
+import { JwtHeader, JwtIssuer, parseJWT } from '@vess-id/oid4vc-common'
 import { ClaimPayloadCommonOpts, ClaimPayloadOpts, CreateAuthorizationRequestOpts } from '../authorization-request'
 import { assertValidAuthorizationRequestOpts } from '../authorization-request/Opts'
 import { fetchByReferenceOrUseByValue, removeNullUndefined } from '../helpers'

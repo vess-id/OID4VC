@@ -1,4 +1,4 @@
-import { JwtIssuer } from '@sphereon/oid4vc-common'
+import { JwtIssuer } from '@vess-id/oid4vc-common'
 import { ClaimPayloadCommonOpts, RequestObjectPayloadOpts } from '../authorization-request'
 import { ObjectBy, CreateJwtCallback } from '../types'
 

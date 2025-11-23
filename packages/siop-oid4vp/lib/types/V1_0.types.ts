@@ -9,7 +9,7 @@
  * - mdoc Session Transcript support for redirect-based flow
  */
 
-import { JWK } from '@sphereon/oid4vc-common'
+import { JWK } from '@vess-id/oid4vc-common'
 import { DcqlQuery } from 'dcql'
 import { NonEmptyArray } from './SIOP.types'
 

@@ -1,4 +1,4 @@
-import { JwtIssuer } from '@sphereon/oid4vc-common'
+import { JwtIssuer } from '@vess-id/oid4vc-common'
 import { PresentationSignCallBackParams } from '@sphereon/pex'
 import { CompactSdJwtVc, Format, HasherSync, MdocOid4vpIssuerSigned, PresentationSubmission, W3CVerifiablePresentation } from '@sphereon/ssi-types'
 import { DcqlQuery } from 'dcql'

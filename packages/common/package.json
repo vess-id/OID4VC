@@ -1,7 +1,7 @@
 {
-  "name": "@sphereon/oid4vc-common",
-  "version": "0.20.0",
-  "description": "OpenID 4 Verifiable Credentials Common",
+  "name": "@vess-id/oid4vc-common",
+  "version": "1.0.0",
+  "description": "OpenID 4 Verifiable Credentials Common - @vess-id implementation",
   "source": "./src/index.ts",
   "type": "module",
   "main": "./dist/index.cjs",

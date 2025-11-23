@@ -1,4 +1,4 @@
-import { parseJWT } from '@sphereon/oid4vc-common'
+import { parseJWT } from '@vess-id/oid4vc-common'
 import { Dcql } from '../authorization-response'
 import { decodeUriAsJson, encodeJsonAsURI, fetchByReferenceOrUseByValue } from '../helpers'
 import { assertValidRequestObjectPayload, RequestObject } from '../request-object'

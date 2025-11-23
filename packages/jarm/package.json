@@ -1,7 +1,7 @@
 {
-  "name": "@sphereon/jarm",
-  "version": "0.20.0",
-  "description": "Sphereon JARM",
+  "name": "@vess-id/jarm",
+  "version": "1.0.0",
+  "description": "JWT Secured Authorization Response Mode (JARM) - @vess-id implementation",
   "source": "./src/index.ts",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -21,7 +21,7 @@
     "build": "tsup --config ../../tsup.config.ts --tsconfig ../../tsconfig.tsup.json"
   },
   "dependencies": {
-    "@sphereon/oid4vc-common": "workspace:^",
+    "@vess-id/oid4vc-common": "workspace:^",
     "valibot": "^0.42.1"
   },
   "devDependencies": {

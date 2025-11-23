@@ -1,5 +1,5 @@
-import { JarmClientMetadata } from '@sphereon/jarm'
-import { DynamicRegistrationClientMetadata, SigningAlgo } from '@sphereon/oid4vc-common'
+import { JarmClientMetadata } from '@vess-id/jarm'
+import { DynamicRegistrationClientMetadata, SigningAlgo } from '@vess-id/oid4vc-common'
 import { AdditionalClaims, Format, W3CVerifiableCredential, W3CVerifiablePresentation, WrappedVerifiablePresentation } from '@sphereon/ssi-types'
 import { DcqlPresentationResult, DcqlQuery } from 'dcql'
 import { z } from 'zod'

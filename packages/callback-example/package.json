@@ -26,7 +26,7 @@
     "@digitalcredentials/ed25519-verification-key-2020": "^4.0.0",
     "@digitalcredentials/security-document-loader": "^1.0.0",
     "@digitalcredentials/vc": "^5.0.0",
-    "@sphereon/oid4vc-common": "workspace:^",
+    "@vess-id/oid4vc-common": "workspace:^",
     "@vess-id/oid4vci-client": "workspace:^",
     "@vess-id/oid4vci-common": "workspace:^",
     "@vess-id/oid4vci-issuer": "workspace:^",

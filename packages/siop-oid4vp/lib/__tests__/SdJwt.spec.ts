@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { defaultHasher, SigningAlgo } from '@sphereon/oid4vc-common'
+import { defaultHasher, SigningAlgo } from '@vess-id/oid4vc-common'
 import { CredentialMapper, decodeSdJwtVc } from '@sphereon/ssi-types'
 import { DcqlPresentation, DcqlQuery, DcqlQueryResult, DcqlSdJwtVcCredential } from 'dcql'
 import { describe, expect, it } from 'vitest'

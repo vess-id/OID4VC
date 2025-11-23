@@ -1,4 +1,4 @@
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import { LanguageTagUtils, removeNullUndefined } from '../helpers'
 import { DiscoveryMetadataOpts, DiscoveryMetadataPayload, ResponseIss, ResponseType, Schema, Scope, SubjectType } from '../types'
 

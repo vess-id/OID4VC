@@ -4,8 +4,8 @@ import {
   JarmAuthResponseParams,
   JarmDirectPostJwtAuthResponseValidationContext,
   JarmDirectPostJwtResponseParams,
-} from '@sphereon/jarm'
-import { base64urlToString, decodeProtectedHeader, JwtIssuer } from '@sphereon/oid4vc-common'
+} from '@vess-id/jarm'
+import { base64urlToString, decodeProtectedHeader, JwtIssuer } from '@vess-id/oid4vc-common'
 import { HasherSync } from '@sphereon/ssi-types'
 import { DcqlQuery } from 'dcql'
 import {

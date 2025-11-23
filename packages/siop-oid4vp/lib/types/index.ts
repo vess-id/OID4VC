@@ -1,4 +1,4 @@
-import { VCI_LOGGERS } from '@sphereon/oid4vc-common'
+import { VCI_LOGGERS } from '@vess-id/oid4vc-common'
 import { ISimpleLogger, LogMethod } from '@sphereon/ssi-types'
 
 import SIOPErrors from './Errors'
