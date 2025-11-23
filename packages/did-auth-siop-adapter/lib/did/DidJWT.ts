@@ -8,7 +8,7 @@ import {
   SIOPErrors,
   SIOPResonse,
   VerifiedJWT,
-} from '@sphereon/did-auth-siop'
+} from '@vess-id/did-auth-siop'
 import { SigningAlgo } from '@sphereon/oid4vc-common'
 import {
   createJWT,
