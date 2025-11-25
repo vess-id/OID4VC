@@ -2989,7 +2989,35 @@ We would like to thank Patrick Amrein, Masayoshi Arakawa, Richard Barnes, Paul B
 
 Document History
 
--16(1.0)
+Appendix L. Document History
+
+-17
+
+Application-encryption security considerations.
+clarification on signed metadata that parameters are included as top-level claims in JWS payload
+clarify how sub in wallet attestation is selected
+make it clear the AS checks if the wallet attestation is signed by a trusted issuer
+add guidance that credentials should not be revoked by issuer just because the wallet has requested more credentials
+add link to formal security analysis
+clarify that absence of 'scope' in a credential configuration means RAR must be used to request the credential
+add requirement in correlation privacy considerations that claims containing time-related information should be randomized or rounded
+add OAuth client authentication to various examples
+clarify that issuer_state is sent to the authorization server by the wallet
+various grammar/punctuation/typo/formatting fixes
+update VC_DATA reference to point to the 1.1 version
+clarifications on use of authorization_details in token requests/responses
+add 'non-empty' to a few more definitions of arrays
+update change controller for pre-authorized_grant_anonymous_access_supported to DCP WG
+updates so that latest defined terms are used consistently
+make urls in examples consistent
+add example for signed credential issuer metadata
+add another more complex example for credential issuer metadata
+fix indentation of nested credential logo object
+add example for signed wallet attestation jwt
+add security considerations on split-architecture wallets.
+require transaction_id in Deferred Credential Response to align with Credential Response behavior.
+
+-16
 
 add new mechanism for signed Credential Issuer metadata
 remove signed_metadata from Credential Issuer metadata
@@ -3037,3 +3065,40 @@ clarify that when using scopes, if credential_identifiers are returned from the 
 clarity that x5c, kid and jwk in the jwt proof type are mutually exclusive
 clarify what checks wallet performs after receiving credential offer
 editorial improvements to tx_code language
+make sure examples fit the maximum length that is rendered properly
+
+-15
+
+add section on Wallet Attestations
+add an option to return credential_identifiers in the Token Response and use them in the Credential Request, when scopes are used in the Authorization Request.
+add an option to use credential_configuration_id in the Credential Request when scopes were used in the authorization request and no credential_identifiers returned in the token response
+remove format and format-specific parameters from Credential Request
+remove claims parameter from ISO mdoc and SD-JWT VC Credential Request
+credential response always returns an array when not returning a transaction_id with the option for additional meta-data
+deferred credential response always returns an array (same as credential response)
+notification_id is now used for an issuance flow that can contain more than one credential
+Fixed #375: Enabled non-breaking extensibility
+removes c_nonce and c_nonce_expires_in from the Credential Response
+Fixed #239: Completed IANA Considerations section
+add key attestation as additional information in a proof of possession and new proof type
+Change the syntax of credential metadata to use claims path queries
+change credential format identifier vc+sd-jwt to dc+sd-jwt to align with the media type in draft -06 of [I-D.ietf-oauth-sd-jwt-vc] and update typ accordingly in examples
+use claims path pointer for mdoc based credentials
+removed c_nonce and c_nonce_expires_in from the token endpoint response
+added a Nonce Endpoint where a Client can acquire a fresh c_nonce value without the overhead of a full Credential Request
+
+-14
+
+removes CWT proof type
+removes the Batch Credential Endpoint
+clarify that authorization_details can be present in the Token Request for Pre-Authorized Code Flow when multiple Credential Configurations are present in the Credential Offer
+make credential_identifiers mandatory for authorization_details flow
+changes proof type descriptions to accommodate for the batch issuance changes
+fix indentation of examples
+changes proof type descriptions to accommodate for the batch issuance changes
+changed Credential Endpoint to enable requesting multiple instances of a particular Credential Configuration and Dataset with different cryptographic material
+clarify optionality of scope and authorization_details for Authorization Request
+Define Credential Format as a term
+Define Credential Dataset as a term
+Define Credential Configuration as a term
+remove use of the authorization_pending and slow_down error codes

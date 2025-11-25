@@ -23,7 +23,7 @@ import { QRCodeOpts } from './QRCode.types'
 import { AuthorizationServerMetadata, AuthorizationServerType, EndpointMetadata } from './ServerMetadata'
 
 /**
- * OID4VCI 1.0 (Draft 16) Types
+ * OID4VCI 1.0 (Draft 17) Types
  *
  * Key changes from v1.0.15 (Draft 15):
  * - signed_metadata removed from metadata (new signed metadata mechanism)
@@ -33,10 +33,14 @@ import { AuthorizationServerMetadata, AuthorizationServerType, EndpointMetadata 
  * - Credential Request/Response encryption support added
  * - New error codes: unknown_credential_configuration, unknown_credential_identifier
  * - Removed error codes: unsupported_credential_type, unsupported_credential_format
+ *
+ * Draft 17 changes:
+ * - transaction_id is now required in Deferred Credential Response when pending
+ * - Various clarifications and security considerations
  */
 
 // ============================================================================
-// Issuer Metadata (v1.0 - Draft 16)
+// Issuer Metadata (v1.0 - Draft 17)
 // ============================================================================
 
 export interface IssuerMetadataV1_0 {
@@ -53,7 +57,7 @@ export interface IssuerMetadataV1_0 {
   token_endpoint?: string // OPTIONAL. URL of the token endpoint.
   display?: MetadataDisplay[] // OPTIONAL. An array of objects, where each object contains display properties of a Credential Issuer for a certain language. MUST be non-empty if present.
   authorization_challenge_endpoint?: string // OPTIONAL. URL of the Credential Issuer's Authorization Challenge Endpoint.
-  // NOTE: signed_metadata removed in v1.0 (Draft 16) - new signed metadata mechanism introduced
+  // NOTE: signed_metadata removed in v1.0 (Draft 17) - new signed metadata mechanism introduced
 
   [x: string]: unknown
 }
@@ -74,7 +78,7 @@ export interface CredentialRequestEncryptionV1_0 {
 }
 
 // ============================================================================
-// Credential Configuration (v1.0 - Draft 16)
+// Credential Configuration (v1.0 - Draft 17)
 // ============================================================================
 
 export type CredentialDefinitionJwtVcJsonV1_0 = {
@@ -145,7 +149,7 @@ export interface ClaimsDescriptionV1_0 {
 }
 
 // ============================================================================
-// Credential Request (v1.0 - Draft 16)
+// Credential Request (v1.0 - Draft 17)
 // ============================================================================
 
 export type CredentialRequestResponseEncryptionV1_0 = {
@@ -181,7 +185,7 @@ export interface CredentialRequestCredentialConfigurationIdV1_0 extends Credenti
 }
 
 // ============================================================================
-// Credential Offer (v1.0 - Draft 16)
+// Credential Offer (v1.0 - Draft 17)
 // ============================================================================
 
 export interface CredentialOfferV1_0 {
@@ -211,7 +215,7 @@ export interface CredentialOfferPayloadV1_0 {
 }
 
 // ============================================================================
-// Credential Response (v1.0 - Draft 16)
+// Credential Response (v1.0 - Draft 17)
 // ============================================================================
 
 // Credential Response reworked in v1.0:
@@ -229,16 +233,19 @@ export interface CredentialResponseCredentialV1_0 {
   credential: string | object // REQUIRED. Contains one issued Credential. MAY be a string or an object, depending on the Credential Format.
 }
 
-// Deferred Credential Response for v1.0
-// - issuance_pending moved here from Error Response in v1.0
+// Deferred Credential Response for v1.0 (Draft 17)
+// When credentials are ready: returns credentials with HTTP 200
+// When still pending: returns transaction_id and interval with HTTP 202
+// Draft 17: transaction_id is now required when issuance is still pending
 export interface DeferredCredentialResponseV1_0 {
-  credentials?: CredentialResponseCredentialV1_0[] // OPTIONAL. Array of issued credentials. MUST be non-empty if present.
-  issuance_pending?: boolean // OPTIONAL (NEW in v1.0). Boolean indicating that credential issuance is still pending. Moved from Error Response.
+  credentials?: CredentialResponseCredentialV1_0[] // OPTIONAL. Array of issued credentials. MUST be non-empty if present. MUST NOT be used if transaction_id is present.
+  transaction_id?: string // REQUIRED when still pending (HTTP 202). String identifying a Deferred Issuance transaction. MUST be same value as in the request.
+  interval?: number // REQUIRED when transaction_id is present. Number of seconds the Wallet should wait before making another request.
   notification_id?: string // OPTIONAL. String identifying one or more Credentials issued in one Credential Response.
 }
 
 // ============================================================================
-// Token Response (v1.0 - Draft 16)
+// Token Response (v1.0 - Draft 17)
 // ============================================================================
 
 // Token Response with credential_identifiers support
@@ -263,7 +270,7 @@ export interface AuthorizationDetailsV1_0 {
 }
 
 // ============================================================================
-// Nonce Endpoint (v1.0 - Draft 16)
+// Nonce Endpoint (v1.0 - Draft 17)
 // ============================================================================
 
 // Nonce Endpoint added in v1.0.15, enhanced in v1.0:
@@ -280,7 +287,7 @@ export interface NonceResponseV1_0 {
 }
 
 // ============================================================================
-// Error Responses (v1.0 - Draft 16)
+// Error Responses (v1.0 - Draft 17)
 // ============================================================================
 
 // Error responses updated for v1.0:
@@ -306,7 +313,7 @@ export type CredentialErrorCodeV1_0 =
   // REMOVED in v1.0: unsupported_credential_type, unsupported_credential_format
 
 // ============================================================================
-// Proof Types (v1.0 - Draft 16)
+// Proof Types (v1.0 - Draft 17)
 // ============================================================================
 
 // Proof types for v1.0:
@@ -375,7 +382,7 @@ export interface WalletAttestationJWTV1_0 {
 }
 
 // ============================================================================
-// Credential Issuer Metadata Options (v1.0 - Draft 16)
+// Credential Issuer Metadata Options (v1.0 - Draft 17)
 // ============================================================================
 
 export interface CredentialIssuerMetadataOptsV1_0 {

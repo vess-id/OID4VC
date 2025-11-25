@@ -1,6 +1,7 @@
 # OID4VC SDK Codebase Exploration Summary
 
 ## Executive Summary
+
 The OID4VCI SDK is a monorepo implementing the OpenID for Verifiable Credential Issuance specification at **draft 15 (v1.0.15)** level. The codebase follows a clear separation between common types, client implementation, and issuer implementation packages. Version-specific code is managed through a V1_0_15 naming convention, with strong typing to ensure spec compliance.
 
 ---
@@ -8,28 +9,33 @@ The OID4VCI SDK is a monorepo implementing the OpenID for Verifiable Credential 
 ## 1. Current Implementation Version and Draft Support
 
 ### Version Enum Definition
+
 **File**: `packages/oid4vci-common/lib/types/OpenID4VCIVersions.types.ts`
 
 ```typescript
 export enum OpenId4VCIVersion {
-  VER_1_0_15 = 1015,  // Draft 15 - Currently Supported
+  VER_1_0_15 = 1015, // Draft 15 - Currently Supported
   VER_UNKNOWN = Number.MAX_VALUE,
 }
 ```
 
 ### Draft 15 Designation
+
 - **Current Version**: Draft 15 (v1.0.15)
 - **Status**: Main supported version across entire SDK
 - **Earlier Versions**: Explicitly NOT supported - versions below v1.0.15 are rejected
 - **Code Pattern**: All major types and classes use `V1_0_15` suffix for version clarity
 
 ### Key Version Indicators
+
 - Workspace version: 0.18.0
 - Package versions: 0.20.0 (client and issuer)
 - Source scope changed to: `@vess-id` (from `@sphereon` for OID4VCI 1.0 migration)
 
 ### README Statement
+
 From main README:
+
 > "IMPORTANT the packages are still in an early development stage, which means that breaking changes are to be expected The current branch only supports OID4VCI draft v15, for draft v13 and lower use branch archive/draft-v13-support"
 
 ---
@@ -37,9 +43,11 @@ From main README:
 ## 2. Main Types and Interfaces (oid4vci-common Package)
 
 ### Core Type Files Location
+
 `packages/oid4vci-common/lib/types/`
 
 ### Primary Type Files
+
 1. **v1_0_15.types.ts** - All Draft 15 specific types
 2. **CredentialIssuance.types.ts** - Generic credential issuance types
 3. **Generic.types.ts** - Shared credential and metadata structures
@@ -50,17 +58,18 @@ From main README:
 ### Key Type Definitions (v1_0_15)
 
 #### Issuer Metadata Types
+
 ```typescript
 interface IssuerMetadataV1_0_15 {
   credential_configurations_supported: Record<string, CredentialConfigurationSupportedV1_0_15>
   credential_issuer: string
   credential_endpoint: string
-  nonce_endpoint?: string  // NEW IN V15
+  nonce_endpoint?: string // NEW IN V15
   authorization_servers?: string[]
   deferred_credential_endpoint?: string
   notification_endpoint?: string
   credential_response_encryption?: ResponseEncryption
-  batch_credential_issuance?: BatchCredentialIssuance  // Changed from endpoint to metadata
+  batch_credential_issuance?: BatchCredentialIssuance // Changed from endpoint to metadata
   authorization_challenge_endpoint?: string
   signed_metadata?: string
   display?: MetadataDisplay[]
@@ -69,16 +78,21 @@ interface IssuerMetadataV1_0_15 {
 ```
 
 #### Credential Configuration Types (Format-Specific)
+
 Four main credential configuration types:
+
 1. **CredentialConfigurationSupportedJwtVcJsonV1_0_15**
+
    - format: 'jwt_vc_json' | 'jwt_vc'
    - credential_definition: CredentialDefinitionJwtVcJsonV1_0_15
 
 2. **CredentialConfigurationSupportedJwtVcJsonLdAndLdpVcV1_0_15**
+
    - format: 'ldp_vc' | 'jwt_vc_json-ld'
    - credential_definition with @context
 
 3. **CredentialConfigurationSupportedSdJwtVcV1_0_15**
+
    - format: 'dc+sd-jwt'
    - vct: string (Verifiable Credential Type)
    - claims?: ClaimsDescriptionV1_0_15[]
@@ -89,6 +103,7 @@ Four main credential configuration types:
    - claims?: ClaimsDescriptionV1_0_15[]
 
 #### Common Credential Configuration Base
+
 ```typescript
 type CredentialConfigurationSupportedCommonV1_0_15 = {
   format: OID4VCICredentialFormat | string
@@ -101,67 +116,71 @@ type CredentialConfigurationSupportedCommonV1_0_15 = {
 ```
 
 #### Credential Request Types
+
 ```typescript
 // v15 REMOVES format parameter from credential requests
 interface CredentialRequestV1_0_15Common {
   credential_response_encryption?: CredentialRequestV1_0_15ResponseEncryption
-  proof?: ProofOfPossession  // Single proof
-  proofs?: ProofOfPossessionMap  // Multiple proofs for batch issuance
+  proof?: ProofOfPossession // Single proof
+  proofs?: ProofOfPossessionMap // Multiple proofs for batch issuance
   issuer_state?: string
 }
 
 // Two mutually exclusive identifier types:
 interface CredentialRequestV1_0_15CredentialIdentifier {
-  credential_identifier: string  // Used with authorization_details
+  credential_identifier: string // Used with authorization_details
   credential_configuration_id?: undefined
 }
 
 interface CredentialRequestV1_0_15CredentialConfigurationId {
-  credential_configuration_id: string  // Used with scopes
+  credential_configuration_id: string // Used with scopes
   credential_identifier?: undefined
 }
 ```
 
 #### Credential Response Types
+
 ```typescript
 interface CredentialResponseV1_0_15 {
-  credentials?: CredentialResponseCredentialV1_0_15[]  // Array format (NEW)
-  transaction_id?: string  // For deferred issuance
+  credentials?: CredentialResponseCredentialV1_0_15[] // Array format (NEW)
+  transaction_id?: string // For deferred issuance
   notification_id?: string
 }
 
 interface CredentialResponseCredentialV1_0_15 {
-  credential: string | object  // Format-dependent
+  credential: string | object // Format-dependent
 }
 
 interface DeferredCredentialResponseV1_0_15 {
-  credentials: CredentialResponseCredentialV1_0_15[]  // Always array
+  credentials: CredentialResponseCredentialV1_0_15[] // Always array
   notification_id?: string
 }
 ```
 
 #### Nonce Endpoint Types (NEW IN V15)
+
 ```typescript
 interface NonceRequestV1_0_15 {
   // Empty request body
 }
 
 interface NonceResponseV1_0_15 {
-  c_nonce: string  // Required
+  c_nonce: string // Required
   // c_nonce_expires_in REMOVED - no longer in response
 }
 ```
 
 #### Proof Types (v15 Updates)
+
 ```typescript
 interface ProofTypesV1_0_15 {
   jwt?: ProofTypeV1_0_15
   ldp_vp?: ProofTypeV1_0_15
-  attestation?: ProofTypeV1_0_15  // NEW attestation proof type
+  attestation?: ProofTypeV1_0_15 // NEW attestation proof type
 }
 
 interface ProofTypeV1_0_15 {
-  proof_signing_alg_values_supported: string[]  // REQUIRED
+  proof_signing_alg_values_supported: string[] // REQUIRED
   key_attestations_required?: KeyAttestationsRequiredV1_0_15
 }
 
@@ -172,10 +191,11 @@ interface KeyAttestationsRequiredV1_0_15 {
 ```
 
 #### Key Attestation JWT (NEW IN V15)
+
 ```typescript
 interface KeyAttestationJWT {
   alg: string
-  typ: 'keyattestation+jwt'  // REQUIRED type
+  typ: 'keyattestation+jwt' // REQUIRED type
   kid?: string
   x5c?: string[]
   trust_chain?: string[]
@@ -192,6 +212,7 @@ interface KeyAttestationJWT {
 ```
 
 #### Wallet Attestation JWT (NEW IN V15)
+
 ```typescript
 interface WalletAttestationJWT {
   typ: 'oauth-client-attestation+jwt'
@@ -208,15 +229,17 @@ interface WalletAttestationJWT {
 ```
 
 #### Claims Description (Path Pointer Based - NEW IN V15)
+
 ```typescript
 interface ClaimsDescriptionV1_0_15 {
-  path: (string | number | null)[]  // Claims path pointer (Appendix C)
+  path: (string | number | null)[] // Claims path pointer (Appendix C)
   mandatory?: boolean
   display?: CredentialsSupportedDisplay[]
 }
 ```
 
 #### Token Response (v15 Updates)
+
 ```typescript
 interface TokenResponseV1_0_15 {
   access_token: string
@@ -230,17 +253,19 @@ interface TokenResponseV1_0_15 {
 ```
 
 #### Authorization Details (v15 Updates)
+
 ```typescript
 interface AuthorizationDetailsV1_0_15 {
   type: 'openid_credential'
   credential_configuration_id?: string
-  credential_identifiers?: string[]  // NEW - for credential_identifiers support
+  credential_identifiers?: string[] // NEW - for credential_identifiers support
   locations?: string[]
   [x: string]: unknown
 }
 ```
 
 #### Error Response (v15 Updates)
+
 ```typescript
 interface CredentialErrorResponseV1_0_15 {
   error: string
@@ -251,6 +276,7 @@ interface CredentialErrorResponseV1_0_15 {
 ```
 
 #### Notification Types (v15)
+
 ```typescript
 interface NotificationResponseV1_0_15 {
   // Success: typically 204 No Content
@@ -263,9 +289,10 @@ interface NotificationErrorResponseV1_0_15 {
 ```
 
 #### Batch Credential Issuance
+
 ```typescript
 interface BatchCredentialIssuance {
-  batch_size: number  // Maximum array size for proofs parameter
+  batch_size: number // Maximum array size for proofs parameter
 }
 ```
 
@@ -274,16 +301,19 @@ interface BatchCredentialIssuance {
 ## 3. Key Client Implementation Classes
 
 ### File Locations
+
 `packages/client/lib/`
 
 ### Primary Client Classes
 
 #### OpenID4VCIClientV1_0_15
+
 **File**: `OpenID4VCIClientV1_0_15.ts`
 
 Main client class managing the full issuance flow.
 
 **State Interface**:
+
 ```typescript
 interface OpenID4VCIClientStateV1_0_15 {
   credentialIssuer: string
@@ -300,12 +330,13 @@ interface OpenID4VCIClientStateV1_0_15 {
   pkce: PKCEOpts
   accessToken?: string
   authorizationURL?: string
-  cachedCNonce?: string  // NEW IN V15: Caches nonce from Nonce Endpoint
-  keyAttestation?: string  // NEW IN V15: JWT format key attestation
+  cachedCNonce?: string // NEW IN V15: Caches nonce from Nonce Endpoint
+  keyAttestation?: string // NEW IN V15: JWT format key attestation
 }
 ```
 
 **Key Methods**:
+
 - Flow orchestration (pre-auth, auth code)
 - Metadata retrieval
 - Token acquisition
@@ -313,17 +344,19 @@ interface OpenID4VCIClientStateV1_0_15 {
 - Notification handling
 
 #### CredentialRequestClientBuilderV1_0_15
+
 **File**: `CredentialRequestClientBuilderV1_0_15.ts`
 
 Builder for configuring credential requests.
 
 **Key Properties**:
+
 ```typescript
 class CredentialRequestClientBuilderV1_0_15 {
   credentialEndpoint?: string
   deferredCredentialEndpoint?: string
-  nonceEndpoint?: string  // NEW IN V15
-  credentialIdentifier?: string  // NEW IN V15
+  nonceEndpoint?: string // NEW IN V15
+  credentialIdentifier?: string // NEW IN V15
   credentialConfigurationId?: string
   token?: string
   version?: OpenId4VCIVersion
@@ -332,32 +365,38 @@ class CredentialRequestClientBuilderV1_0_15 {
 ```
 
 **Builder Methods**:
+
 - Static factories from issuer, URI, or credential offer
 - Version validation (rejects < v1.0.15)
 - Endpoint configuration
 
 #### MetadataClientV1_0_15
+
 **File**: `MetadataClientV1_0_15.ts`
 
 Handles metadata discovery and retrieval.
 
 **Key Methods**:
+
 - `retrieveAllMetadata(issuer)` - Gets issuer and AS metadata
 - `retrieveAllMetadataFromCredentialOffer(offer)` - Metadata from offer
 - OpenID4VCI metadata endpoint retrieval
 - Authorization server metadata discovery
 
 #### CredentialOfferClientV1_0_15
+
 **File**: `CredentialOfferClientV1_0_15.ts`
 
 Handles credential offer parsing and validation.
 
 **Key Methods**:
+
 - `fromUri(uri)` - Parse credential offer from URI
 - Supports both inline and reference modes
 - Version detection
 
 #### NonceClient
+
 **File**: `NonceClient.ts`
 
 NEW functionality for v1.0.15 - Nonce Endpoint support.
@@ -380,21 +419,25 @@ export const acquireNonceFromAuthorizationServer = async (opts: {
 ```
 
 #### ProofOfPossessionBuilder
+
 **File**: `ProofOfPossessionBuilder.ts`
 
 Creates JWT-based proofs of possession for credential requests.
 
 #### AccessTokenClient
+
 **File**: `AccessTokenClient.ts`
 
 Handles OAuth 2.0 token endpoint interactions.
 
 #### AuthorizationCodeClient
+
 **File**: `AuthorizationCodeClient.ts`
 
 Manages authorization code flow and challenges.
 
 ### Client Utility Functions
+
 `packages/client/lib/functions/`
 
 - **AccessTokenUtil.ts** - Token request/response handling
@@ -408,16 +451,19 @@ Manages authorization code flow and challenges.
 ## 4. Key Issuer Implementation Classes
 
 ### File Locations
+
 `packages/issuer/lib/`
 
 ### Primary Issuer Classes
 
 #### VcIssuer
+
 **File**: `VcIssuer.ts`
 
 Core issuer class for credential issuance management.
 
 **State Management**:
+
 ```typescript
 class VcIssuer {
   private readonly _issuerMetadata: CredentialIssuerMetadataOptsV1_0_15
@@ -433,6 +479,7 @@ class VcIssuer {
 ```
 
 **Key Methods**:
+
 - `getCredentialOfferSessionById()` - Session retrieval with lookups
 - `deleteCredentialOfferSessionById()` - Session cleanup
 - `processNotification()` - Handle notification requests
@@ -441,11 +488,13 @@ class VcIssuer {
 - Credential issuance coordination
 
 #### VcIssuerBuilder
+
 **File**: `builder/VcIssuerBuilder.ts`
 
 Fluent builder for issuer configuration.
 
 **Key Configuration Methods**:
+
 ```typescript
 class VcIssuerBuilder {
   issuerMetadataBuilder?: IssuerMetadataBuilderV1_15
@@ -465,6 +514,7 @@ class VcIssuerBuilder {
 ```
 
 **Builder Methods**:
+
 - `withIssuerMetadata()` - Validates v1_0_15 structure
 - `withCredentialEndpoint()`
 - `withNonceEndpoint()` - NEW IN V15
@@ -473,21 +523,23 @@ class VcIssuerBuilder {
 - State manager configuration
 
 #### IssuerMetadataBuilderV1_15
+
 **File**: `builder/IssuerMetadataBuilderV1_15.ts`
 
 Constructs issuer metadata.
 
 **Key Properties & Methods**:
+
 ```typescript
 class IssuerMetadataBuilderV1_15 {
   credentialEndpoint?: string
-  nonceEndpoint?: string  // NEW IN V15
+  nonceEndpoint?: string // NEW IN V15
   credentialIssuer?: string
-  batchCredentialIssuance?: BatchCredentialIssuance  // Changed from endpoint
+  batchCredentialIssuance?: BatchCredentialIssuance // Changed from endpoint
   credentialResponseEncryption?: ResponseEncryption
-  signedMetadata?: string  // NEW IN V15
-  credentialIdentifiersSupported?: boolean  // NEW IN V15
-  
+  signedMetadata?: string // NEW IN V15
+  credentialIdentifiersSupported?: boolean // NEW IN V15
+
   // Builder methods
   withNonceEndpoint(url)
   withBatchCredentialIssuance(config)
@@ -498,11 +550,13 @@ class IssuerMetadataBuilderV1_15 {
 ```
 
 #### CredentialSupportedBuilderV1_15
+
 **File**: `builder/CredentialSupportedBuilderV1_15.ts`
 
 Builds credential configuration objects.
 
 **Key Properties**:
+
 ```typescript
 class CredentialSupportedBuilderV1_15 {
   format?: OID4VCICredentialFormat
@@ -513,13 +567,14 @@ class CredentialSupportedBuilderV1_15 {
   credentialSigningAlgValuesSupported?: string[]
   proofTypesSupported?: ProofTypesSupported
   display?: CredentialsSupportedDisplay[]
-  claims?: ClaimsDescriptionV1_0_15[]  // Changed to path pointers
-  vct?: string  // For dc+sd-jwt
-  doctype?: string  // For mso_mdoc
+  claims?: ClaimsDescriptionV1_0_15[] // Changed to path pointers
+  vct?: string // For dc+sd-jwt
+  doctype?: string // For mso_mdoc
 }
 ```
 
 **Key Methods**:
+
 - `withFormat()`
 - `withVct()` - NEW IN V15
 - `withDoctype()` - NEW IN V15
@@ -527,11 +582,13 @@ class CredentialSupportedBuilderV1_15 {
 - `addProofTypesSupported()`
 
 #### AuthorizationServerMetadataBuilder
+
 **File**: `builder/AuthorizationServerMetadataBuilder.ts`
 
 Builds authorization server metadata.
 
 ### Issuer State Management
+
 `packages/issuer/lib/state-manager/`
 
 - **MemoryStates.ts** - In-memory state storage
@@ -539,6 +596,7 @@ Builds authorization server metadata.
 - **CredentialOfferStateBuilder.ts** - Session building
 
 ### Issuer Utility Functions
+
 `packages/issuer/lib/functions/`
 
 - **CredentialOfferUtils.ts** - Offer generation and utilities
@@ -586,6 +644,7 @@ CredentialIssuerMetadataV1_0_15 (from v1_0_15.types.ts)
 ### Metadata Discovery
 
 **MetadataClientV1_0_15 Process**:
+
 1. Queries OpenID4VCI metadata endpoint (issuer/.well-known/openid-credential-issuer)
 2. Falls back to authorization server metadata
 3. Merges both metadata sources
@@ -595,16 +654,18 @@ CredentialIssuerMetadataV1_0_15 (from v1_0_15.types.ts)
 ### Key Metadata Utilities
 
 **IssuerMetadataUtils.ts** Functions:
+
 - `determineVersionsFromIssuerMetadata()` - Detects supported version from structure
 - `getSupportedCredentials()` - Filters credentials by format/types
 - `getSupportedCredential()` - Single credential lookup
 - `getIssuerDisplays()` - Locale-aware display filtering
 
 **Version Detection Logic**:
+
 ```typescript
 function determineVersionsFromIssuerMetadata(metadata) {
   if ('credential_configurations_supported' in metadata) {
-    return [OpenId4VCIVersion.VER_1_0_15]  // Only one version currently
+    return [OpenId4VCIVersion.VER_1_0_15] // Only one version currently
   }
   return [OpenId4VCIVersion.VER_UNKNOWN]
 }
@@ -617,15 +678,17 @@ function determineVersionsFromIssuerMetadata(metadata) {
 ### Proof of Possession Structure
 
 #### Basic Proof Type
+
 ```typescript
 interface ProofOfPossession {
   proof_type: 'jwt'
   jwt: string
-  [x: string]: unknown  // For extensions
+  [x: string]: unknown // For extensions
 }
 ```
 
 #### Batch Proofs (v15)
+
 ```typescript
 interface ProofOfPossessionMap {
   [proofType: string]: ProofOfPossession[]
@@ -633,6 +696,7 @@ interface ProofOfPossessionMap {
 ```
 
 ### Proof Request in Credential Request
+
 ```typescript
 // MUTUALLY EXCLUSIVE in v1.0.15:
 proof?: ProofOfPossession  // Single credential request
@@ -640,33 +704,35 @@ proofs?: ProofOfPossessionMap  // Batch issuance (when batch_size set)
 ```
 
 ### JWT Header Parameters for Proofs
+
 ```typescript
 interface JoseHeaderParameters {
-  kid?: string  // For DID binding - MUST NOT be present if jwk or x5c
-  x5c?: string[]  // Certificate chain (key attestation) - MUST NOT if kid/jwk
+  kid?: string // For DID binding - MUST NOT be present if jwk or x5c
+  x5c?: string[] // Certificate chain (key attestation) - MUST NOT if kid/jwk
   x5u?: string
   jku?: string
-  jwk?: BaseJWK  // Key material - MUST NOT if kid or x5c
+  jwk?: BaseJWK // Key material - MUST NOT if kid or x5c
   typ?: string
   cty?: string
 }
 
 interface JWTHeaderParameters extends CompactJWSHeaderParameters {
-  alg: string  // REQUIRED
+  alg: string // REQUIRED
   b64?: true
 }
 ```
 
 ### JWT Payload for Proofs
+
 ```typescript
 interface JWTPayload {
-  iss?: string  // Issuer (client_id)
-  aud?: string | string[]  // Audience (issuer URL)
-  iat?: number  // Issued at time (REQUIRED)
-  nonce?: string  // REQUIRED - c_nonce from issuer
-  jti?: string  // Nonce chosen by wallet (replay prevention)
-  exp?: number  // Expiration (not longer than 5 minutes)
-  client_id?: string  // Client identifier
+  iss?: string // Issuer (client_id)
+  aud?: string | string[] // Audience (issuer URL)
+  iat?: number // Issued at time (REQUIRED)
+  nonce?: string // REQUIRED - c_nonce from issuer
+  jti?: string // Nonce chosen by wallet (replay prevention)
+  exp?: number // Expiration (not longer than 5 minutes)
+  client_id?: string // Client identifier
   [s: string]: unknown
 }
 ```
@@ -685,23 +751,25 @@ export const createProofOfPossession = async <DIDDoc extends object = never>(
 ```
 
 **Process**:
+
 1. Invoke sign callback with JWT payload
 2. Partially validate JWS structure
 3. Call optional verify callback
 4. Return proof object with JWT
 
 ### Proof Types Supported (v15)
+
 ```typescript
-type KeyProofType = 'jwt' | 'cwt' | 'ldp_vp'  // Generic support
+type KeyProofType = 'jwt' | 'cwt' | 'ldp_vp' // Generic support
 
 interface ProofTypesV1_0_15 {
   jwt?: ProofTypeV1_0_15
-  ldp_vp?: ProofTypeV1_0_15  
-  attestation?: ProofTypeV1_0_15  // NEW
+  ldp_vp?: ProofTypeV1_0_15
+  attestation?: ProofTypeV1_0_15 // NEW
 }
 
 interface ProofTypeV1_0_15 {
-  proof_signing_alg_values_supported: string[]  // REQUIRED
+  proof_signing_alg_values_supported: string[] // REQUIRED
   key_attestations_required?: KeyAttestationsRequiredV1_0_15
 }
 ```
@@ -709,6 +777,7 @@ interface ProofTypeV1_0_15 {
 ### Credential Request Building
 
 **CredentialRequestClientBuilderV1_0_15** orchestrates:
+
 1. Format removal (v15 doesn't include format in request)
 2. Identifier selection (credential_identifier vs credential_configuration_id)
 3. Proof building via ProofOfPossessionBuilder
@@ -718,6 +787,7 @@ interface ProofTypeV1_0_15 {
 ### Key Differences from Previous Versions
 
 **v1.0.15 Specific**:
+
 - Format removed from credential request
 - Credential requests use credential_configuration_id (from scope) OR credential_identifier (from authorization_details)
 - Proofs parameter for batch issuance
@@ -735,27 +805,31 @@ interface ProofTypeV1_0_15 {
 All v1.0.15 specific implementations use **V1_0_15** suffix:
 
 **Type Files**:
+
 - `v1_0_15.types.ts` - All v15 type definitions
 - Types: `IssuerMetadataV1_0_15`, `CredentialResponseV1_0_15`, etc.
 
 **Client Classes**:
+
 - `OpenID4VCIClientV1_0_15` - Main client for v15
 - `CredentialRequestClientBuilderV1_0_15` - Request builder
 - `MetadataClientV1_0_15` - Metadata handling
 - `CredentialOfferClientV1_0_15` - Offer parsing
 
 **Issuer Builders**:
+
 - `IssuerMetadataBuilderV1_15` - Metadata construction
 - `CredentialSupportedBuilderV1_15` - Credential config building
 
 ### Version Checking Patterns
 
 **File**: `CredentialOfferUtil.ts`
+
 ```typescript
 export function determineSpecVersionFromURI(uri: string): OpenId4VCIVersion {
   let version = determineSpecVersionFromScheme(uri, OpenId4VCIVersion.VER_UNKNOWN)
   if (version === OpenId4VCIVersion.VER_UNKNOWN) {
-    version = OpenId4VCIVersion.VER_1_0_15  // Default to v15
+    version = OpenId4VCIVersion.VER_1_0_15 // Default to v15
   }
   return version
 }
@@ -768,10 +842,9 @@ function determineSpecVersionFromScheme(uri: string, defaultVersion) {
 ```
 
 **File**: `IssuerMetadataUtils.ts`
+
 ```typescript
-export function determineVersionsFromIssuerMetadata(
-  issuerMetadata
-): Array<OpenId4VCIVersion> {
+export function determineVersionsFromIssuerMetadata(issuerMetadata): Array<OpenId4VCIVersion> {
   const versions = new Set<OpenId4VCIVersion>()
   if ('credential_configurations_supported' in issuerMetadata) {
     versions.add(OpenId4VCIVersion.VER_1_0_15)
@@ -784,6 +857,7 @@ export function determineVersionsFromIssuerMetadata(
 ```
 
 **File**: `CredentialRequestClientBuilderV1_0_15.ts`
+
 ```typescript
 const version = opts.version ?? request.version ?? determineSpecVersionFromOffer(request)
 if (version < OpenId4VCIVersion.VER_1_0_15) {
@@ -794,10 +868,11 @@ if (version < OpenId4VCIVersion.VER_1_0_15) {
 ### Legacy Version Remnants
 
 **File**: `Generic.types.ts`
+
 ```typescript
 // Legacy credential support (pre-v13)
 export interface CredentialIssuerMetadataOpts {
-  credentials_supported: CredentialsSupportedLegacy[]  // Legacy array format
+  credentials_supported: CredentialsSupportedLegacy[] // Legacy array format
   // ...
 }
 
@@ -808,6 +883,7 @@ export interface CredentialIssuerMetadata extends CredentialIssuerMetadataOpts {
 ```
 
 **File**: `TypeConversionUtils.ts`
+
 ```typescript
 function filterMatchingConfig(config) {
   // Handles both old (array) and new (record) formats
@@ -819,6 +895,7 @@ function filterMatchingConfig(config) {
 ### Feature Flags
 
 **Nonce Endpoint Support**:
+
 ```typescript
 // In IssuerMetadataBuilderV1_15
 if (metadata?.credentialIssuerMetadata?.nonce_endpoint) {
@@ -827,6 +904,7 @@ if (metadata?.credentialIssuerMetadata?.nonce_endpoint) {
 ```
 
 **Batch Issuance Support**:
+
 ```typescript
 // In metadata
 batch_credential_issuance?: {
@@ -835,12 +913,14 @@ batch_credential_issuance?: {
 ```
 
 **Credential Identifiers Support**:
+
 ```typescript
 // In metadata
 credential_identifiers_supported?: boolean  // Default false
 ```
 
 **Response Encryption**:
+
 ```typescript
 // In credential request
 credential_response_encryption?: {
@@ -853,10 +933,12 @@ credential_response_encryption?: {
 ### Error Codes
 
 **Removed in v15** (from earlier versions):
+
 - `authorization_pending`
 - `slow_down`
 
 **Error Response Structure** (simplified):
+
 ```typescript
 interface CredentialErrorResponseV1_0_15 {
   error: string
@@ -914,6 +996,7 @@ OID4VC (monorepo)
 ### Data Flow
 
 **Client Flow (Pre-Auth)**:
+
 ```
 Credential Offer URI
     ↓
@@ -931,6 +1014,7 @@ Parse CredentialResponseV1_0_15 (credentials array) [NEW FORMAT]
 ```
 
 **Issuer Flow**:
+
 ```
 VcIssuerBuilder (configuration)
     ↓

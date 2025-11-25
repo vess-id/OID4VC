@@ -394,7 +394,7 @@ export class VcIssuer {
         }
       }
 
-      let format = this.lookupCredentialFormat(credentialRequest)
+      let format = this.lookupCredentialFormat(credentialRequest, issuerCorrelation.authorizationDetails)
       const validated = await this.validateCredentialRequestProof({
         ...opts,
         format,
@@ -553,14 +553,36 @@ export class VcIssuer {
     }
   }
 
-  private lookupCredentialFormat(credentialRequest: CredentialRequestV1_0_15): OID4VCICredentialFormat | undefined {
+  private lookupCredentialFormat(
+    credentialRequest: CredentialRequestV1_0_15,
+    authorizationDetails?: Array<{ credential_configuration_id?: string; credential_identifiers?: string[] }>,
+  ): OID4VCICredentialFormat | undefined {
     let format: OID4VCICredentialFormat | undefined
+
+    // OID4VCI 1.0: The wallet may include 'format' directly in the credential request
+    // This takes precedence as it's explicitly specified by the wallet
+    if ('format' in credentialRequest && credentialRequest.format) {
+      return credentialRequest.format as OID4VCICredentialFormat
+    }
 
     if ('credential_configuration_id' in credentialRequest && credentialRequest.credential_configuration_id) {
       const credentialConfig = this._issuerMetadata.credential_configurations_supported?.[credentialRequest.credential_configuration_id]
       format = credentialConfig?.format as OID4VCICredentialFormat
     } else if ('credential_identifier' in credentialRequest && credentialRequest.credential_identifier) {
       const credentialIdentifier: any = credentialRequest.credential_identifier
+
+      // First, try to find credential_configuration_id from authorization_details
+      if (authorizationDetails) {
+        const matchedDetail = authorizationDetails.find(
+          (detail) => detail.credential_identifiers?.includes(credentialIdentifier),
+        )
+        if (matchedDetail?.credential_configuration_id) {
+          const credentialConfig = this._issuerMetadata.credential_configurations_supported?.[matchedDetail.credential_configuration_id]
+          return credentialConfig?.format as OID4VCICredentialFormat
+        }
+      }
+
+      // Fallback: try to match config.id or config.vct (for backward compatibility)
       const matchedConfig = Object.values(this._issuerMetadata.credential_configurations_supported || {}).find(
         (config) => credentialIdentifier === config.id || credentialIdentifier === config.vct,
       )
