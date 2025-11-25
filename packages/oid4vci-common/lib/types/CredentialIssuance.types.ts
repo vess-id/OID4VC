@@ -7,14 +7,18 @@ import { OID4VCICredentialFormat, TxCode } from './Generic.types'
 import { OpenId4VCIVersion } from './OpenID4VCIVersions.types'
 import { CredentialOfferPayloadV1_0_15, CredentialOfferV1_0_15, CredentialResponseCredentialV1_0_15 } from './v1_0_15.types'
 
+/**
+ * Credential Response
+ * OID4VCI 1.0: Credential Response does NOT include c_nonce.
+ * Wallets must use the Nonce Endpoint (Section 7) to obtain c_nonce values.
+ */
 export interface CredentialResponse extends ExperimentalSubjectIssuance {
   credentials?: Array<CredentialResponseCredentialV1_0_15>
   format?: OID4VCICredentialFormat /* | OID4VCICredentialFormat[]*/ // REQUIRED. JSON string denoting the format of the issued Credential  TODO: remove when cleaning <v13
   transaction_id?: string //OPTIONAL. A string identifying a Deferred Issuance transaction. This claim is contained in the response if the Credential Issuer was unable to immediately issue the credential. The value is subsequently used to obtain the respective Credential with the Deferred Credential Endpoint (see Section 9). It MUST be present when the credential parameter is not returned. It MUST be invalidated after the credential for which it was meant has been obtained by the Wallet.
   acceptance_token?: string //deprecated // OPTIONAL. A JSON string containing a security token subsequently used to obtain a Credential. MUST be present when credential is not returned
-  c_nonce?: string // OPTIONAL. JSON string containing a nonce to be used to create a proof of possession of key material when requesting a Credential (see Section 7.2). When received, the Wallet MUST use this nonce value for its subsequent credential requests until the Credential Issuer provides a fresh nonce
-  c_nonce_expires_in?: number // OPTIONAL. JSON integer denoting the lifetime in seconds of the c_nonce
   notification_id?: string
+  interval?: number // REQUIRED if transaction_id is present. Minimum time in seconds the Wallet should wait before retrying
 }
 
 export interface CredentialOfferRequestWithBaseUrl extends UniformCredentialOfferRequest {

@@ -354,7 +354,9 @@ export class VcIssuer {
    *  - issuerState the state of the issuer
    *  - jwtVerifyCallback callback that verifies the Proof of Possession JWT
    *  - issuerCallback callback to issue a Verifiable Credential
-   *  - cNonce an existing c_nonce
+   *
+   * OID4VCI 1.0: Credential Response does NOT include c_nonce.
+   * Wallets must use the Nonce Endpoint (Section 7) to obtain c_nonce values.
    */
   public async issueCredential(opts: {
     credentialRequest: CredentialRequest
@@ -362,12 +364,9 @@ export class VcIssuer {
     credential?: CredentialIssuanceInput
     credentialDataSupplier?: CredentialDataSupplier
     credentialDataSupplierInput?: CredentialDataSupplierInput
-    newCNonce?: string
-    cNonceExpiresIn?: number // expiration duration in seconds
     tokenExpiresIn?: number // expiration duration in seconds
     jwtVerifyCallback?: JWTVerifyCallback
     credentialSignerCallback?: CredentialSignerCallback
-    responseCNonce?: string
   }): Promise<CredentialResponse> {
     /*if (!('credential_identifier' in opts.credentialRequest)) {
       throw new Error('credential request should be of spec version 1.0.13 or above')
@@ -412,14 +411,6 @@ export class VcIssuer {
       const did = jwtVerifyResult.did
       const jwk = jwtVerifyResult.jwk
       const kid = jwtVerifyResult.kid
-      const newcNonce = opts.newCNonce ? opts.newCNonce : uuidv4()
-      const newcNonceState = {
-        cNonce: newcNonce,
-        createdAt: +new Date(),
-        ...(authSession?.issuerState && { issuerState: authSession.issuerState }),
-        ...(preAuthSession && { preAuthorizedCode: preAuthSession.preAuthorizedCode }),
-      }
-      await this.cNonces.set(newcNonce, newcNonceState)
 
       if (!opts.credential && this._credentialDataSupplier === undefined && opts.credentialDataSupplier === undefined) {
         throw Error(`Either a credential needs to be supplied or a credentialDataSupplier`)
@@ -539,11 +530,10 @@ export class VcIssuer {
         await this._credentialOfferSessions.set(issuerCorrelation.issuerState, authSession)
       }
 
+      // OID4VCI 1.0: Credential Response does NOT include c_nonce.
+      // Wallets must use the Nonce Endpoint (Section 7) to obtain fresh c_nonce values if needed.
       const response: CredentialResponse = {
         credentials: [{ credential: verifiableCredential }],
-        // format: credentialRequest.format,
-        c_nonce: newcNonce,
-        c_nonce_expires_in: this._cNonceExpiresIn,
         ...(notification_id && { notification_id }),
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

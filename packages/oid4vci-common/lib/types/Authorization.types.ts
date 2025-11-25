@@ -474,13 +474,16 @@ export interface DPoPResponseParams {
   dpop?: { dpopNonce: string }
 }
 
+/**
+ * Access Token Response
+ * OID4VCI 1.0: Token Response does NOT include c_nonce.
+ * Wallets must use the Nonce Endpoint (Section 7) to obtain c_nonce values.
+ */
 export interface AccessTokenResponse {
   access_token: string
   scope?: string
   token_type?: string
   expires_in?: number // in seconds
-  c_nonce?: string
-  c_nonce_expires_in?: number // in seconds
   authorization_pending?: boolean
   interval?: number // in seconds
   authorization_details?: AuthorizationDetailsV1_0_15[]
