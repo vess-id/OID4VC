@@ -1,9 +1,10 @@
 name: Sync @next with @latest
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'main'
+# Workflow disabled - uncomment the lines below to re-enable
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - 'main'
 jobs:
   merge-branch:
     runs-on: ubuntu-latest
