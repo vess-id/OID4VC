@@ -166,8 +166,24 @@ export interface CredentialRequestCommonV1_0 extends ExperimentalSubjectIssuance
   issuer_state?: string // OPTIONAL. Issuer state from credential offer
 }
 
+/**
+ * OID4VCI 1.0 Section 8.2: Proof of Possession Map
+ *
+ * The proofs parameter is an object where the key is the proof type (e.g., "jwt", "di_vp")
+ * and the value is an array whose structure depends on the proof type:
+ *
+ * - For "jwt": array of JWT strings
+ *   Example: { "jwt": ["eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImFsZyI6IkVTMjU2Ii..."] }
+ *
+ * - For "di_vp": array of Data Integrity VP objects
+ *   Example: { "di_vp": [{ "@context": [...], "type": [...], "holder": "...", "proof": [...] }] }
+ *
+ * The proof type is an extension point. Each proof type defines its own structure.
+ */
 export interface ProofOfPossessionMapV1_0 {
-  [proofType: string]: ProofOfPossession[] // Array of proofs for each proof type - proofs object contains exactly one parameter named as the proof type. MUST be non-empty.
+  jwt?: string[] // OPTIONAL. Array of JWT proof strings (OID4VCI 1.0 Appendix F.1). MUST be non-empty if present.
+  di_vp?: object[] // OPTIONAL. Array of Data Integrity VP proof objects (OID4VCI 1.0 Appendix F.2). MUST be non-empty if present.
+  [proofType: string]: string[] | object[] | undefined // Extension point for other proof types
 }
 
 // Main credential request type for v1.0 - format parameter removed from authorization_details in Authorization Request

@@ -97,7 +97,7 @@ export class RP {
 
     if (opts.queryId && this._dcqlQueryLookupCallback) {
       const dcqlQuery: DcqlQuery = await this._dcqlQueryLookupCallback(opts.queryId)
-      authorizationRequestOpts.payload.dcql_query = dcqlQuery
+      authorizationRequestOpts.requestObject.payload.dcql_query = dcqlQuery
     }
 
     return AuthorizationRequest.fromOpts(authorizationRequestOpts)
@@ -134,9 +134,36 @@ export class RP {
   }): Promise<URI> {
     const authorizationRequestOpts = this.newAuthorizationRequestOpts(opts)
 
+    // Lookup DCQL query if queryId is provided (OID4VP 1.0)
+    if (opts.queryId && this._dcqlQueryLookupCallback) {
+      const dcqlQuery: DcqlQuery = await this._dcqlQueryLookupCallback(opts.queryId)
+      authorizationRequestOpts.requestObject.payload.dcql_query = dcqlQuery
+
+      // OID4VP 1.0: For PassBy.NONE, also set dcql_query in payload (not just requestObject)
+      if (authorizationRequestOpts.requestObject.passBy === PassBy.NONE) {
+        if (!authorizationRequestOpts.payload) {
+          authorizationRequestOpts.payload = {}
+        }
+        authorizationRequestOpts.payload.dcql_query = dcqlQuery
+      }
+    }
+
     try {
       const uri = await URI.fromOpts(authorizationRequestOpts)
       const authRequest = await AuthorizationRequest.fromOpts(authorizationRequestOpts)
+
+      // Debug: Log authorization request details for PassBy.NONE
+      if (authorizationRequestOpts.requestObject?.passBy === PassBy.NONE) {
+        console.log('[RP.createAuthorizationRequestURI] PassBy.NONE debug:')
+        console.log('  - URI:', uri.encodedUri)
+        console.log('  - authRequest.getMergedProperty(nonce):', await authRequest.getMergedProperty('nonce'))
+        console.log('  - authRequest.getMergedProperty(state):', await authRequest.getMergedProperty('state'))
+        console.log('  - authRequest.getMergedProperty(client_id):', await authRequest.getMergedProperty('client_id'))
+        console.log('  - authRequest.payload.nonce:', authRequest.payload.nonce)
+        console.log('  - authRequest.payload.state:', authRequest.payload.state)
+        console.log('  - authRequest.payload.client_id:', authRequest.payload.client_id)
+      }
+
       this.emitEvent(AuthorizationEvents.ON_AUTH_REQUEST_CREATED_SUCCESS, {
         correlationId: opts.correlationId,
         queryId: opts.queryId,
@@ -313,13 +340,19 @@ export class RP {
     responseURIType?: ResponseURIType
     responseURI?: string
   }): CreateAuthorizationRequestOpts {
+    // OID4VP 1.0: For PassBy.NONE (redirect_uri scheme), nonce and state must be in AUTHORIZATION_REQUEST
+    // For other PassBy modes, they should be in REQUEST_OBJECT
+    const defaultTarget =
+      this._createRequestOptions.requestObject?.passBy === PassBy.NONE
+        ? PropertyTarget.AUTHORIZATION_REQUEST
+        : PropertyTarget.REQUEST_OBJECT
     const nonceWithTarget =
       typeof opts.nonce === 'string'
-        ? { propertyValue: opts.nonce, targets: PropertyTarget.REQUEST_OBJECT }
+        ? { propertyValue: opts.nonce, targets: defaultTarget }
         : (opts?.nonce as RequestPropertyWithTargets<string>)
     const stateWithTarget =
       typeof opts.state === 'string'
-        ? { propertyValue: opts.state, targets: PropertyTarget.REQUEST_OBJECT }
+        ? { propertyValue: opts.state, targets: defaultTarget }
         : (opts?.state as RequestPropertyWithTargets<string>)
     const claimsWithTarget =
       opts?.claims && !('propertyValue' in opts.claims)
@@ -406,6 +439,15 @@ export class RP {
         newOpts.requestObject.payload.claims = { ...newOpts.requestObject.payload.claims, ...claimsWithTarget.propertyValue }
       }
     }
+
+    // OID4VP 1.0: For PassBy.NONE, copy all requestObject.payload properties to payload
+    // This ensures parameters like dcql_query, response_type, response_mode, client_metadata
+    // are included in the authorization request URI as query parameters
+    if (newOpts.requestObject.passBy === PassBy.NONE && newOpts.requestObject.payload) {
+      // Copy all properties from requestObject.payload to payload
+      Object.assign(newOpts.payload, newOpts.requestObject.payload)
+    }
+
     return newOpts
   }
 

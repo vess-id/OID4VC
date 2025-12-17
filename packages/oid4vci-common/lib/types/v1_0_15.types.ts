@@ -120,8 +120,23 @@ export interface CredentialRequestV1_0_15Common extends ExperimentalSubjectIssua
   issuer_state?: string // OPTIONAL. We allow sending a issuer state back to the credential offer in case an auth code flow is used with an external AS and no nonces are used (not recommended), but does allow to integrate any OIDC server
 }
 
+/**
+ * OID4VCI 1.0 Section 8.2: Proof of Possession Map (v1.0.15 - same structure as v1.0)
+ *
+ * The proofs parameter is an object where the key is the proof type (e.g., "jwt", "di_vp")
+ * and the value is an array whose structure depends on the proof type:
+ *
+ * - For "jwt": array of JWT strings
+ *   Example: { "jwt": ["eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImFsZyI6IkVTMjU2Ii..."] }
+ *
+ * - For "di_vp" (formerly ldp_vp): array of Data Integrity VP objects
+ *   Example: { "di_vp": [{ "@context": [...], "type": [...], "holder": "...", "proof": [...] }] }
+ */
 export interface ProofOfPossessionMap {
-  [proofType: string]: ProofOfPossession[] // Array of proofs for each proof type - proofs object contains exactly one parameter named as the proof type
+  jwt?: string[] // OPTIONAL. Array of JWT proof strings (OID4VCI 1.0 Appendix F.1). MUST be non-empty if present.
+  di_vp?: object[] // OPTIONAL. Array of Data Integrity VP proof objects (OID4VCI 1.0 Appendix F.2). MUST be non-empty if present.
+  ldp_vp?: object[] // DEPRECATED: Use di_vp instead. For backward compatibility with older implementations.
+  [proofType: string]: string[] | object[] | undefined // Extension point for other proof types
 }
 
 // Main credential request type for v15 - removes format and format-specific parameters from Credential Request

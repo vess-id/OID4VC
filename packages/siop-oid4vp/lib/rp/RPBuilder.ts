@@ -151,6 +151,14 @@ export class RPBuilder {
     return this.withRequestBy(PassBy.VALUE, undefined /*, PropertyTarget.AUTHORIZATION_REQUEST*/)
   }
 
+  /**
+   * Configure request to be passed without signing (plain query parameters)
+   * This is required for redirect_uri client_id_scheme in OID4VP 1.0
+   */
+  withRequestByNone(): RPBuilder {
+    return this.withRequestBy(PassBy.NONE, undefined)
+  }
+
   withRequestBy(passBy: PassBy, referenceUri?: string /*, targets?: PropertyTargets*/): RPBuilder {
     if (passBy === PassBy.REFERENCE && !referenceUri) {
       throw Error('Cannot use pass by reference without a reference URI')

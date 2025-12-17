@@ -689,14 +689,31 @@ export class VcIssuer {
         throw Error(`Format ${format} not supported yet`)
       } else if (typeof this._jwtVerifyCallback !== 'function' && typeof jwtVerifyCallback !== 'function') {
         throw new Error(JWT_VERIFY_CONFIG_ERROR)
-      } else if (!credentialRequest.proof) {
+      }
+
+      // OID4VCI 1.0: Support both 'proofs' (new spec) and 'proof' (legacy)
+      let jwtString: string
+      if (credentialRequest.proofs) {
+        // OID4VCI 1.0 format: Extract first proof from proofs.jwt array
+        // In OID4VCI 1.0, proofs.jwt is an array of JWT strings, not ProofOfPossession objects
+        const jwtProofs = credentialRequest.proofs['jwt'] as unknown as string[]
+        if (!jwtProofs || jwtProofs.length === 0) {
+          throw Error('Proof of possession is required. No proof value present in credential request')
+        }
+        // proofs.jwt contains an array of JWT strings (OID4VCI 1.0 spec)
+        jwtString = jwtProofs[0]
+      } else if (credentialRequest.proof) {
+        // Legacy format for backward compatibility (ProofOfPossession object)
+        jwtString = credentialRequest.proof.jwt
+      } else {
         throw Error('Proof of possession is required. No proof value present in credential request')
       }
 
+      // Call jwtVerifyCallback with { jwt: string } format as per JWTVerifyCallback type
       const jwtVerifyResult = jwtVerifyCallback
-        ? await jwtVerifyCallback(credentialRequest.proof)
+        ? await jwtVerifyCallback({ jwt: jwtString })
         : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          await this._jwtVerifyCallback!(credentialRequest.proof)
+          await this._jwtVerifyCallback!({ jwt: jwtString })
 
       const { didDocument, did, jwt } = jwtVerifyResult
       const { header, payload } = jwt

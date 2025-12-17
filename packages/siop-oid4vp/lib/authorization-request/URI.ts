@@ -148,16 +148,26 @@ export class URI implements AuthorizationRequestURI {
     }
 
     const isJwt = typeof authorizationRequestPayload === 'string'
-    const requestObjectJwt = requestObject
-      ? await requestObject.toJwt()
-      : typeof authorizationRequestPayload === 'string'
-        ? authorizationRequestPayload
-        : authorizationRequestPayload.request
+    // OID4VP 1.0: For PassBy.NONE (redirect_uri scheme), skip JWT generation
+    const requestObjectJwt =
+      opts.passBy === PassBy.NONE
+        ? undefined
+        : requestObject
+          ? await requestObject.toJwt()
+          : typeof authorizationRequestPayload === 'string'
+            ? authorizationRequestPayload
+            : authorizationRequestPayload.request
 
     if (isJwt && (!requestObjectJwt || !requestObjectJwt.startsWith('ey'))) {
       throw Error(SIOPErrors.NO_JWT)
     }
-    const requestObjectPayload: RequestObjectPayload = requestObjectJwt ? (parseJWT(requestObjectJwt).payload as RequestObjectPayload) : undefined
+    // OID4VP 1.0: For PassBy.NONE, use request object payload directly without JWT
+    const requestObjectPayload: RequestObjectPayload =
+      opts.passBy === PassBy.NONE && requestObject
+        ? await requestObject.getPayload()
+        : requestObjectJwt
+          ? (parseJWT(requestObjectJwt).payload as RequestObjectPayload)
+          : undefined
 
     if (requestObjectPayload) {
       // Only used to validate if the request object contains presentation definition(s) | a dcql query
@@ -189,12 +199,56 @@ export class URI implements AuthorizationRequestURI {
       if (!opts.reference_uri) {
         throw new Error(SIOPErrors.NO_REFERENCE_URI)
       }
+      // OID4VP 1.0: When using Request by Reference, only request_uri and client_id should be in the URI
+      // All other parameters (including dcql_query) should be in the Request Object JWT
+      const client_id = requestObjectPayload.client_id
+      Object.keys(uniformAuthorizationRequestPayload).forEach(key => {
+        delete uniformAuthorizationRequestPayload[key]
+      })
       uniformAuthorizationRequestPayload.request_uri = opts.reference_uri
-      uniformAuthorizationRequestPayload.client_id = requestObjectPayload.client_id
-      delete uniformAuthorizationRequestPayload.request
+      uniformAuthorizationRequestPayload.client_id = client_id
     } else if (type === PassBy.VALUE) {
       uniformAuthorizationRequestPayload.request = requestObjectJwt
       delete uniformAuthorizationRequestPayload.request_uri
+    } else if (type === PassBy.NONE) {
+      // OID4VP 1.0: For redirect_uri scheme, send all parameters as plain query parameters (no JWT)
+      // Debug: Log before merge
+      console.log('[URI.fromOpts] PassBy.NONE BEFORE merge:')
+      console.log('  - uniformAuthorizationRequestPayload keys:', Object.keys(uniformAuthorizationRequestPayload))
+      console.log('  - requestObjectPayload keys:', requestObjectPayload ? Object.keys(requestObjectPayload) : 'undefined')
+      console.log('  - requestObjectPayload:', requestObjectPayload)
+
+      // Merge request object payload into authorization request payload
+      if (requestObjectPayload) {
+        Object.assign(uniformAuthorizationRequestPayload, requestObjectPayload)
+      }
+
+      console.log('[URI.fromOpts] PassBy.NONE AFTER merge:')
+      console.log('  - uniformAuthorizationRequestPayload keys:', Object.keys(uniformAuthorizationRequestPayload))
+
+      // OID4VP 1.0: Set client_id for redirect_uri scheme
+      // For redirect_uri scheme, client_id must be the response_uri with "redirect_uri:" prefix
+      const responseUri = uniformAuthorizationRequestPayload.response_uri || uniformAuthorizationRequestPayload.redirect_uri
+      if (responseUri) {
+        uniformAuthorizationRequestPayload.client_id = `redirect_uri:${responseUri}`
+        uniformAuthorizationRequestPayload.client_id_scheme = 'redirect_uri'
+      }
+
+      // Ensure no request or request_uri parameters
+      delete uniformAuthorizationRequestPayload.request
+      delete uniformAuthorizationRequestPayload.request_uri
+      // Remove JWT-specific fields that shouldn't be in query parameters
+      delete uniformAuthorizationRequestPayload.iss
+      delete uniformAuthorizationRequestPayload.sub
+      delete uniformAuthorizationRequestPayload.aud
+      delete uniformAuthorizationRequestPayload.iat
+      delete uniformAuthorizationRequestPayload.exp
+      delete uniformAuthorizationRequestPayload.nbf
+      delete uniformAuthorizationRequestPayload.jti
+
+      // Debug: Log final payload for PassBy.NONE
+      console.log('[URI.fromOpts] PassBy.NONE final payload keys:', Object.keys(uniformAuthorizationRequestPayload))
+      console.log('[URI.fromOpts] PassBy.NONE payload:', JSON.stringify(uniformAuthorizationRequestPayload, null, 2))
     }
     return new URI({
       scheme,
