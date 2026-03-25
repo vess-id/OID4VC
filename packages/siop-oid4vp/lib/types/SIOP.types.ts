@@ -480,7 +480,7 @@ export interface VerifiedOpenID4VPSubmission {
 }
 
 export interface PresentationSubmission {
-  [credentialQueryId: string]: WrappedVerifiablePresentation
+  [credentialQueryId: string]: WrappedVerifiablePresentation[]
 }
 
 export interface VerifiedAuthorizationResponse {

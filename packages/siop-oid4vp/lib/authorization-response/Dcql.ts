@@ -50,22 +50,24 @@ export class Dcql {
     },
   ): DcqlPresentationResult.Output => {
     const dcqlPresentation = Object.fromEntries(
-      Object.entries(extractDcqlPresentationFromDcqlVpToken(record, opts)).map(([queryId, p]) => {
-        const credentials = p.vcs.map((vc) => {
-          switch (p.format) {
-            case 'mso_mdoc':
-              return Dcql.toDcqlMdocCredential(vc.original)
-            case 'dc+sd-jwt':
-              return Dcql.toDcqlSdJwtCredential(vc)
-            case 'jwt_vp':
-              return Dcql.toDcqlJwtCredential(vc)
-            case 'ldp_vp':
-              return Dcql.toDcqlJsonLdCredential(vc)
-            default:
-              const format: string = (p as any).format
-              throw new Error(`Unknown DcqlPresentation format ${format}`)
-          }
-        })
+      Object.entries(extractDcqlPresentationFromDcqlVpToken(record, opts)).map(([queryId, presentations]) => {
+        const credentials = presentations.flatMap((pres) =>
+          pres.vcs.map((vc) => {
+            switch (pres.format) {
+              case 'mso_mdoc':
+                return Dcql.toDcqlMdocCredential(vc.original)
+              case 'dc+sd-jwt':
+                return Dcql.toDcqlSdJwtCredential(vc)
+              case 'jwt_vp':
+                return Dcql.toDcqlJwtCredential(vc)
+              case 'ldp_vp':
+                return Dcql.toDcqlJsonLdCredential(vc)
+              default:
+                const format: string = (pres as any).format
+                throw new Error(`Unknown DcqlPresentation format ${format}`)
+            }
+          }),
+        )
 
         return [queryId, credentials]
       }),
