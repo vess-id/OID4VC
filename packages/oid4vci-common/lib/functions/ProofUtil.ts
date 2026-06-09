@@ -1,4 +1,4 @@
-import { BaseJWK, JWK } from '@sphereon/oid4vc-common'
+import { BaseJWK, JWK } from '@vess-id/oid4vc-common'
 import { Loggers } from '@sphereon/ssi-types'
 import { jwtDecode } from 'jwt-decode'
 

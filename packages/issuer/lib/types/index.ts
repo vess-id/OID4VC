@@ -9,7 +9,7 @@ import {
   JwtVerifyResult,
   OID4VCICredentialFormat,
   StatusListOpts,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import {
   CompactSdJwtVc,
   ICredential,

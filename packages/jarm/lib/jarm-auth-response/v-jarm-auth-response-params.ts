@@ -1,4 +1,4 @@
-import { checkExp } from '@sphereon/oid4vc-common'
+import { checkExp } from '@vess-id/oid4vc-common'
 import * as v from 'valibot'
 
 export const vJarmAuthResponseErrorParams = v.looseObject({

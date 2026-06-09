@@ -1,4 +1,4 @@
-import { assertValidCodeVerifier, CodeChallengeMethod, createCodeChallenge, generateCodeVerifier, PKCEOpts } from '@sphereon/oid4vci-common'
+import { assertValidCodeVerifier, CodeChallengeMethod, createCodeChallenge, generateCodeVerifier, PKCEOpts } from '@vess-id/oid4vci-common'
 
 export const generateMissingPKCEOpts = (pkce: PKCEOpts) => {
   if (pkce.disabled) {

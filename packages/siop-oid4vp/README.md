@@ -1,17 +1,54 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <h1 align="center">
   <br>
-  <a href="https://www.sphereon.com"><img src="https://sphereon.com/content/themes/sphereon/assets/img/logo.svg" alt="Sphereon" width="400"></a>
+  @vess-id/did-auth-siop
   <br><center>Self Issued OpenID Provider (SIOPv2)<br/>
-with OpenID4VP support</center>
+with OpenID4VP 1.0 support</center>
   <br>
 </h1>
 <br>
 
-An OpenID authentication library conforming to
-the [Self Issued OpenID Provider v2 (SIOPv2)](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html)
-and [OpenID for Verifiable Presentations (OpenID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
-as specified in the OpenID Connect working group.
+> **Note**: This is a @vess-id fork implementing **OpenID for Verifiable Presentations (OID4VP) 1.0 Final** specification.
+> Original implementation by [Sphereon](https://github.com/Sphereon-Opensource/SIOP-OID4VP).
+
+An OpenID authentication library conforming to:
+- [Self Issued OpenID Provider v2 (SIOPv2)](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html)
+- [OpenID for Verifiable Presentations (OID4VP) 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html) **✨ New!**
+
+## What's New in v1.0.0
+
+This version implements **OID4VP 1.0 Final** specification with the following enhancements:
+
+### Type System
+- Complete OID4VP 1.0 type definitions with backward compatibility
+- `NonEmptyArray<T>` type helper for v1.0 compliance
+- Type guards for v1.0 validation
+
+### DCQL Support
+- Enhanced DCQL query validation
+- **Required** `meta` parameter enforcement (v1.0 requirement)
+- Non-empty array validation
+
+### mdoc Session Transcript
+- `OpenID4VPHandover` for redirect-based flows
+- `OpenID4VPDCAPIHandover` for Digital Credentials API
+- JWK thumbprint computation (RFC 7638)
+- ISO 18013-5 compliant session transcripts
+
+### Response Processing
+- **New response modes**: `dc_api` and `dc_api.jwt`
+- Response encryption with JWE support
+- Algorithm selection (ECDH-ES, A256GCM preferred)
+
+### Transaction Data
+- Hash-based binding (SHA-256/384/512)
+- Constant-time hash comparison
+- Transaction data validation
+
+### Package Migration
+- Migrated to `@vess-id` scope
+- All dependencies updated to v1.0.0
+- Consistent versioning across workspace
 
 ## Introduction
 

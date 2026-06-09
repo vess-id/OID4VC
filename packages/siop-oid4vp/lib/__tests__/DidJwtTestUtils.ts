@@ -1,4 +1,4 @@
-import { JwtPayload, parseJWT, SigningAlgo } from '@sphereon/oid4vc-common'
+import { JwtPayload, parseJWT, SigningAlgo } from '@vess-id/oid4vc-common'
 import { VerifyCallback } from '@sphereon/wellknown-dids-client'
 import {
   createJWT,

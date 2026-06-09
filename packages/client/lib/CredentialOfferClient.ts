@@ -8,7 +8,7 @@ import {
   OpenId4VCIVersion,
   PRE_AUTH_GRANT_LITERAL,
   toUniformCredentialOfferRequest,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { constructBaseResponse, handleCredentialOfferUri } from './functions'
 import { LOG } from './types'

@@ -54,9 +54,11 @@ export const verifyPresentations = async (
   const dcqlPresentation = extractDcqlPresentationFromDcqlVpToken(authorizationResponse.payload.vp_token as string, { hasher: verifyOpts.hasher })
 
   const wrappedPresentations = Object.values(dcqlPresentation)
+  // Extract presentation_submission from the authorization response payload
+  const presentationSubmission = authorizationResponse.payload.presentation_submission
   const verifiedPresentations = await Promise.all(
     wrappedPresentations.map((presentation) =>
-      verifyOpts.verification.presentationVerificationCallback?.(presentation.original as W3CVerifiablePresentation),
+      verifyOpts.verification.presentationVerificationCallback?.(presentation.original as W3CVerifiablePresentation, presentationSubmission),
     ),
   )
 

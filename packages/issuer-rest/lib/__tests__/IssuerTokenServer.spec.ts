@@ -11,7 +11,7 @@ import {
   STATE_MISSING_ERROR,
   URIState,
 } from '@sphereon/oid4vci-common'
-import { AuthorizationServerMetadataBuilder, MemoryStates, VcIssuer } from '@sphereon/oid4vci-issuer'
+import { AuthorizationServerMetadataBuilder, MemoryStates, VcIssuer } from '@vess-id/oid4vci-issuer'
 import { ExpressBuilder, ExpressSupport } from '@sphereon/ssi-express-support'
 import { Express } from 'express'
 import * as jose from 'jose'
@@ -148,7 +148,7 @@ describe('OID4VCIServer', () => {
         credentialOfferSessions,
         cNonces: new MemoryStates<CNonceState>(),
         uris: new MemoryStates<URIState>(),
-      },
+      }
     )
 
     expressSupport = ExpressBuilder.fromServerOpts({

@@ -1,4 +1,4 @@
-import { SubjectIdentifierType, SubjectSyntaxTypesSupportedValues } from '@sphereon/did-auth-siop'
+import { SubjectIdentifierType, SubjectSyntaxTypesSupportedValues } from '@vess-id/did-auth-siop'
 import { getUniResolver, UniResolver } from '@sphereon/did-uni-client'
 import { DIDResolutionOptions, DIDResolutionResult, ParsedDID, Resolvable, Resolver, ResolverRegistry } from 'did-resolver'
 

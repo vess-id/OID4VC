@@ -1,4 +1,4 @@
-import { parseJWT, SigningAlgo } from '@sphereon/oid4vc-common'
+import { parseJWT, SigningAlgo } from '@vess-id/oid4vc-common'
 import { describe, expect, it } from 'vitest'
 import { DcqlQuery } from 'dcql'
 import { internalSignature } from '../DidJwtTestUtils'

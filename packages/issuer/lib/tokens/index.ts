@@ -1,10 +1,9 @@
-import { calculateJwkThumbprint, JWK, uuidv4 } from '@sphereon/oid4vc-common'
+import { calculateJwkThumbprint, JWK, uuidv4 } from '@vess-id/oid4vc-common'
 import {
   AccessTokenRequest,
   AccessTokenResponse,
   Alg,
   AuthorizationRequest,
-  CNonceState,
   CredentialOfferSession,
   EXPIRED_PRE_AUTHORIZED_CODE,
   GrantTypes,
@@ -24,7 +23,7 @@ import {
   USER_PIN_NOT_REQUIRED_ERROR,
   USER_PIN_REQUIRED_ERROR,
   USER_PIN_TX_CODE_SPEC_ERROR,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { generateCredentialIdentifiers, isPreAuthorizedCodeExpired } from '../functions'
 
@@ -32,7 +31,6 @@ export interface ITokenEndpointOpts {
   tokenEndpointDisabled?: boolean // Disable if used in an existing OAuth2/OIDC environment and have the AS handle tokens
   tokenPath?: string // token path can either be defined here, or will be deduced from issuer metadata
   interval?: number
-  cNonceExpiresIn?: number
   tokenExpiresIn?: number
   preAuthorizedCodeExpirationDuration?: number
   accessTokenSignerCallback?: JWTSignerCallback
@@ -262,15 +260,16 @@ export const assertValidAccessTokenRequest = async (
   return { preAuthSession: credentialOfferSession }
 }
 
+/**
+ * Create Access Token Response
+ * OID4VCI 1.0: Token Response does NOT include c_nonce.
+ * Wallets must use the Nonce Endpoint (Section 7) to obtain c_nonce values.
+ */
 export const createAccessTokenResponse = async (
   request: AccessTokenRequest,
   opts: {
     credentialOfferSessions: IStateManager<CredentialOfferSession>
-    cNonces: IStateManager<CNonceState>
-    cNonce?: string
-    cNonceExpiresIn?: number // expiration in seconds
     tokenExpiresIn: number // expiration in seconds
-    // preAuthorizedCodeExpirationDuration?: number
     accessTokenSignerCallback: JWTSignerCallback
     accessTokenIssuer: string
     accessTokenProvider?: AccessTokenProvider
@@ -281,8 +280,6 @@ export const createAccessTokenResponse = async (
   const {
     dPoPJwk,
     credentialOfferSessions,
-    cNonces,
-    cNonceExpiresIn,
     tokenExpiresIn,
     accessTokenIssuer,
     accessTokenSignerCallback,
@@ -301,9 +298,6 @@ export const createAccessTokenResponse = async (
     credentialOfferSession = await credentialOfferSessions.getAsserted(sessionKey)
   }
 
-  const cNonce = opts.cNonce ?? uuidv4()
-  await cNonces.set(cNonce, { cNonce, createdAt: +new Date() })
-
   const access_token = await generateAccessToken({
     tokenExpiresIn,
     accessTokenSignerCallback,
@@ -316,12 +310,12 @@ export const createAccessTokenResponse = async (
   credentialOfferSession.status = IssueStatus.ACCESS_TOKEN_CREATED
   credentialOfferSession.lastUpdatedAt = +new Date()
 
+  // OID4VCI 1.0: Token Response does NOT include c_nonce or c_nonce_expires_in
+  // Wallets should use the Nonce Endpoint to obtain c_nonce values
   const response: AccessTokenResponse = {
     access_token,
     token_type: dPoPJwk ? 'DPoP' : 'bearer',
     expires_in: tokenExpiresIn,
-    c_nonce: cNonce,
-    c_nonce_expires_in: cNonceExpiresIn,
     interval,
     ...(credentialOfferSession.authorizationDetails && {
       authorization_details: credentialOfferSession.authorizationDetails.map((detail) => {

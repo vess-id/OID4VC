@@ -1,4 +1,4 @@
-import { CreateDPoPClientOpts, JWK } from '@sphereon/oid4vc-common'
+import { CreateDPoPClientOpts, JWK } from '@vess-id/oid4vc-common'
 import {
   AccessTokenRequestOpts,
   AccessTokenResponse,
@@ -30,7 +30,7 @@ import {
   PKCEOpts,
   ProofOfPossessionCallbacks,
   toAuthorizationResponsePayload,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { CredentialFormat, Loggers } from '@sphereon/ssi-types'
 
 import { AccessTokenClient } from './AccessTokenClient'

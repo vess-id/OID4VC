@@ -4,7 +4,7 @@ import {
   IssuerMetadataV1_0_15,
   MetadataDisplay,
   ResponseEncryption,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { CredentialSupportedBuilderV1_15 } from './CredentialSupportedBuilderV1_15'
 import { DisplayBuilder } from './DisplayBuilder'

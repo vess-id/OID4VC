@@ -29,7 +29,7 @@ import {
   validateJWT,
   WellKnownEndpoints,
 } from '@sphereon/oid4vci-common'
-import { IssuerCorrelation, ITokenEndpointOpts, LOG, VcIssuer } from '@sphereon/oid4vci-issuer'
+import { IssuerCorrelation, ITokenEndpointOpts, LOG, VcIssuer } from '@vess-id/oid4vci-issuer'
 import { env, ISingleEndpointOpts, sendErrorResponse } from '@sphereon/ssi-express-support'
 import { InitiatorType, SubSystem, System } from '@sphereon/ssi-types'
 import { NextFunction, Request, Response, Router } from 'express'
@@ -80,7 +80,7 @@ export function getIssueStatusEndpoint(router: Router, issuer: VcIssuer, opts: I
           error: 'invalid_request',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -109,7 +109,7 @@ export function getCredentialOfferReferenceEndpoint(router: Router, issuer: VcIs
       if (!session || !session.credentialOffer || session.status !== 'OFFER_CREATED') {
         if (session?.status) {
           LOG.warning(
-            `[OID4VCI] credential offer reference URI request with ${id}, but request was already received earlier. Session status: ${session.status}`,
+            `[OID4VCI] credential offer reference URI request with ${id}, but request was already received earlier. Session status: ${session.status}`
           )
         }
         return sendErrorResponse(response, 404, {
@@ -127,7 +127,7 @@ export function getCredentialOfferReferenceEndpoint(router: Router, issuer: VcIs
           error: 'invalid_request',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -141,7 +141,7 @@ function isExternalAS(issuerMetadata: CredentialIssuerMetadataOptsV1_0_15) {
 export function authorizationChallengeEndpoint(
   router: Router,
   issuer: VcIssuer,
-  opts: IAuthorizationChallengeEndpointOpts & { baseUrl: string | URL },
+  opts: IAuthorizationChallengeEndpointOpts & { baseUrl: string | URL }
 ) {
   const endpoint = issuer.authorizationServerMetadata.authorization_challenge_endpoint ?? issuer.issuerMetadata.authorization_challenge_endpoint
   const baseUrl = getBaseUrl(opts.baseUrl)
@@ -222,12 +222,12 @@ export function accessTokenEndpoint(
     ISingleEndpointOpts & {
       baseUrl: string | URL
       authRequestsData?: Map<string, AuthorizationRequest>
-    },
+    }
 ) {
   const externalAS = isExternalAS(issuer.issuerMetadata) || issuer.asClientOpts
   if (externalAS || (opts.accessTokenProvider && opts.accessTokenProvider !== 'internal')) {
     LOG.log(
-      `[OID4VCI] External Authorization Server ${issuer.issuerMetadata.authorization_servers} is being used. Not enabling internal issuer token endpoint`,
+      `[OID4VCI] External Authorization Server ${issuer.issuerMetadata.authorization_servers} is being used. Not enabling internal issuer token endpoint`
     )
     return
   } else if (opts?.enabled === false) {
@@ -280,7 +280,7 @@ export function accessTokenEndpoint(
       interval,
       tokenExpiresIn,
       accessTokenIssuer,
-    }),
+    })
   )
 }
 
@@ -288,7 +288,7 @@ export function getCredentialEndpoint(
   router: Router,
   issuer: VcIssuer,
   opts: Pick<ITokenEndpointOpts, 'accessTokenVerificationCallback' | 'accessTokenSignerCallback' | 'tokenExpiresIn' | 'cNonceExpiresIn'> &
-    ISingleEndpointOpts & { baseUrl: string | URL },
+    ISingleEndpointOpts & { baseUrl: string | URL }
 ) {
   const endpoint = issuer.issuerMetadata.credential_endpoint
   const baseUrl = getBaseUrl(opts.baseUrl)
@@ -356,7 +356,7 @@ export function getCredentialEndpoint(
           error: 'invalid_request',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -365,7 +365,7 @@ export function getCredentialEndpoint(
 export function notificationEndpoint(
   router: Router,
   issuer: VcIssuer,
-  opts: ISingleEndpointOpts & Pick<ITokenEndpointOpts, 'accessTokenVerificationCallback'> & { baseUrl: string | URL },
+  opts: ISingleEndpointOpts & Pick<ITokenEndpointOpts, 'accessTokenVerificationCallback'> & { baseUrl: string | URL }
 ) {
   const endpoint = issuer.issuerMetadata.notification_endpoint
   const baseUrl = getBaseUrl(opts.baseUrl)
@@ -379,7 +379,7 @@ export function notificationEndpoint(
     try {
       const notificationRequest = request.body as NotificationRequest
       LOG.log(
-        `notification ${notificationRequest.event}/${notificationRequest.event_description} received for ${notificationRequest.notification_id}`,
+        `notification ${notificationRequest.event}/${notificationRequest.event_description} received for ${notificationRequest.notification_id}`
       )
       const jwt = extractBearerToken(request.header('Authorization'))
       EVENTS.emit(NotificationStatusEventNames.OID4VCI_NOTIFICATION_RECEIVED, {
@@ -435,7 +435,7 @@ export function notificationEndpoint(
           error: 'invalid_notification_request',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -482,7 +482,7 @@ export function nonceEndpoint(router: Router, issuer: VcIssuer, opts: INonceEndp
           error: 'server_error',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -510,7 +510,7 @@ export function getCredentialOfferEndpoint(router: Router, issuer: VcIssuer, opt
           error: 'invalid_request',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -538,7 +538,7 @@ export function deleteCredentialOfferEndpoint(router: Router, issuer: VcIssuer, 
           error: 'invalid_request',
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -566,7 +566,7 @@ export function createCredentialOfferEndpoint(
   router: Router,
   issuer: VcIssuer,
   opts?: ICreateCredentialOfferEndpointOpts & { baseUrl?: string },
-  issuerPayloadPath?: string, // backwards compat, sigh
+  issuerPayloadPath?: string // backwards compat, sigh
 ) {
   const path = determinePath(opts?.baseUrl, opts?.path ?? '/webapp/credential-offers', { stripBasePath: true })
   const offerReferencePath =
@@ -626,7 +626,7 @@ export function createCredentialOfferEndpoint(
           error: TokenErrorResponse.invalid_request,
           error_description: (e as Error).message,
         },
-        e,
+        e
       )
     }
   })
@@ -636,12 +636,12 @@ export function pushedAuthorizationEndpoint(
   router: Router,
   issuer: VcIssuer,
   authRequestsData: Map<string, AuthorizationRequest>,
-  opts?: ISingleEndpointOpts,
+  opts?: ISingleEndpointOpts
 ) {
   const externalAS = isExternalAS(issuer.issuerMetadata) || issuer.asClientOpts
   if (externalAS) {
     LOG.log(
-      `[OID4VCI] External Authorization Server ${issuer.issuerMetadata.authorization_servers} is being used. Not enabling internal PAR endpoint`,
+      `[OID4VCI] External Authorization Server ${issuer.issuerMetadata.authorization_servers} is being used. Not enabling internal PAR endpoint`
     )
     return
   } else if (opts?.enabled === false) {
@@ -748,7 +748,7 @@ export function getMetadataEndpoints(
     rootRouter?: Router
     basePath?: string
     wellKnownHostLocation?: WellKnownHostLocation
-  },
+  }
 ) {
   const credentialIssuerHandler = (request: Request, response: Response) => {
     return response.json(issuer.issuerMetadata)
@@ -781,7 +781,7 @@ export function getMetadataEndpoints(
 export function determinePath(
   baseUrl: URL | string | undefined,
   endpoint: string,
-  opts?: { skipBaseUrlCheck?: boolean; prependUrl?: string; stripBasePath?: boolean },
+  opts?: { skipBaseUrlCheck?: boolean; prependUrl?: string; stripBasePath?: boolean }
 ) {
   const basePath = baseUrl ? getBasePath(baseUrl) : ''
   let path = endpoint

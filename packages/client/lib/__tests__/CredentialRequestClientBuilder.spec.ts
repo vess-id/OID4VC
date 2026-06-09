@@ -1,6 +1,6 @@
 import { KeyObject } from 'crypto'
 
-import { Alg, CredentialIssuerMetadataV1_0_15, Jwt, JwtVerifyResult, OpenId4VCIVersion, ProofOfPossession } from '@sphereon/oid4vci-common'
+import { Alg, CredentialIssuerMetadataV1_0_15, Jwt, JwtVerifyResult, OpenId4VCIVersion, ProofOfPossession } from '@vess-id/oid4vci-common'
 import * as jose from 'jose'
 import { beforeAll, describe, expect, it } from 'vitest'
 

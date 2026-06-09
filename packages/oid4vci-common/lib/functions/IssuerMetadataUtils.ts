@@ -37,7 +37,25 @@ export function getSupportedCredentials(opts?: {
 export function determineVersionsFromIssuerMetadata(issuerMetadata: CredentialIssuerMetadata | IssuerMetadata): Array<OpenId4VCIVersion> {
   const versions = new Set<OpenId4VCIVersion>()
   if ('credential_configurations_supported' in issuerMetadata) {
-    versions.add(OpenId4VCIVersion.VER_1_0_15)
+    // Both v1.0 and v1.0.15 have credential_configurations_supported
+    // Distinguish by checking for v1.0-specific features:
+    // - credential_request_encryption (NEW in v1.0)
+    // - absence of signed_metadata (removed in v1.0)
+    // - credential_metadata structure (NEW in v1.0)
+
+    const hasV1_0Features =
+      'credential_request_encryption' in issuerMetadata || // NEW in v1.0
+      (issuerMetadata.credential_configurations_supported &&
+       Object.values(issuerMetadata.credential_configurations_supported).some(
+         (config: any) => config.credential_metadata !== undefined // NEW structure in v1.0
+       ))
+
+    if (hasV1_0Features) {
+      versions.add(OpenId4VCIVersion.VER_1_0)
+    } else {
+      // Assume v1.0.15 if no v1.0-specific features detected
+      versions.add(OpenId4VCIVersion.VER_1_0_15)
+    }
   }
 
   //  if (versions.size === 0) {
@@ -61,13 +79,15 @@ export function getSupportedCredential(opts?: {
 
   let credentialConfigurationsV15: Record<string, CredentialConfigurationSupportedV1_0_15> | undefined = undefined
 
-  // Check if we have v15 credential_configurations_supported
+  // Check if we have v1.0 or v1.0.15 credential_configurations_supported
+  // Both versions use the same structure, so we can handle them similarly
   if (issuerMetadata?.credential_configurations_supported && version >= OpenId4VCIVersion.VER_1_0_15) {
     credentialConfigurationsV15 = issuerMetadata.credential_configurations_supported as Record<string, CredentialConfigurationSupportedV1_0_15>
   }
   if (!issuerMetadata || (!issuerMetadata.credential_configurations_supported && !issuerMetadata.credentials_supported)) {
     VCI_LOG_COMMON.warning(`No credential issuer metadata or supported credentials found for issuer`)
-    if (version >= OpenId4VCIVersion.VER_1_0_15) {
+    // v1.0 and v1.0.15 both use credential_configurations_supported structure
+    if (version >= OpenId4VCIVersion.VER_1_0_15 || version === OpenId4VCIVersion.VER_1_0) {
       return credentialConfigurationsV15 ?? {}
     } else {
       return []

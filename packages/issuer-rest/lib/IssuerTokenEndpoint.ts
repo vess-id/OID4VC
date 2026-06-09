@@ -1,6 +1,6 @@
 import { DPoPVerifyJwtCallback, JWK, uuidv4, verifyDPoP } from '@sphereon/oid4vc-common'
 import { AuthorizationRequest, GrantTypes, PRE_AUTHORIZED_CODE_REQUIRED_ERROR, TokenError, TokenErrorResponse } from '@sphereon/oid4vci-common'
-import { assertValidAccessTokenRequest, createAccessTokenResponse, ITokenEndpointOpts, VcIssuer } from '@sphereon/oid4vci-issuer'
+import { assertValidAccessTokenRequest, createAccessTokenResponse, ITokenEndpointOpts, VcIssuer } from '@vess-id/oid4vci-issuer'
 import { sendErrorResponse } from '@sphereon/ssi-express-support'
 import { NextFunction, Request, Response } from 'express'
 
@@ -78,7 +78,7 @@ export const handleTokenRequest = ({
             jwtVerifyCallback: dpop.dPoPVerifyJwtCallback,
             expectAccessToken: false,
             maxIatAgeInSeconds: undefined,
-          },
+          }
         )
       } catch (error) {
         return sendErrorResponse(response, 400, {
@@ -108,7 +108,7 @@ export const handleTokenRequest = ({
         {
           error: TokenErrorResponse.invalid_request,
         },
-        error,
+        error
       )
     }
   }

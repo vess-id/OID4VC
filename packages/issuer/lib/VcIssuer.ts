@@ -1,4 +1,4 @@
-import { uuidv4 } from '@sphereon/oid4vc-common'
+import { uuidv4 } from '@vess-id/oid4vc-common'
 import {
   ALG_ERROR,
   AUD_ERROR,
@@ -41,7 +41,7 @@ import {
   TxCode,
   TYP_ERROR,
   URIState,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { CompactSdJwtVc, CredentialMapper, InitiatorType, SubSystem, System, W3CVerifiableCredential } from '@sphereon/ssi-types'
 import ShortUUID from 'short-uuid'
 
@@ -354,7 +354,9 @@ export class VcIssuer {
    *  - issuerState the state of the issuer
    *  - jwtVerifyCallback callback that verifies the Proof of Possession JWT
    *  - issuerCallback callback to issue a Verifiable Credential
-   *  - cNonce an existing c_nonce
+   *
+   * OID4VCI 1.0: Credential Response does NOT include c_nonce.
+   * Wallets must use the Nonce Endpoint (Section 7) to obtain c_nonce values.
    */
   public async issueCredential(opts: {
     credentialRequest: CredentialRequest
@@ -362,12 +364,9 @@ export class VcIssuer {
     credential?: CredentialIssuanceInput
     credentialDataSupplier?: CredentialDataSupplier
     credentialDataSupplierInput?: CredentialDataSupplierInput
-    newCNonce?: string
-    cNonceExpiresIn?: number // expiration duration in seconds
     tokenExpiresIn?: number // expiration duration in seconds
     jwtVerifyCallback?: JWTVerifyCallback
     credentialSignerCallback?: CredentialSignerCallback
-    responseCNonce?: string
   }): Promise<CredentialResponse> {
     /*if (!('credential_identifier' in opts.credentialRequest)) {
       throw new Error('credential request should be of spec version 1.0.13 or above')
@@ -395,7 +394,7 @@ export class VcIssuer {
         }
       }
 
-      let format = this.lookupCredentialFormat(credentialRequest)
+      let format = this.lookupCredentialFormat(credentialRequest, issuerCorrelation.authorizationDetails)
       const validated = await this.validateCredentialRequestProof({
         ...opts,
         format,
@@ -412,14 +411,6 @@ export class VcIssuer {
       const did = jwtVerifyResult.did
       const jwk = jwtVerifyResult.jwk
       const kid = jwtVerifyResult.kid
-      const newcNonce = opts.newCNonce ? opts.newCNonce : uuidv4()
-      const newcNonceState = {
-        cNonce: newcNonce,
-        createdAt: +new Date(),
-        ...(authSession?.issuerState && { issuerState: authSession.issuerState }),
-        ...(preAuthSession && { preAuthorizedCode: preAuthSession.preAuthorizedCode }),
-      }
-      await this.cNonces.set(newcNonce, newcNonceState)
 
       if (!opts.credential && this._credentialDataSupplier === undefined && opts.credentialDataSupplier === undefined) {
         throw Error(`Either a credential needs to be supplied or a credentialDataSupplier`)
@@ -539,11 +530,10 @@ export class VcIssuer {
         await this._credentialOfferSessions.set(issuerCorrelation.issuerState, authSession)
       }
 
+      // OID4VCI 1.0: Credential Response does NOT include c_nonce.
+      // Wallets must use the Nonce Endpoint (Section 7) to obtain fresh c_nonce values if needed.
       const response: CredentialResponse = {
         credentials: [{ credential: verifiableCredential }],
-        // format: credentialRequest.format,
-        c_nonce: newcNonce,
-        c_nonce_expires_in: this._cNonceExpiresIn,
         ...(notification_id && { notification_id }),
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -563,14 +553,36 @@ export class VcIssuer {
     }
   }
 
-  private lookupCredentialFormat(credentialRequest: CredentialRequestV1_0_15): OID4VCICredentialFormat | undefined {
+  private lookupCredentialFormat(
+    credentialRequest: CredentialRequestV1_0_15,
+    authorizationDetails?: Array<{ credential_configuration_id?: string; credential_identifiers?: string[] }>,
+  ): OID4VCICredentialFormat | undefined {
     let format: OID4VCICredentialFormat | undefined
+
+    // OID4VCI 1.0: The wallet may include 'format' directly in the credential request
+    // This takes precedence as it's explicitly specified by the wallet
+    if ('format' in credentialRequest && credentialRequest.format) {
+      return credentialRequest.format as OID4VCICredentialFormat
+    }
 
     if ('credential_configuration_id' in credentialRequest && credentialRequest.credential_configuration_id) {
       const credentialConfig = this._issuerMetadata.credential_configurations_supported?.[credentialRequest.credential_configuration_id]
       format = credentialConfig?.format as OID4VCICredentialFormat
     } else if ('credential_identifier' in credentialRequest && credentialRequest.credential_identifier) {
       const credentialIdentifier: any = credentialRequest.credential_identifier
+
+      // First, try to find credential_configuration_id from authorization_details
+      if (authorizationDetails) {
+        const matchedDetail = authorizationDetails.find(
+          (detail) => detail.credential_identifiers?.includes(credentialIdentifier),
+        )
+        if (matchedDetail?.credential_configuration_id) {
+          const credentialConfig = this._issuerMetadata.credential_configurations_supported?.[matchedDetail.credential_configuration_id]
+          return credentialConfig?.format as OID4VCICredentialFormat
+        }
+      }
+
+      // Fallback: try to match config.id or config.vct (for backward compatibility)
       const matchedConfig = Object.values(this._issuerMetadata.credential_configurations_supported || {}).find(
         (config) => credentialIdentifier === config.id || credentialIdentifier === config.vct,
       )
@@ -677,14 +689,31 @@ export class VcIssuer {
         throw Error(`Format ${format} not supported yet`)
       } else if (typeof this._jwtVerifyCallback !== 'function' && typeof jwtVerifyCallback !== 'function') {
         throw new Error(JWT_VERIFY_CONFIG_ERROR)
-      } else if (!credentialRequest.proof) {
+      }
+
+      // OID4VCI 1.0: Support both 'proofs' (new spec) and 'proof' (legacy)
+      let jwtString: string
+      if (credentialRequest.proofs) {
+        // OID4VCI 1.0 format: Extract first proof from proofs.jwt array
+        // In OID4VCI 1.0, proofs.jwt is an array of JWT strings, not ProofOfPossession objects
+        const jwtProofs = credentialRequest.proofs['jwt'] as unknown as string[]
+        if (!jwtProofs || jwtProofs.length === 0) {
+          throw Error('Proof of possession is required. No proof value present in credential request')
+        }
+        // proofs.jwt contains an array of JWT strings (OID4VCI 1.0 spec)
+        jwtString = jwtProofs[0]
+      } else if (credentialRequest.proof) {
+        // Legacy format for backward compatibility (ProofOfPossession object)
+        jwtString = credentialRequest.proof.jwt
+      } else {
         throw Error('Proof of possession is required. No proof value present in credential request')
       }
 
+      // Call jwtVerifyCallback with { jwt: string } format as per JWTVerifyCallback type
       const jwtVerifyResult = jwtVerifyCallback
-        ? await jwtVerifyCallback(credentialRequest.proof)
+        ? await jwtVerifyCallback({ jwt: jwtString })
         : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          await this._jwtVerifyCallback!(credentialRequest.proof)
+          await this._jwtVerifyCallback!({ jwt: jwtString })
 
       const { didDocument, did, jwt } = jwtVerifyResult
       const { header, payload } = jwt

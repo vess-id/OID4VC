@@ -54,7 +54,7 @@ export class Dcql {
         const credentials = p.vcs.map((vc) => {
           switch (p.format) {
             case 'mso_mdoc':
-              return Dcql.toDcqlMdocCredential(vc.original)
+              return Dcql.toDcqlMdocCredential(vc)
             case 'dc+sd-jwt':
               return Dcql.toDcqlSdJwtCredential(vc)
             case 'jwt_vp':
@@ -75,9 +75,14 @@ export class Dcql {
   }
 
   static toDcqlMdocCredential = (vc: WrappedMdocCredential): DcqlMdocCredential => {
+    // For mdoc, the doctype may be in decoded or credential
+    const doctype = (vc.decoded?.docType ?? vc.credential?.toJson?.().docType) as string
+    if (!doctype || typeof doctype !== 'string') {
+      throw new Error('Unable to extract doctype from WrappedMdocCredential')
+    }
     return {
       credential_format: 'mso_mdoc',
-      doctype: vc.credential.toJson().docType,
+      doctype,
       namespaces: vc.decoded,
       cryptographic_holder_binding: hasCryptographicHolderBinding('mso_mdoc', vc),
     } satisfies DcqlMdocCredential

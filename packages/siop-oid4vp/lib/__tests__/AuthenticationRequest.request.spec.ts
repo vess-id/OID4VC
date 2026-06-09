@@ -1,5 +1,5 @@
 import { parse } from 'querystring'
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import { IProofType } from '@sphereon/ssi-types'
 import { DcqlQuery } from 'dcql'
 import { describe, expect, it } from 'vitest'

@@ -1,4 +1,4 @@
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import { PresentationSignCallBackParams } from '@sphereon/pex'
 import { W3CVerifiablePresentation } from '@sphereon/ssi-types'
 import { DcqlPresentation, DcqlQuery, DcqlQueryResult, DcqlW3cVcCredential } from 'dcql'
