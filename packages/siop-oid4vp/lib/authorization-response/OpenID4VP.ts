@@ -53,7 +53,7 @@ export const verifyPresentations = async (
   DcqlQuery.validate(dcqlQuery)
   const dcqlPresentation = extractDcqlPresentationFromDcqlVpToken(authorizationResponse.payload.vp_token as string, { hasher: verifyOpts.hasher })
 
-  const wrappedPresentations = Object.values(dcqlPresentation)
+  const wrappedPresentations = Object.values(dcqlPresentation).flat()
   // Extract presentation_submission from the authorization response payload
   const presentationSubmission = authorizationResponse.payload.presentation_submission
   const verifiedPresentations = await Promise.all(
@@ -109,23 +109,15 @@ export const extractDcqlPresentationFromDcqlVpToken = (
 ): PresentationSubmission => {
   return Object.fromEntries(
     Object.entries(DcqlPresentation.parse(vpToken)).map(([credentialQueryId, vp]) => {
-      let singleVp: W3CVerifiablePresentation | CompactSdJwtVc | string
-
-      if (Array.isArray(vp)) {
-        if (vp.length === 0) {
-          throw new Error(`DCQL query '${credentialQueryId}' has empty array of presentations`)
-        }
-        if (vp.length > 1) {
-          throw new Error(`DCQL query '${credentialQueryId}' has multiple presentations (${vp.length}), but only one is supported atm`)
-        }
-        singleVp = vp[0]
-      } else {
-        singleVp = vp
+      const vpArray = Array.isArray(vp) ? vp : [vp]
+      if (vpArray.length === 0) {
+        throw new Error(`DCQL query '${credentialQueryId}' has empty array of presentations`)
       }
-
       return [
         credentialQueryId,
-        CredentialMapper.toWrappedVerifiablePresentation(singleVp as W3CVerifiablePresentation | CompactSdJwtVc | string, { hasher: opts?.hasher }),
+        vpArray.map((v) =>
+          CredentialMapper.toWrappedVerifiablePresentation(v as W3CVerifiablePresentation | CompactSdJwtVc | string, { hasher: opts?.hasher }),
+        ),
       ]
     }),
   )
@@ -135,7 +127,7 @@ export const extractPresentationsFromDcqlVpToken = (
   vpToken: DcqlPresentation.Input | string,
   opts?: { hasher?: HasherSync },
 ): WrappedVerifiablePresentation[] => {
-  return Object.values(extractDcqlPresentationFromDcqlVpToken(vpToken, opts))
+  return Object.values(extractDcqlPresentationFromDcqlVpToken(vpToken, opts)).flat()
 }
 
 // FIXME probably too naive
