@@ -282,7 +282,9 @@ export class CredentialRequestClient {
   }
 
   public async acquireDeferredCredential(
-    response: Pick<CredentialResponse, 'transaction_id' | 'acceptance_token' | 'c_nonce'>,
+    // c_nonce was removed from CredentialResponse in OID4VCI 1.0 and is not used here
+    // (only transaction_id / acceptance_token are needed for deferred issuance).
+    response: Pick<CredentialResponse, 'transaction_id' | 'acceptance_token'>,
     opts?: {
       bearerToken?: string
     },

@@ -41,7 +41,7 @@ export class ProofOfPossessionBuilder<DIDDoc = never> {
   }: {
     proof?: ProofOfPossession
     callbacks?: ProofOfPossessionCallbacks
-    accessTokenResponse?: AccessTokenResponse
+    accessTokenResponse?: AccessTokenResponse & { c_nonce?: string }
     jwt?: Jwt
     version: OpenId4VCIVersion
     mode?: PoPMode
@@ -94,7 +94,7 @@ export class ProofOfPossessionBuilder<DIDDoc = never> {
     version,
     mode = 'pop',
   }: {
-    accessTokenResponse: AccessTokenResponse
+    accessTokenResponse: AccessTokenResponse & { c_nonce?: string }
     callbacks: ProofOfPossessionCallbacks
     version: OpenId4VCIVersion
     mode?: PoPMode
@@ -160,7 +160,10 @@ export class ProofOfPossessionBuilder<DIDDoc = never> {
     return this
   }
 
-  withAccessTokenResponse(accessToken: AccessTokenResponse): this {
+  // OID4VCI 1.0 removed c_nonce from AccessTokenResponse (it now comes from the dedicated
+  // Nonce Endpoint). We still accept it defensively: pre-1.0 issuers may include it, and
+  // callers can graft a cached nonce onto the response (see OpenID4VCIClient*.acquireCredentials).
+  withAccessTokenResponse(accessToken: AccessTokenResponse & { c_nonce?: string }): this {
     if (accessToken.c_nonce) {
       this.withAccessTokenNonce(accessToken.c_nonce)
     }

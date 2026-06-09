@@ -372,8 +372,11 @@ export class OpenID4VCIClient {
       this._state.dpopResponseParams = response.params
       this._state.accessToken = response.successBody.access_token
 
-      if (response.successBody.c_nonce) {
-        this._state.cachedCNonce = response.successBody.c_nonce
+      // OID4VCI 1.0 removed c_nonce from the token response (now served by the Nonce Endpoint),
+      // but pre-1.0 issuers may still include it — read it defensively when present.
+      const tokenCNonce = (response.successBody as AccessTokenResponse & { c_nonce?: string }).c_nonce
+      if (tokenCNonce) {
+        this._state.cachedCNonce = tokenCNonce
       }
     }
 
@@ -437,11 +440,14 @@ export class OpenID4VCIClient {
           version: this.version(),
         })
 
-    // If we are in an auth code flow, without a c nonce, we return the issuerState back to the issuer in case it is present
+    // If we are in an auth code flow, without a c nonce, we return the issuerState back to the issuer in case it is present.
+    // c_nonce is no longer part of AccessTokenResponse in OID4VCI 1.0; fall back to the cached nonce (Nonce Endpoint)
+    // and still tolerate a c_nonce echoed by pre-1.0 issuers.
+    const hasCNonce = this._state.cachedCNonce || (this.accessTokenResponse as (AccessTokenResponse & { c_nonce?: string }) | undefined)?.c_nonce
     const issuerState =
       this.issuerSupportedFlowTypes().includes(AuthzFlowType.AUTHORIZATION_CODE_FLOW) &&
       this._state.authorizationCodeResponse &&
-      !this.accessTokenResponse?.c_nonce &&
+      !hasCNonce &&
       this._state.credentialOffer?.issuerState
         ? this._state.credentialOffer.issuerState
         : undefined
