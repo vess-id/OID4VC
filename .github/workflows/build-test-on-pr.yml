@@ -1,6 +1,5 @@
 name: Build and Test PR
-# Workflow disabled - uncomment the line below to re-enable
-# on: [pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 jobs:
   build-test:
     runs-on: ubuntu-latest
