@@ -3,7 +3,7 @@ import { Ed25519Signature2020 } from '@digitalcredentials/ed25519-signature-2020
 import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
 import { securityLoader } from '@digitalcredentials/security-document-loader'
 import vc from '@digitalcredentials/vc'
-import { CredentialRequest } from '@sphereon/oid4vci-common'
+import { CredentialRequest } from '@vess-id/oid4vci-common'
 import { CredentialIssuanceInput } from '@vess-id/oid4vci-issuer'
 import { CompactSdJwtVc, W3CVerifiableCredential } from '@sphereon/ssi-types'
 

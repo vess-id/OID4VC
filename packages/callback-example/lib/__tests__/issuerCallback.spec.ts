@@ -1,7 +1,7 @@
 import { KeyObject } from 'crypto'
 
-import { uuidv4 } from '@sphereon/oid4vc-common'
-import { CredentialRequestClientBuilderV1_0_15, ProofOfPossessionBuilder } from '@sphereon/oid4vci-client'
+import { uuidv4 } from '@vess-id/oid4vc-common'
+import { CredentialRequestClientBuilderV1_0_15, ProofOfPossessionBuilder } from '@vess-id/oid4vci-client'
 import {
   Alg,
   CNonceState,
@@ -14,7 +14,7 @@ import {
   JwtVerifyResult,
   OpenId4VCIVersion,
   ProofOfPossession,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { AuthorizationServerMetadataBuilder, CredentialSupportedBuilderV1_15, MemoryStates, VcIssuer, VcIssuerBuilder } from '@vess-id/oid4vci-issuer'
 import { ICredential, IProofPurpose, IProofType, W3CVerifiableCredential } from '@sphereon/ssi-types'
 import { DIDDocument } from 'did-resolver'
