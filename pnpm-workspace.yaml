@@ -5,6 +5,10 @@ linkWorkspacePackages: false
 
 packages:
   - packages/*
+  # Temporarily excluded: issuer-rest (@sphereon/oid4vci-issuer-server) is not migrated to
+  # OID4VCI 1.0 (still references removed cNonce* APIs and pre-rename @sphereon scopes) and
+  # is unused (no internal dependents, not published). Re-include once the 1.0 migration lands.
+  - '!packages/issuer-rest'
 
 ignoredBuiltDependencies:
   - '@mattrglobal/node-bbs-signatures'
