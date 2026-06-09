@@ -4,7 +4,7 @@ import {
   CredentialOfferPayloadV1_0_15,
   CredentialOfferRequestWithBaseUrl,
   PRE_AUTH_GRANT_LITERAL,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 export const IDENTIPROOF_ISSUER_URL = 'https://issuer.research.identiproof.io'
 export const IDENTIPROOF_AS_URL = 'https://auth.research.identiproof.io'

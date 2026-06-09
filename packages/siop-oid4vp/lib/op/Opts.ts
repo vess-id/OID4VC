@@ -1,4 +1,4 @@
-import { defaultHasher } from '@sphereon/oid4vc-common'
+import { defaultHasher } from '@vess-id/oid4vc-common'
 import { VerifyAuthorizationRequestOpts } from '../authorization-request'
 import { AuthorizationResponseOpts } from '../authorization-response'
 import { LanguageTagUtils } from '../helpers'

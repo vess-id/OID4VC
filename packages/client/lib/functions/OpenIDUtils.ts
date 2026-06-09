@@ -1,4 +1,4 @@
-import { getJson, OpenIDResponse, WellKnownEndpoints } from '@sphereon/oid4vci-common'
+import { getJson, OpenIDResponse, WellKnownEndpoints } from '@vess-id/oid4vci-common'
 import { Loggers } from '@sphereon/ssi-types'
 
 const logger = Loggers.DEFAULT.get('sphereon:openid4vci:openid-utils')

@@ -9,7 +9,7 @@ import {
   getIssuerFromCredentialOfferPayload,
   OpenId4VCIVersion,
   UniformCredentialOfferRequest,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { CredentialOfferClient } from './CredentialOfferClient'
 import { CredentialRequestClient } from './CredentialRequestClient'

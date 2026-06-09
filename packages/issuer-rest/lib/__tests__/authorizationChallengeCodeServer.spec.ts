@@ -6,7 +6,7 @@ import {
   CredentialOfferSession,
   IssueStatus,
 } from '@sphereon/oid4vci-common'
-import { AuthorizationServerMetadataBuilder, MemoryStates, VcIssuer } from '@sphereon/oid4vci-issuer'
+import { AuthorizationServerMetadataBuilder, MemoryStates, VcIssuer } from '@vess-id/oid4vci-issuer'
 import { ExpressBuilder, ExpressSupport } from '@sphereon/ssi-express-support'
 import { Express } from 'express'
 import requests from 'supertest'
@@ -64,7 +64,7 @@ describe('OID4VCIServer', () => {
         cNonceExpiresIn: 300,
         credentialOfferSessions,
         cNonces: new MemoryStates<CNonceState>(),
-      },
+      }
     )
 
     expressSupport = ExpressBuilder.fromServerOpts({

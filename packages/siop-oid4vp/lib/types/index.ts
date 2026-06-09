@@ -1,4 +1,4 @@
-import { VCI_LOGGERS } from '@sphereon/oid4vc-common'
+import { VCI_LOGGERS } from '@vess-id/oid4vc-common'
 import { ISimpleLogger, LogMethod } from '@sphereon/ssi-types'
 
 import SIOPErrors from './Errors'
@@ -10,6 +10,7 @@ export const LOG: ISimpleLogger<string> = VCI_LOGGERS.options('sphereon:siop-oid
 export { SIOPErrors }
 export * from './JWT.types'
 export * from './SIOP.types'
+export * from './V1_0.types'
 export * from './Events'
 export * from './SessionManager'
 export * from './VpJwtIssuer'

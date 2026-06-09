@@ -15,13 +15,7 @@ import {
   PRE_AUTH_CODE_LITERAL,
   PRE_AUTH_GRANT_LITERAL,
 } from '@sphereon/oid4vci-common'
-import {
-  AuthorizationServerMetadataBuilder,
-  CredentialSupportedBuilderV1_15,
-  MemoryStates,
-  VcIssuer,
-  VcIssuerBuilder,
-} from '@sphereon/oid4vci-issuer'
+import { AuthorizationServerMetadataBuilder, CredentialSupportedBuilderV1_15, MemoryStates, VcIssuer, VcIssuerBuilder } from '@vess-id/oid4vci-issuer'
 import { ExpressBuilder, ExpressSupport } from '@sphereon/ssi-express-support'
 import { IProofPurpose, IProofType } from '@sphereon/ssi-types'
 import { DIDDocument } from 'did-resolver'
@@ -150,7 +144,7 @@ describe('VcIssuer', () => {
         Promise.resolve({
           format: 'ldp_vc',
           credential,
-        }),
+        })
       )
       .withCredentialSignerCallback(() =>
         Promise.resolve({
@@ -162,7 +156,7 @@ describe('VcIssuer', () => {
             proofPurpose: IProofPurpose.assertionMethod,
             verificationMethod: 'sdfsdfasdfasdfasdfasdfassdfasdf',
           },
-        }),
+        })
       )
       .withJWTVerifyCallback((args: { jwt: string; kid?: string }) => {
         const header = jose.decodeProtectedHeader(args.jwt)
@@ -237,7 +231,7 @@ describe('VcIssuer', () => {
       })
       .then((response: any) => response.uri)
     expect(uri).toEqual(
-      'http://localhost:3456/test?credential_offer=%7B%22credential_issuer%22%3A%22http%3A%2F%2Flocalhost%3A3456%2Ftest%22%2C%22credential_configuration_ids%22%3A%5B%22UniversityDegree_JWT%22%5D%2C%22grants%22%3A%7B%22urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code%22%3A%7B%22pre-authorized_code%22%3A%22test_code%22%2C%22tx_code%22%3A%7B%22input_mode%22%3A%22text%22%2C%22length%22%3A4%7D%7D%2C%22authorization_code%22%3A%7B%22issuer_state%22%3A%22previously-created-state%22%7D%7D%7D',
+      'http://localhost:3456/test?credential_offer=%7B%22credential_issuer%22%3A%22http%3A%2F%2Flocalhost%3A3456%2Ftest%22%2C%22credential_configuration_ids%22%3A%5B%22UniversityDegree_JWT%22%5D%2C%22grants%22%3A%7B%22urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code%22%3A%7B%22pre-authorized_code%22%3A%22test_code%22%2C%22tx_code%22%3A%7B%22input_mode%22%3A%22text%22%2C%22length%22%3A4%7D%7D%2C%22authorization_code%22%3A%7B%22issuer_state%22%3A%22previously-created-state%22%7D%7D%7D'
     )
   })
 
@@ -448,7 +442,7 @@ describe('VcIssuer', () => {
               verificationMethod: 'did:example:123#key-1',
               jws: 'eyJ...ye.ye.ye',
             },
-          }),
+          })
         )
         .build()
 

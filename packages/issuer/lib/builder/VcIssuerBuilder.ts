@@ -14,7 +14,7 @@ import {
   TokenErrorResponse,
   TxCode,
   URIState,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 import { VcIssuer } from '../VcIssuer'
 import { oidcAccessTokenVerifyCallback } from '../functions'

@@ -1,4 +1,4 @@
-import { AccessTokenRequest, AccessTokenResponse, GrantTypes, PRE_AUTH_CODE_LITERAL, WellKnownEndpoints } from '@sphereon/oid4vci-common'
+import { AccessTokenRequest, AccessTokenResponse, GrantTypes, PRE_AUTH_CODE_LITERAL, WellKnownEndpoints } from '@vess-id/oid4vci-common'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import nock from 'nock'

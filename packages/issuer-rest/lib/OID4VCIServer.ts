@@ -13,7 +13,7 @@ import {
   oidcAccessTokenVerifyCallback,
   VcIssuer,
   VcIssuerBuilder,
-} from '@sphereon/oid4vci-issuer'
+} from '@vess-id/oid4vci-issuer'
 import { ExpressSupport, HasEndpointOpts, ISingleEndpointOpts } from '@sphereon/ssi-express-support'
 import express, { Express } from 'express'
 
@@ -173,7 +173,7 @@ export class OID4VCIServer {
     expressSupport: ExpressSupport,
     opts: IOID4VCIServerOpts & {
       issuer?: VcIssuer
-    } /*If not supplied as argument, it will be fully configured from environment variables*/,
+    } /*If not supplied as argument, it will be fully configured from environment variables*/
   ) {
     this._baseUrl = new URL(opts?.baseUrl ?? process.env.BASE_URL ?? opts?.issuer?.issuerMetadata?.credential_issuer ?? 'http://localhost')
     this._expressSupport = expressSupport
@@ -306,7 +306,7 @@ export class OID4VCIServer {
     if (this.isTokenEndpointDisabled(tokenEndpointOpts, this.issuer.asClientOpts)) {
       if (!authServer || authServer.length === 0) {
         throw Error(
-          `No Authorization Server (AS) is defined in the issuer metadata and the token endpoint is disabled. An AS or token endpoints needs to be present`,
+          `No Authorization Server (AS) is defined in the issuer metadata and the token endpoint is disabled. An AS or token endpoints needs to be present`
         )
       }
       if (this.issuer.asClientOpts) {
@@ -317,7 +317,7 @@ export class OID4VCIServer {
     } else {
       if (authServer && authServer.some((as) => as !== this.issuer.issuerMetadata.credential_issuer)) {
         throw Error(
-          `An external Authorization Server (AS) was already enabled in the issuer metadata (${authServer}). Cannot both have an AS and enable the token endpoint at the same time `,
+          `An external Authorization Server (AS) was already enabled in the issuer metadata (${authServer}). Cannot both have an AS and enable the token endpoint at the same time `
         )
       } else if (this._asClientOpts) {
         throw Error(`OIDC Client metadata is set, but the token endpoint is not disabled. This is not supported.`)

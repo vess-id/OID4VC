@@ -1,4 +1,4 @@
-import { createDPoP, CreateDPoPClientOpts, getCreateDPoPOptions } from '@sphereon/oid4vc-common'
+import { createDPoP, CreateDPoPClientOpts, getCreateDPoPOptions } from '@vess-id/oid4vc-common'
 import {
   acquireDeferredCredential,
   AuthorizationDetailsV1_0_15,
@@ -16,7 +16,7 @@ import {
   ProofOfPossession,
   supportedOID4VCICredentialFormat,
   URL_NOT_VALID,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { CredentialFormat, Loggers } from '@sphereon/ssi-types'
 
 import { CredentialRequestClientBuilderV1_0_15 } from './CredentialRequestClientBuilderV1_0_15'

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import { IPresentationDefinition } from '@sphereon/pex'
 import { CredentialMapper, IPresentation, IProofType, IVerifiableCredential, W3CVerifiablePresentation } from '@sphereon/ssi-types'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

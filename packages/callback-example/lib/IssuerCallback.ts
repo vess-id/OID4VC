@@ -4,7 +4,7 @@ import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verifica
 import { securityLoader } from '@digitalcredentials/security-document-loader'
 import vc from '@digitalcredentials/vc'
 import { CredentialRequest } from '@sphereon/oid4vci-common'
-import { CredentialIssuanceInput } from '@sphereon/oid4vci-issuer'
+import { CredentialIssuanceInput } from '@vess-id/oid4vci-issuer'
 import { CompactSdJwtVc, W3CVerifiableCredential } from '@sphereon/ssi-types'
 
 // Example on how to generate a did:key to issue a verifiable credential
@@ -18,7 +18,7 @@ export const getIssuerCallbackV1_0_15 = (
   credential: CredentialIssuanceInput,
   credentialRequest: CredentialRequest,
   keyPair: any,
-  verificationMethod: string,
+  verificationMethod: string
 ) => {
   if (!credential) {
     throw new Error('A credential needs to be provided')

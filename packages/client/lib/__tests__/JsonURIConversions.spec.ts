@@ -1,4 +1,4 @@
-import { convertJsonToURI, convertURIToJsonObject, JsonURIMode, OpenId4VCIVersion } from '@sphereon/oid4vci-common'
+import { convertJsonToURI, convertURIToJsonObject, JsonURIMode, OpenId4VCIVersion } from '@vess-id/oid4vci-common'
 import { describe, expect, it } from 'vitest'
 
 describe('JSON To URI v15', () => {

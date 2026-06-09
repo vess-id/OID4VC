@@ -11,7 +11,7 @@ import {
   OpenId4VCIVersion,
   OpenIDResponse,
   WellKnownEndpoints,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { Loggers } from '@sphereon/ssi-types'
 import { retrieveWellknown } from './functions'
 import { MetadataClientV1_0_15 } from './MetadataClientV1_0_15'

@@ -1,5 +1,5 @@
-import { AuthorizationRequestPayload, IDTokenPayload, JwtIssuerWithContext, JwtVerifier, RequestObjectPayload } from '@sphereon/did-auth-siop'
-import { JwtHeader, JwtPayload } from '@sphereon/oid4vc-common'
+import { AuthorizationRequestPayload, IDTokenPayload, JwtIssuerWithContext, JwtVerifier, RequestObjectPayload } from '@vess-id/did-auth-siop'
+import { JwtHeader, JwtPayload } from '@vess-id/oid4vc-common'
 import { Resolvable } from 'did-resolver'
 
 import { getAudience, getSubDidFromPayload, signIDTokenPayload, signRequestObjectPayload, validateLinkedDomainWithDid, verifyDidJWT } from './did'

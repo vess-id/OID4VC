@@ -1,4 +1,4 @@
-import { JWK } from '@sphereon/oid4vc-common'
+import { JWK } from '@vess-id/oid4vc-common'
 import {
   AccessTokenResponse,
   Alg,
@@ -12,7 +12,7 @@ import {
   ProofOfPossession,
   ProofOfPossessionCallbacks,
   Typ,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 export class ProofOfPossessionBuilder<DIDDoc = never> {
   private readonly proof?: ProofOfPossession

@@ -1,5 +1,5 @@
 import { CNonceState, CredentialIssuerMetadataOptsV1_0_15 } from '@sphereon/oid4vci-common'
-import { AuthorizationServerMetadataBuilder, MemoryStates, VcIssuer } from '@sphereon/oid4vci-issuer'
+import { AuthorizationServerMetadataBuilder, MemoryStates, VcIssuer } from '@vess-id/oid4vci-issuer'
 import { ExpressBuilder, ExpressSupport } from '@sphereon/ssi-express-support'
 import { Express } from 'express'
 import requests from 'supertest'
@@ -42,7 +42,7 @@ describe('Nonce Endpoint', () => {
         cNonceExpiresIn: 300,
         credentialOfferSessions: new MemoryStates(),
         cNonces: new MemoryStates<CNonceState>(),
-      },
+      }
     )
 
     expressSupport = ExpressBuilder.fromServerOpts({
@@ -112,7 +112,7 @@ describe('Nonce Endpoint', () => {
       {
         credentialOfferSessions: new MemoryStates(),
         cNonces: new MemoryStates<CNonceState>(),
-      },
+      }
     )
 
     const disabledExpressSupport = ExpressBuilder.fromServerOpts({

@@ -9,7 +9,7 @@ import {
   ProofType,
   ProofTypesSupported,
   TokenErrorResponse,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 export class CredentialSupportedBuilderV1_15 {
   format?: OID4VCICredentialFormat

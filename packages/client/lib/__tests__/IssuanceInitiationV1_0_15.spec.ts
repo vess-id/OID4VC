@@ -1,4 +1,4 @@
-import { OpenId4VCIVersion } from '@sphereon/oid4vci-common'
+import { OpenId4VCIVersion } from '@vess-id/oid4vci-common'
 import { describe, expect, it } from 'vitest'
 
 import { CredentialOfferClient } from '../CredentialOfferClient'

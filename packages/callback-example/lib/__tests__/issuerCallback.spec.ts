@@ -15,13 +15,7 @@ import {
   OpenId4VCIVersion,
   ProofOfPossession,
 } from '@sphereon/oid4vci-common'
-import {
-  AuthorizationServerMetadataBuilder,
-  CredentialSupportedBuilderV1_15,
-  MemoryStates,
-  VcIssuer,
-  VcIssuerBuilder,
-} from '@sphereon/oid4vci-issuer'
+import { AuthorizationServerMetadataBuilder, CredentialSupportedBuilderV1_15, MemoryStates, VcIssuer, VcIssuerBuilder } from '@vess-id/oid4vci-issuer'
 import { ICredential, IProofPurpose, IProofType, W3CVerifiableCredential } from '@sphereon/ssi-types'
 import { DIDDocument } from 'did-resolver'
 import * as jose from 'jose'
@@ -191,7 +185,7 @@ describe('issuerCallback', () => {
             credentialSubject: {},
           },
           format: 'ldp_vc',
-        }),
+        })
       )
       .withCredentialSignerCallback((opts) =>
         Promise.resolve({
@@ -203,7 +197,7 @@ describe('issuerCallback', () => {
             proofPurpose: IProofPurpose.assertionMethod,
             verificationMethod: 'sdfsdfasdfasdfasdfasdfassdfasdf',
           },
-        }),
+        })
       )
       .build()
   }, 30000)
@@ -224,7 +218,7 @@ describe('issuerCallback', () => {
       credential,
       {} as CredentialRequest,
       didKey.keyPairs,
-      didKey.didDocument.verificationMethod[0].id,
+      didKey.didDocument.verificationMethod[0].id
     )({
       credentialRequest: {} as CredentialRequest,
       credential: credential,
@@ -245,7 +239,7 @@ describe('issuerCallback', () => {
       type: ['VerifiableCredential'],
     })
     await expect(verifyCredential(vc, didKey.keyPairs, didKey.didDocument.verificationMethod[0].id)).resolves.toEqual(
-      expect.objectContaining({ verified: true }),
+      expect.objectContaining({ verified: true })
     )
   })
 
@@ -348,8 +342,8 @@ describe('issuerCallback', () => {
       verifyCredential(
         credentialResponse.credentials![0].credential as W3CVerifiableCredential,
         didKey.keyPairs,
-        didKey.didDocument.verificationMethod[0].id,
-      ),
+        didKey.didDocument.verificationMethod[0].id
+      )
     ).resolves.toEqual(expect.objectContaining({ verified: true }))
   })
 })

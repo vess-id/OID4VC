@@ -1,4 +1,4 @@
-import { decodeProtectedHeader, isJwe, isJws } from '@sphereon/oid4vc-common'
+import { decodeProtectedHeader, isJwe, isJws } from '@vess-id/oid4vc-common'
 import * as v from 'valibot'
 
 import type { AuthRequestParams, JarmDirectPostJwtAuthResponseValidationContext } from './c-jarm-auth-response'

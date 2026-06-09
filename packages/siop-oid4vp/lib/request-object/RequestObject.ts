@@ -1,4 +1,4 @@
-import { JwtHeader, JwtIssuer, parseJWT } from '@sphereon/oid4vc-common'
+import { JwtHeader, JwtIssuer, parseJWT } from '@vess-id/oid4vc-common'
 import { ClaimPayloadCommonOpts, ClaimPayloadOpts, CreateAuthorizationRequestOpts } from '../authorization-request'
 import { assertValidAuthorizationRequestOpts } from '../authorization-request/Opts'
 import { fetchByReferenceOrUseByValue, removeNullUndefined } from '../helpers'
@@ -17,7 +17,20 @@ export class RequestObject {
     payload?: RequestObjectPayload,
     jwt?: string,
   ) {
+    // Preserve createJwtCallback and jwtIssuer before merging
+    const createJwtCallback = opts?.['requestObject']?.createJwtCallback
+    const jwtIssuer = opts?.['requestObject']?.jwtIssuer
+
     this.opts = opts ? RequestObject.mergeOAuth2AndOpenIdProperties(opts) : undefined
+
+    // Restore createJwtCallback and jwtIssuer after merging to ensure they're not lost
+    if (this.opts && createJwtCallback) {
+      this.opts.createJwtCallback = createJwtCallback
+    }
+    if (this.opts && jwtIssuer) {
+      this.opts.jwtIssuer = jwtIssuer
+    }
+
     this.payload = payload
     this.jwt = jwt
   }
@@ -88,8 +101,41 @@ export class RequestObject {
         const did = jwtIssuer.didUrl.split('#')[0]
         this.payload.iss = this.payload.iss ?? did
         this.payload.sub = this.payload.sub ?? did
-        this.payload.client_id = this.payload.client_id ?? did
 
+        // OID4VP 1.0: Determine client_id based on client_id_scheme
+        if (!this.payload.client_id) {
+          // Check environment variable for client_id scheme preference
+          // Default to 'redirect_uri' for better OID4VP 1.0 compatibility
+          const clientIdScheme = process.env.OID4VP_CLIENT_ID_SCHEME || 'redirect_uri'
+
+          // Debug logging
+          console.log('[RequestObject.toJwt] client_id_scheme:', clientIdScheme)
+          console.log('[RequestObject.toJwt] payload.response_uri:', this.payload.response_uri)
+          console.log('[RequestObject.toJwt] payload.redirect_uri:', this.payload.redirect_uri)
+          console.log('[RequestObject.toJwt] Full payload keys:', Object.keys(this.payload))
+
+          if (clientIdScheme === 'redirect_uri') {
+            // Use response_uri or redirect_uri as client_id with prefix
+            const responseUri = this.payload.response_uri || this.payload.redirect_uri
+            if (responseUri) {
+              this.payload.client_id = `redirect_uri:${responseUri}`
+              console.log('[RequestObject.toJwt] ✓ Set client_id to:', this.payload.client_id)
+            } else {
+              // Fallback to DID if no response_uri is available
+              this.payload.client_id = `decentralized_identifier:${did}`
+              console.log('[RequestObject.toJwt] ✗ No responseUri, fallback to DID:', this.payload.client_id)
+            }
+          } else {
+            // Use DID-based client_id with prefix (backward compatibility)
+            this.payload.client_id = `decentralized_identifier:${did}`
+            console.log('[RequestObject.toJwt] Using DID scheme:', this.payload.client_id)
+          }
+        } else {
+          console.log('[RequestObject.toJwt] client_id already set:', this.payload.client_id)
+        }
+
+        // Pass minimal header to createJwtCallback, which will add x5c if x509Opts is provided
+        // The createJwtCallback (signCallback in siopv2-oid4vp-rp-auth) will handle x5c header injection
         const header = { kid: jwtIssuer.didUrl, alg: jwtIssuer.alg, typ: 'oauth-authz-req+jwt' }
         this.jwt = await this.opts.createJwtCallback(jwtIssuer, { header, payload: this.payload })
       } else if (jwtIssuer.method === 'x5c') {

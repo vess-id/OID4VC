@@ -1,4 +1,4 @@
-import { uuidv4 } from '@sphereon/oid4vc-common'
+import { uuidv4 } from '@vess-id/oid4vc-common'
 import {
   AssertedUniformCredentialOffer,
   AuthorizationDetailsV1_0_15,
@@ -14,7 +14,7 @@ import {
   PIN_NOT_MATCH_ERROR,
   PRE_AUTH_GRANT_LITERAL,
   UniformCredentialOffer,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 
 export interface CredentialOfferGrantInput {
   authorization_code?: Partial<GrantAuthorizationCode>

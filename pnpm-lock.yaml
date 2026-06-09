@@ -76,21 +76,21 @@ importers:
       '@digitalcredentials/vc':
         specifier: ^5.0.0
         version: 5.0.0(encoding@0.1.13)(expo@48.0.21(@babel/core@7.28.5)(encoding@0.1.13))(react-native@0.71.19(@babel/core@7.28.5)(@babel/preset-env@7.28.5(@babel/core@7.28.5))(encoding@0.1.13)(react@18.3.1))(web-streams-polyfill@3.3.3)
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
-      '@sphereon/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
-      '@sphereon/oid4vci-issuer':
-        specifier: workspace:^
-        version: link:../issuer
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
+      '@vess-id/oid4vci-client':
+        specifier: workspace:^
+        version: link:../client
+      '@vess-id/oid4vci-common':
+        specifier: workspace:^
+        version: link:../oid4vci-common
+      '@vess-id/oid4vci-issuer':
+        specifier: workspace:^
+        version: link:../issuer
       jose:
         specifier: ^4.10.0
         version: 4.15.9
@@ -122,15 +122,15 @@ importers:
 
   packages/client:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.8.3)
+      '@vess-id/oid4vci-common':
+        specifier: ^1.0.1
+        version: 1.0.4(encoding@0.1.13)(typescript@5.8.3)
       cross-fetch:
         specifier: ^4.1.0
         version: 4.1.0(encoding@0.1.13)
@@ -214,18 +214,18 @@ importers:
 
   packages/did-auth-siop-adapter:
     dependencies:
-      '@sphereon/did-auth-siop':
-        specifier: workspace:^
-        version: link:../siop-oid4vp
       '@sphereon/did-uni-client':
         specifier: ^0.6.4
         version: 0.6.4(encoding@0.1.13)
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/wellknown-dids-client':
         specifier: ^0.1.3
         version: 0.1.3(encoding@0.1.13)(typescript@5.8.3)
+      '@vess-id/did-auth-siop':
+        specifier: ^1.0.1
+        version: 1.0.2(encoding@0.1.13)(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.8.3)
       did-jwt:
         specifier: 6.11.6
         version: 6.11.6(patch_hash=273724dfda88826ea701236dab63df8edf4ac66af32e92c95c1dd3b2c1f58942)
@@ -239,18 +239,18 @@ importers:
 
   packages/issuer:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.8.3)
+      '@vess-id/oid4vci-common':
+        specifier: ^1.0.2
+        version: 1.0.4(encoding@0.1.13)(typescript@5.8.3)
       awesome-qr:
         specifier: ^2.1.5-rc.0
         version: 2.1.5-rc.0(encoding@0.1.13)
@@ -261,15 +261,15 @@ importers:
         specifier: ^9.0.0
         version: 9.0.1
     devDependencies:
-      '@sphereon/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
       '@types/node':
         specifier: ^20.17.30
         version: 20.19.24
       '@types/uuid':
         specifier: ^9.0.8
         version: 9.0.8
+      '@vess-id/oid4vci-client':
+        specifier: workspace:^
+        version: link:../client
       did-resolver:
         specifier: ^4.1.0
         version: 4.1.0
@@ -279,21 +279,21 @@ importers:
 
   packages/issuer-rest:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
-      '@sphereon/oid4vci-common':
-        specifier: workspace:^
-        version: link:../oid4vci-common
-      '@sphereon/oid4vci-issuer':
-        specifier: workspace:^
-        version: link:../issuer
       '@sphereon/ssi-express-support':
         specifier: 0.34.1-next.3
         version: 0.34.1-next.3(@noble/hashes@1.6.1)(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: workspace:^
+        version: link:../common
+      '@vess-id/oid4vci-common':
+        specifier: workspace:^
+        version: link:../oid4vci-common
+      '@vess-id/oid4vci-issuer':
+        specifier: workspace:^
+        version: link:../issuer
       awesome-qr:
         specifier: ^2.1.5-rc.0
         version: 2.1.5-rc.0(encoding@0.1.13)
@@ -322,9 +322,6 @@ importers:
       '@digitalcredentials/did-method-key':
         specifier: ^2.0.3
         version: 2.0.3
-      '@sphereon/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
       '@types/body-parser':
         specifier: ^1.19.2
         version: 1.19.6
@@ -349,6 +346,9 @@ importers:
       '@types/supertest':
         specifier: ^6.0.3
         version: 6.0.3
+      '@vess-id/oid4vci-client':
+        specifier: workspace:^
+        version: link:../client
       did-resolver:
         specifier: ^4.1.0
         version: 4.1.0
@@ -367,9 +367,9 @@ importers:
 
   packages/jarm:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
+      '@vess-id/oid4vc-common':
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.8.3)
       valibot:
         specifier: ^0.42.1
         version: 0.42.1(typescript@5.8.3)
@@ -380,12 +380,12 @@ importers:
 
   packages/oid4vci-common:
     dependencies:
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.8.3)
       cross-fetch:
         specifier: ^4.1.0
         version: 4.1.0(encoding@0.1.13)
@@ -417,18 +417,18 @@ importers:
       '@astronautlabs/jsonpath':
         specifier: ^1.1.2
         version: 1.1.2
-      '@sphereon/jarm':
-        specifier: workspace:^
-        version: link:../jarm
-      '@sphereon/oid4vc-common':
-        specifier: workspace:^
-        version: link:../common
       '@sphereon/pex':
         specifier: 5.0.0-unstable.28
         version: 5.0.0-unstable.28(typescript@5.8.3)
       '@sphereon/ssi-types':
         specifier: 0.34.1-feature.SSISDK.78.280
         version: 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/jarm':
+        specifier: ^1.0.1
+        version: 1.0.1(typescript@5.8.3)
+      '@vess-id/oid4vc-common':
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.8.3)
       cross-fetch:
         specifier: ^4.0.0
         version: 4.1.0(encoding@0.1.13)
@@ -2005,7 +2005,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {'0': node >=0.10.0}
+    engines: {node: '>=0.10.0'}
 
   '@expo/cli@0.7.3':
     resolution: {integrity: sha512-uMGHbAhApqXR2sd1KPhgvpbOhBBnspad8msEqHleT2PHXwKIwTUDzBGO9+jdOAWwCx2MJfw3+asYjzoD3DN9Bg==}
@@ -3305,6 +3305,22 @@ packages:
 
   '@veramo/core@4.2.0':
     resolution: {integrity: sha512-HIqbXfCbwOAJelR5Ohsm22vr63cy6ND8Ua/+9wfMDAiymUUS7NryaJ/v6NRtnmIrNZqUMDdR9/TWdp4cCq5eBg==}
+
+  '@vess-id/did-auth-siop@1.0.2':
+    resolution: {integrity: sha512-hrFA2JFVtZTi9IjzcqpRh7yFNSJVQZhHGDWsxzQuGevgl5xjJo9TizJc/Hr8oznWEL4PGuzfQOBPRvNmi7Cs1Q==}
+    engines: {node: '>=20.6'}
+
+  '@vess-id/jarm@1.0.1':
+    resolution: {integrity: sha512-Gu+LXZKLyvcZFrwwOErJMRqJ+hScS8FnisT4l1SNZG/iGICAi4pGmeuyfgYynNA1S81MX91MaEdU/mz2hb+CNw==}
+    engines: {node: '>=20'}
+
+  '@vess-id/oid4vc-common@1.0.0':
+    resolution: {integrity: sha512-this4ogWULY0I1sft3joQ2XEHL7Xxp1t102kuerBJ0RKwinPSaqS5oL2CGkMZmoOA4AcqmW6+b0wJ1EJV4GM+g==}
+    engines: {node: '>=20'}
+
+  '@vess-id/oid4vci-common@1.0.4':
+    resolution: {integrity: sha512-Zh2vUiuqJMJaWpXSDRK+B808m6ClFsS0hZ2GInoZ1ArdEJZlHHhfxiIfOoCZyeoukzvaOk0F5APC+sMBy8u9dw==}
+    engines: {node: '>=20'}
 
   '@vitest/coverage-v8@3.2.4':
     resolution: {integrity: sha512-EyF9SXU6kS5Ku/U82E259WSnvg6c8KTjppUncuNdm5QHpe17mwREHnjDzozC8x9MZ0xfBUFSaLkRv4TMA75ALQ==}
@@ -5907,6 +5923,10 @@ packages:
 
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+    hasBin: true
+
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
   jsc-android@250231.0.0:
@@ -10663,7 +10683,7 @@ snapshots:
       globals: 13.24.0
       ignore: 5.3.2
       import-fresh: 3.3.1
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -12989,6 +13009,60 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@vess-id/did-auth-siop@1.0.2(encoding@0.1.13)(typescript@5.8.3)':
+    dependencies:
+      '@astronautlabs/jsonpath': 1.1.2
+      '@sphereon/pex': 5.0.0-unstable.28(typescript@5.8.3)
+      '@sphereon/ssi-types': 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/jarm': 1.0.1(typescript@5.8.3)
+      '@vess-id/oid4vc-common': 1.0.0(typescript@5.8.3)
+      cross-fetch: 4.1.0(encoding@0.1.13)
+      dcql: 1.0.1(patch_hash=7950e381aed4d3f7a510973c71a2e2dbe8f9a55a6bd42c2dce9f9c3ca2b0720c)(typescript@5.8.3)
+      debug: 4.4.3
+      events: 3.3.0
+      jwt-decode: 4.0.0
+      language-tags: 1.0.9
+      multiformats: 12.1.3
+      qs: 6.14.0
+      uint8arrays: 3.1.1
+      zod: 4.1.12
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+      - typescript
+
+  '@vess-id/jarm@1.0.1(typescript@5.8.3)':
+    dependencies:
+      '@vess-id/oid4vc-common': 1.0.0(typescript@5.8.3)
+      valibot: 0.42.1(typescript@5.8.3)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  '@vess-id/oid4vc-common@1.0.0(typescript@5.8.3)':
+    dependencies:
+      '@sphereon/ssi-types': 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      jwt-decode: 4.0.0
+      uint8arrays: 3.1.1
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  '@vess-id/oid4vci-common@1.0.4(encoding@0.1.13)(typescript@5.8.3)':
+    dependencies:
+      '@sphereon/ssi-types': 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common': 1.0.0(typescript@5.8.3)
+      cross-fetch: 4.1.0(encoding@0.1.13)
+      debug: 4.4.3
+      jwt-decode: 4.0.0
+      uint8arrays: 3.1.1
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+      - typescript
+
   '@vitest/coverage-v8@3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@20.19.24)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -14666,7 +14740,7 @@ snapshots:
       imurmurhash: 0.1.4
       is-glob: 4.0.3
       is-path-inside: 3.0.3
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       json-stable-stringify-without-jsonify: 1.0.1
       levn: 0.4.1
       lodash.merge: 4.6.2
@@ -16171,6 +16245,10 @@ snapshots:
       esprima: 4.0.1
 
   js-yaml@4.1.0:
+    dependencies:
+      argparse: 2.0.1
+
+  js-yaml@4.1.1:
     dependencies:
       argparse: 2.0.1
 

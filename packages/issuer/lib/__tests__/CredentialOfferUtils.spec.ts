@@ -1,4 +1,4 @@
-import { CredentialOfferPayloadV1_0_15, PRE_AUTH_CODE_LITERAL, PRE_AUTH_GRANT_LITERAL } from '@sphereon/oid4vci-common'
+import { CredentialOfferPayloadV1_0_15, PRE_AUTH_CODE_LITERAL, PRE_AUTH_GRANT_LITERAL } from '@vess-id/oid4vci-common'
 import { describe, expect, it } from 'vitest'
 import { createCredentialOfferObject, createCredentialOfferURI } from '../functions'
 

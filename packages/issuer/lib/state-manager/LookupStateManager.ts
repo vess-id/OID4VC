@@ -1,6 +1,6 @@
 // noinspection ES6MissingAwait
 
-import { IStateManager, StateType } from '@sphereon/oid4vci-common'
+import { IStateManager, StateType } from '@vess-id/oid4vci-common'
 
 export async function lookupStateManagerMultiGetAsserted<K extends StateType, V extends StateType>(args: {
   id: string

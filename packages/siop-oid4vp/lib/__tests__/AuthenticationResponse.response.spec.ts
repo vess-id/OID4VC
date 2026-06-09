@@ -1,4 +1,4 @@
-import { SigningAlgo } from '@sphereon/oid4vc-common'
+import { SigningAlgo } from '@vess-id/oid4vc-common'
 import { ICredential, IProofType } from '@sphereon/ssi-types'
 import { DcqlPresentation, DcqlQuery, DcqlQueryResult, DcqlSdJwtVcCredential, DcqlW3cVcCredential } from 'dcql'
 import { describe, expect, it, vitest } from 'vitest'

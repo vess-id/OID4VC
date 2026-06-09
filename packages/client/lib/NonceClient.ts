@@ -1,4 +1,4 @@
-import { EndpointMetadataResultV1_0_15, formPost, IssuerOpts, OpenIDResponse } from '@sphereon/oid4vci-common'
+import { EndpointMetadataResultV1_0_15, formPost, IssuerOpts, OpenIDResponse } from '@vess-id/oid4vci-common'
 import { MetadataClient } from './MetadataClient'
 
 export interface NonceSuccessBodyV1_0_15 {

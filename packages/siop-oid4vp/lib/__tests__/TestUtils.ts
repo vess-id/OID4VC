@@ -4,7 +4,7 @@ import crypto, { createHash } from 'crypto'
 
 import { digest, ES256, generateSalt } from '@sd-jwt/crypto-nodejs'
 import { SDJwtVcInstance } from '@sd-jwt/sd-jwt-vc'
-import { base64ToHexString, JwtPayload, parseJWT, SigningAlgo, uuidv4 } from '@sphereon/oid4vc-common'
+import { base64ToHexString, JwtPayload, parseJWT, SigningAlgo, uuidv4 } from '@vess-id/oid4vc-common'
 import { PartialSdJwtDecodedVerifiableCredential } from '@sphereon/pex/dist/main/lib'
 import { IProofType, SdJwtVcKbJwtPayload } from '@sphereon/ssi-types'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

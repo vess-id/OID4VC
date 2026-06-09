@@ -1,4 +1,4 @@
-import { parseJWT } from '@sphereon/oid4vc-common'
+import { parseJWT } from '@vess-id/oid4vc-common'
 import { DcqlQuery } from 'dcql'
 import { Dcql } from '../authorization-response'
 import { fetchByReferenceOrUseByValue, getClientIdentifierPrefix, removeNullUndefined } from '../helpers'

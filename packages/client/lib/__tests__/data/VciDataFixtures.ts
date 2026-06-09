@@ -3,7 +3,7 @@ import {
   IssuerCredentialSubjectDisplay,
   IssuerMetadataV1_0_15,
   PRE_AUTH_GRANT_LITERAL,
-} from '@sphereon/oid4vci-common'
+} from '@vess-id/oid4vci-common'
 import { ICredentialStatus, W3CVerifiableCredential } from '@sphereon/ssi-types'
 
 export function getMockData(issuerName: string): IssuerMockData | null {
