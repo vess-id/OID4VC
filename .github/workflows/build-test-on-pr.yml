@@ -1,6 +1,5 @@
 name: Build and Test PR
-# Workflow disabled - uncomment the line below to re-enable
-# on: [pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 jobs:
   build-test:
     runs-on: ubuntu-latest
@@ -8,7 +7,7 @@ jobs:
       VC_HTTP_API_AUTH_TOKEN: ${{secrets.VC_HTTP_API_AUTH_TOKEN}}
     services:
       postgres:
-        image: postgres:10.10
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: test123
@@ -48,7 +47,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           name: codecove # optional
           flags: unittest
-          fail_ci_if_error: true # optional (default = false)
+          fail_ci_if_error: false # avoid failing CI on Codecov upload errors when token is unset
           #directory: ./coverage/reports/
           #files: ./coverage1.xml,./coverage2.xml
           verbose: true # optional (default = false)
