@@ -406,8 +406,11 @@ export class OpenID4VCIClientV1_0_15 {
       this._state.dpopResponseParams = response.params
       this._state.accessToken = response.successBody.access_token
 
-      if (response.successBody.c_nonce) {
-        this._state.cachedCNonce = response.successBody.c_nonce
+      // OID4VCI 1.0 removed c_nonce from the token response (now served by the Nonce Endpoint),
+      // but pre-1.0 issuers may still include it — read it defensively when present.
+      const tokenCNonce = (response.successBody as AccessTokenResponse & { c_nonce?: string }).c_nonce
+      if (tokenCNonce) {
+        this._state.cachedCNonce = tokenCNonce
       }
     }
 
