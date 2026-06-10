@@ -1,6 +1,6 @@
 {
   "name": "@vess-id/oid4vc-common",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "OpenID 4 Verifiable Credentials Common - @vess-id implementation",
   "source": "./src/index.ts",
   "type": "module",

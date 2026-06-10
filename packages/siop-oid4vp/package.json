@@ -1,6 +1,6 @@
 {
   "name": "@vess-id/did-auth-siop",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Self Issued OpenID V2 (SIOPv2) and OpenID 4 Verifiable Presentations (OID4VP) 1.0 - @vess-id implementation",
   "source": "./src/index.ts",
   "type": "module",

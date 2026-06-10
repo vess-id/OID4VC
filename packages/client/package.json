@@ -1,6 +1,6 @@
 {
   "name": "@vess-id/oid4vci-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "OpenID for Verifiable Credential Issuance (OpenID4VCI) client - OID4VCI 1.0 (Draft 16) Support",
   "source": "./src/index.ts",
   "type": "module",
