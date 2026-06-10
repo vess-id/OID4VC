@@ -1,7 +1,7 @@
 import { KeyObject } from 'crypto'
 
 import * as didKeyDriver from '@digitalcredentials/did-method-key'
-import { OpenID4VCIClientV1_0_15 } from '@sphereon/oid4vci-client'
+import { OpenID4VCIClientV1_0_15 } from '@vess-id/oid4vci-client'
 import {
   AccessTokenResponse,
   Alg,

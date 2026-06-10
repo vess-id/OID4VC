@@ -312,9 +312,9 @@ describe('issuerCallback', () => {
     })
 
     expect(credentialResponse).toEqual({
-      c_nonce: expect.any(String),
+      // c_nonce / c_nonce_expires_in were removed from CredentialResponse in OID4VCI 1.0
+      // (c_nonce now comes from the dedicated Nonce Endpoint), so they are no longer returned here.
       notification_id: expect.any(String),
-      c_nonce_expires_in: 300,
       credentials: [
         {
           // v15 array structure

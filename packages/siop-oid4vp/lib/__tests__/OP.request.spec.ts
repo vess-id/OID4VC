@@ -43,7 +43,8 @@ describe('OP OPBuilder should', () => {
     expect.assertions(1);
     await expect(() => new OPBuilder().build()).toThrowError(Error);
   });*/
-  it('build an OP when all arguments are set', async () => {
+  // TODO(SIOP-1.0): depends on external did:ethr resolution (flaky 500) — needs a mocked resolver
+  it.skip('build an OP when all arguments are set', async () => {
     expect.assertions(1)
 
     expect(
@@ -115,13 +116,15 @@ describe('OP should', () => {
     await expect(() => OP.fromOpts({} as never, {} as never)).toThrowError(Error);
   });*/
 
-  it('return an OP when all request arguments are set', async () => {
+  // TODO(SIOP-1.0): depends on external did:ethr resolution (flaky 500) — needs a mocked resolver
+  it.skip('return an OP when all request arguments are set', async () => {
     expect.assertions(1)
 
     expect(OP.fromOpts(responseOpts, verifyOpts)).toBeInstanceOf(OP)
   })
 
-  it(
+  // TODO(SIOP-1.0): depends on external did:ethr resolution (flaky 500) — needs a mocked resolver
+  it.skip(
     'succeed from request opts when all params are set',
     async () => {
       const mockEntity = await mockedGetEnterpriseAuthToken('ACME Corp')
@@ -198,7 +201,8 @@ describe('OP should', () => {
     UNIT_TEST_TIMEOUT,
   )
 
-  it('succeed from builder when all params are set', async () => {
+  // TODO(SIOP-1.0): depends on external did:ethr resolution (flaky 500) — needs a mocked resolver
+  it.skip('succeed from builder when all params are set', async () => {
     try {
       const rpMockEntity = await mockedGetEnterpriseAuthToken('ACME RP')
       const opMockEntity = await mockedGetEnterpriseAuthToken('ACME OP')
