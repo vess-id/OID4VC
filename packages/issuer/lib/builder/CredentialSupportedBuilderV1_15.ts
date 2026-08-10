@@ -178,6 +178,9 @@ export class CredentialSupportedBuilderV1_15 {
     if (this.cryptographicBindingMethodsSupported) {
       credentialSupported.cryptographic_binding_methods_supported = this.cryptographicBindingMethodsSupported
     }
+    if (this.proofTypesSupported) {
+      credentialSupported.proof_types_supported = this.proofTypesSupported
+    }
     if (this.display) {
       credentialSupported.display = this.display
     }
