@@ -36,6 +36,18 @@ describe('CredentialSupportedBuilderV1_15', () => {
     })
   })
 
+  it('addProofTypesSupported を異なるキーで複数回呼ぶと上書きせずマージすること', () => {
+    const configuration = baseBuilder()
+      .addProofTypesSupported('jwt', { proof_signing_alg_values_supported: ['ES256'] })
+      .addProofTypesSupported('ldp_vp', { proof_signing_alg_values_supported: ['Ed25519Signature2020'] })
+      .build()
+
+    expect(configuration['UniversityDegree_JWT'].proof_types_supported).toEqual({
+      jwt: { proof_signing_alg_values_supported: ['ES256'] },
+      ldp_vp: { proof_signing_alg_values_supported: ['Ed25519Signature2020'] },
+    })
+  })
+
   it('未設定の場合は proof_types_supported のキー自体を出力しないこと', () => {
     const configuration = baseBuilder().build()
 
