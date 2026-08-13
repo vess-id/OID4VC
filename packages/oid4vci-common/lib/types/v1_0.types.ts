@@ -14,7 +14,6 @@ import {
   IssuerCredentialSubject,
   MetadataDisplay,
   OID4VCICredentialFormat,
-  ProofTypesSupported,
   ResponseEncryption,
   StatusListOpts,
   ZipValue,
@@ -111,7 +110,7 @@ export type CredentialConfigurationSupportedCommonV1_0 = {
   scope?: string // OPTIONAL. A JSON string identifying the scope value that this Credential Issuer supports for this particular Credential.
   cryptographic_binding_methods_supported?: string[] // OPTIONAL. Array of case sensitive strings that identify how the Credential is bound to the identifier of the End-User who possesses the Credential. Renamed from "Cryptographic Holder Binding" to "Cryptographic Key Binding" in v1.0.
   credential_signing_alg_values_supported?: string[] // OPTIONAL. Array of case sensitive strings that identify the algorithms that the Issuer uses to sign the issued Credential. Format-specific in v1.0.
-  proof_types_supported?: ProofTypesSupported // OPTIONAL. Object that describes specifics of the key proof(s) that the Credential Issuer supports.
+  proof_types_supported?: ProofTypesV1_0 // OPTIONAL. Object that describes specifics of the key proof(s) that the Credential Issuer supports.
   credential_metadata?: CredentialMetadataV1_0 // OPTIONAL. Object containing credential metadata (NEW in v1.0 - claims and display moved here)
   [x: string]: unknown
 }
