@@ -54,6 +54,48 @@ describe('CredentialSupportedBuilderV1_15', () => {
     expect(configuration['UniversityDegree_JWT']).not.toHaveProperty('proof_types_supported')
   })
 
+  it('空オブジェクトを設定した場合は proof_types_supported のキー自体を出力しないこと', () => {
+    const configuration = baseBuilder().withProofTypesSupported({}).build()
+
+    expect(configuration['UniversityDegree_JWT']).not.toHaveProperty('proof_types_supported')
+  })
+
+  it('proof_signing_alg_values_supported が空配列の場合はエラーになること', () => {
+    const builder = baseBuilder().withProofTypesSupported({ jwt: { proof_signing_alg_values_supported: [] } })
+
+    expect(() => builder.build()).toThrow('proof_types_supported.jwt.proof_signing_alg_values_supported must be non-empty (OID4VCI 1.0 requirement)')
+  })
+
+  it('proof_signing_alg_values_supported が未設定の場合はエラーになること', () => {
+    const builder = baseBuilder().withProofTypesSupported({ jwt: {} } as never)
+
+    expect(() => builder.build()).toThrow('proof_types_supported.jwt.proof_signing_alg_values_supported must be non-empty (OID4VCI 1.0 requirement)')
+  })
+
+  it('複数キーのうち一方だけが空配列の場合も該当キー名を含むエラーになること', () => {
+    const builder = baseBuilder().withProofTypesSupported({
+      jwt: { proof_signing_alg_values_supported: ['ES256'] },
+      ldp_vp: { proof_signing_alg_values_supported: [] },
+    })
+
+    expect(() => builder.build()).toThrow(
+      'proof_types_supported.ldp_vp.proof_signing_alg_values_supported must be non-empty (OID4VCI 1.0 requirement)',
+    )
+  })
+
+  it('build() 後に入力オブジェクトを書き換えても出力が変化しないこと', () => {
+    const input = { jwt: { proof_signing_alg_values_supported: ['ES256'] } }
+    const configuration = baseBuilder().withProofTypesSupported(input).build()
+
+    // 検証を通過した後に呼び出し側が壊しても、出力済みのメタデータは影響を受けない
+    input.jwt.proof_signing_alg_values_supported.length = 0
+    input.jwt = { proof_signing_alg_values_supported: ['RS256'] }
+
+    expect(configuration['UniversityDegree_JWT'].proof_types_supported).toEqual({
+      jwt: { proof_signing_alg_values_supported: ['ES256'] },
+    })
+  })
+
   it('dc+sd-jwt でも proof_types_supported を出力すること', () => {
     const configuration = new CredentialSupportedBuilderV1_15()
       .withFormat('dc+sd-jwt')

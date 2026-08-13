@@ -9,6 +9,7 @@ import {
   ProofType,
   ProofTypesSupported,
   TokenErrorResponse,
+  validateProofSigningAlgValues,
 } from '@vess-id/oid4vci-common'
 
 export class CredentialSupportedBuilderV1_15 {
@@ -178,8 +179,16 @@ export class CredentialSupportedBuilderV1_15 {
     if (this.cryptographicBindingMethodsSupported) {
       credentialSupported.cryptographic_binding_methods_supported = this.cryptographicBindingMethodsSupported
     }
-    if (this.proofTypesSupported) {
-      credentialSupported.proof_types_supported = this.proofTypesSupported
+    // 空オブジェクトはキー不在と同義に正規化する。OID4VCI では「キー不在 = proof を要求しない」だが
+    // proof_types_supported: {} は「対応する proof type がゼロ」とも読めるため、広告しない。
+    if (this.proofTypesSupported && Object.keys(this.proofTypesSupported).length > 0) {
+      for (const [keyProofType, proofType] of Object.entries(this.proofTypesSupported)) {
+        if (!validateProofSigningAlgValues(proofType?.proof_signing_alg_values_supported, keyProofType)) {
+          throw new Error(`proof_types_supported.${keyProofType}.proof_signing_alg_values_supported must be non-empty (OID4VCI 1.0 requirement)`)
+        }
+      }
+      // 検証を通した値が build() 後に呼び出し側から書き換えられないよう、深いコピーを出力する。
+      credentialSupported.proof_types_supported = structuredClone(this.proofTypesSupported)
     }
     if (this.display) {
       credentialSupported.display = this.display
