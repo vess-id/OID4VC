@@ -1,7 +1,7 @@
 import { JWK } from '@vess-id/oid4vc-common'
 
 import { ExperimentalSubjectIssuance } from '../experimental/holder-vci'
-// 型としてのみ使用する。ProofTypeUtils は ../index を import するため、値として取り込むと循環参照になる。
+// Type-only import: ProofTypeUtils imports from ../index, so a value import would create a cycle.
 import type { ProofTypeIdentifierV1_0_15 } from '../functions/ProofTypeUtils'
 
 import { ProofOfPossession } from './CredentialIssuance.types'
@@ -268,9 +268,9 @@ export interface ProofTypesV1_0_15 {
   attestation?: ProofTypeV1_0_15 // OPTIONAL. New attestation proof type for key attestation
 }
 
-// v15 で有効な proof type のキー。既存の ProofTypeIdentifierV1_0_15 enum を単一の情報源とし、
-// テンプレートリテラル型で文字列ユニオンに変換する（enum 型のままだと呼び出し側が 'jwt' 等の
-// 文字列リテラルを渡せなくなるため）。
+// Valid proof type keys for v15. Derived from the existing ProofTypeIdentifierV1_0_15 enum to keep a
+// single source of truth. A template literal type is used instead of the enum type itself so that
+// callers can still pass plain string literals such as 'jwt'.
 export type KeyProofTypeV1_0_15 = `${ProofTypeIdentifierV1_0_15}`
 
 export interface ProofTypeV1_0_15 {
