@@ -1,6 +1,8 @@
 import { JWK } from '@vess-id/oid4vc-common'
 
 import { ExperimentalSubjectIssuance } from '../experimental/holder-vci'
+// Type-only import: ProofTypeUtils imports from ../index, so a value import would create a cycle.
+import type { ProofTypeIdentifierV1_0_15 } from '../functions/ProofTypeUtils'
 
 import { ProofOfPossession } from './CredentialIssuance.types'
 import {
@@ -14,7 +16,6 @@ import {
   IssuerCredentialSubject,
   MetadataDisplay,
   OID4VCICredentialFormat,
-  ProofTypesSupported,
   ResponseEncryption,
   StatusListOpts,
 } from './Generic.types'
@@ -67,7 +68,7 @@ export type CredentialConfigurationSupportedCommonV1_0_15 = {
   scope?: string // OPTIONAL. A JSON string identifying the scope value that this Credential Issuer supports for this particular Credential. The value can be the same across multiple credential_configurations_supported objects. The Authorization Server MUST be able to uniquely identify the Credential Issuer based on the scope value. The Wallet can use this value in the Authorization Request as defined in Section 5.1.2. Scope values in this Credential Issuer metadata MAY duplicate those in the scopes_supported parameter of the Authorization Server.
   cryptographic_binding_methods_supported?: string[] // OPTIONAL. Array of case sensitive strings that identify how the Credential is bound to the identifier of the End-User who possesses the Credential
   credential_signing_alg_values_supported?: string[] // OPTIONAL. Array of case sensitive strings that identify the algorithms that the Issuer uses to sign the issued Credential. Algorithm names used are determined by the Credential Format and are defined in Appendix A.
-  proof_types_supported?: ProofTypesSupported // OPTIONAL. Object that describes specifics of the key proof(s) that the Credential Issuer supports. This object contains a list of name/value pairs, where each name is a unique identifier of the supported proof type(s).
+  proof_types_supported?: ProofTypesV1_0_15 // OPTIONAL. Object that describes specifics of the key proof(s) that the Credential Issuer supports. This object contains a list of name/value pairs, where each name is a unique identifier of the supported proof type(s).
   display?: CredentialsSupportedDisplay[] // OPTIONAL. An array of objects, where each object contains the display properties of the supported credential for a certain language
   [x: string]: unknown
 }
@@ -266,6 +267,11 @@ export interface ProofTypesV1_0_15 {
   ldp_vp?: ProofTypeV1_0_15 // OPTIONAL. Linked Data Proof VP support
   attestation?: ProofTypeV1_0_15 // OPTIONAL. New attestation proof type for key attestation
 }
+
+// Valid proof type keys for v15. Derived from the existing ProofTypeIdentifierV1_0_15 enum to keep a
+// single source of truth. A template literal type is used instead of the enum type itself so that
+// callers can still pass plain string literals such as 'jwt'.
+export type KeyProofTypeV1_0_15 = `${ProofTypeIdentifierV1_0_15}`
 
 export interface ProofTypeV1_0_15 {
   proof_signing_alg_values_supported: string[] // REQUIRED. Array of case sensitive strings that identify the algorithms that the Issuer supports for this proof type.
