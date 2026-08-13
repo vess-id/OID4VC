@@ -11,10 +11,12 @@ import type { ProofTypesV1_0 } from '../types/v1_0.types'
  * runtime test could catch. These assertions pin the key sets so a regression (e.g. re-introducing
  * the removed `cwt`, or dropping `attestation`) fails here.
  *
- * Note: vitest typecheck is not enabled in this repository, so the `expectTypeOf` assertions are
- * only evaluated by an editor / `tsc` run that includes this file. The runtime assertions below are
- * the ones that actually fail the suite, and they cover the same key sets because
- * `KeyProofTypeV1_0_15` is derived from `ProofTypeIdentifierV1_0_15`.
+ * Note: the `expectTypeOf` assertion below is NOT verified by any automated process in this
+ * repository. `tsc --noEmit` excludes the `__tests__` directories (see the exclude list in
+ * tsconfig.base.json) and vitest typecheck is not enabled, so it only surfaces in an editor.
+ * It is kept as documentation of intent. The runtime `expect` assertions are the actual safety net;
+ * they cover the same key sets because `KeyProofTypeV1_0_15` is derived from
+ * `ProofTypeIdentifierV1_0_15`.
  */
 describe('proof type identifiers', () => {
   it('exposes jwt / ldp_vp / attestation for v1.0.15 (Draft 15)', () => {
