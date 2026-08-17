@@ -40,7 +40,7 @@
     "awesome-qr": false
   },
   "devDependencies": {
-    "@vess-id/oid4vci-client": "workspace:^",
+    "@vess-id/oid4vci-client": "^1.0.2",
     "@types/node": "^20.17.30",
     "@types/uuid": "^9.0.8",
     "did-resolver": "^4.1.0",
