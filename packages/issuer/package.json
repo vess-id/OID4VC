@@ -1,6 +1,6 @@
 {
   "name": "@vess-id/oid4vci-issuer",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "OpenID 4 Verifiable Credential Issuance issuer REST endpoints - OID4VCI 1.0 (Draft 16) Support",
   "source": "./src/index.ts",
   "type": "module",

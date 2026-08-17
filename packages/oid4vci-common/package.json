@@ -1,6 +1,6 @@
 {
   "name": "@vess-id/oid4vci-common",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "OpenID 4 Verifiable Credential Issuance Common Types",
   "source": "./src/index.ts",
   "type": "module",
