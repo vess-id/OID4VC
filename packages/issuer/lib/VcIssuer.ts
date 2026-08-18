@@ -53,6 +53,58 @@ import { LOG } from './index'
 
 const shortUUID = ShortUUID()
 
+// Caps for request-supplied proof type names embedded in error messages. The message is returned as
+// the HTTP error_description and is also persisted on the credential offer session as
+// `session.error` (see updateSession below), where it is kept for the lifetime of the session and
+// re-read by anything that inspects the session, so a request must not be able to grow it without
+// bound. 32 characters keeps the registered proof types ("jwt", "attestation") and any private
+// proof type identifier recognisable while bounding a single name.
+const MAX_PROOF_TYPE_NAME_LENGTH_IN_ERROR = 32
+// 3 names are enough to diagnose the request; the rest are reported as a count so the message stays
+// a fixed size no matter how many proof types the request carried.
+const MAX_PROOF_TYPE_NAMES_IN_ERROR = 3
+// Characters kept verbatim in an error message. The spec does not constrain the character set of a
+// proof type name ("a unique identifier of the supported proof type(s)"), so the set is wide enough
+// to leave a realistic identifier intact: RFC 3986 unreserved characters (A-Z a-z 0-9 - . _ ~) plus
+// the URI punctuation a URN- or URL-shaped private identifier needs (: / # % = + @), which covers
+// "jwt", "attestation", "urn:example:my_proof" and "https://example.com/proofs#v1" unchanged.
+// Deliberately excluded: everything non-ASCII (homoglyphs, invisible and bidi characters), all
+// whitespace and control characters, the message's own delimiters ("," "(" ")" and space), the
+// quote and backslash characters that JSON escaping would expand, and "?" itself, so that a name
+// made up only of allowed characters always renders to itself and never contains a "?": a hostile
+// name therefore cannot render as a legitimate proof type identifier. (A name that literally
+// contains a "?" is not allowlist-clean, so it is not distinguishable from a name whose characters
+// were replaced; no registered or realistic proof type identifier contains one.)
+const SAFE_PROOF_TYPE_NAME_CHARACTER = /^[A-Za-z0-9\-._~:/#%=+@]$/
+
+/**
+ * Makes a request-supplied proof type name safe to embed in an error message. Every character
+ * outside SAFE_PROOF_TYPE_NAME_CHARACTER is replaced one-for-one by "?" rather than dropped, so a
+ * name can neither forge a log line nor collapse onto the rendering of a different (possibly
+ * legitimate) proof type name. An over-long name is truncated with a trailing "..." so the
+ * truncation is visible, and the result is quoted so an empty or padded name still has a visible
+ * extent in the message.
+ */
+const sanitizeProofTypeNameForError = (proofTypeName: string): string => {
+  // Slice by code point, not code unit, so truncation cannot split a surrogate pair
+  const characters = [...proofTypeName]
+  const truncated = characters.slice(0, MAX_PROOF_TYPE_NAME_LENGTH_IN_ERROR)
+  const safe = truncated.map((character) => (SAFE_PROOF_TYPE_NAME_CHARACTER.test(character) ? character : '?')).join('')
+  const withEllipsis = characters.length > MAX_PROOF_TYPE_NAME_LENGTH_IN_ERROR ? `${safe}...` : safe
+  // Only printable ASCII reaches this point, so the quoting adds exactly two characters
+  return JSON.stringify(withEllipsis)
+}
+
+/**
+ * Renders a list of proof type names for an error message, listing at most
+ * MAX_PROOF_TYPE_NAMES_IN_ERROR of them and reporting the remainder as a count.
+ */
+const formatProofTypeNamesForError = (proofTypeNames: string[]): string => {
+  const listed = proofTypeNames.slice(0, MAX_PROOF_TYPE_NAMES_IN_ERROR).map(sanitizeProofTypeNameForError)
+  const omitted = Math.max(0, proofTypeNames.length - MAX_PROOF_TYPE_NAMES_IN_ERROR)
+  return omitted > 0 ? `${listed.join(', ')} (and ${omitted} more)` : listed.join(', ')
+}
+
 export class VcIssuer {
   private readonly _issuerMetadata: CredentialIssuerMetadataOptsV1_0_15
   private readonly _authorizationServerMetadata: AuthorizationServerMetadata
@@ -698,6 +750,16 @@ export class VcIssuer {
         // In OID4VCI 1.0, proofs.jwt is an array of JWT strings, not ProofOfPossession objects
         const jwtProofs = credentialRequest.proofs['jwt'] as unknown as string[]
         if (!jwtProofs || jwtProofs.length === 0) {
+          // Only jwt proofs can be verified here. If the wallet did send proofs, but all of them are of
+          // another type, say so explicitly instead of claiming that no proof was present at all
+          const unsupportedProofTypes = Object.entries(credentialRequest.proofs)
+            .filter(([proofType, proofValues]) => proofType !== 'jwt' && Array.isArray(proofValues) && proofValues.length > 0)
+            .map(([proofType]) => proofType)
+          if (unsupportedProofTypes.length > 0) {
+            throw Error(
+              `Unsupported proof type(s) in credential request: ${formatProofTypeNamesForError(unsupportedProofTypes)}. This issuer implementation only verifies jwt proofs`,
+            )
+          }
           throw Error('Proof of possession is required. No proof value present in credential request')
         }
         // proofs.jwt contains an array of JWT strings (OID4VCI 1.0 spec)
