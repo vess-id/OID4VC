@@ -5,12 +5,12 @@ import {
   CredentialDefinitionJwtVcJsonV1_0,
   CredentialMetadataV1_0,
   CredentialsSupportedDisplay,
-  KeyProofType,
   OID4VCICredentialFormat,
   ProofTypeV1_0,
-  ProofTypesSupported,
+  ProofTypesV1_0,
   validateClaimsArray,
   validateDisplayArray,
+  validateProofSigningAlgValues,
 } from '@vess-id/oid4vci-common'
 
 /**
@@ -28,7 +28,7 @@ export class CredentialSupportedBuilderV1_0 {
   credentialDefinition?: CredentialDefinitionJwtVcJsonLdAndLdpVcV1_0 | CredentialDefinitionJwtVcJsonV1_0
   cryptographicBindingMethodsSupported?: ('jwk' | 'cose_key' | 'did' | string)[]
   credentialSigningAlgValuesSupported?: string[]
-  proofTypesSupported?: ProofTypesSupported
+  proofTypesSupported?: ProofTypesV1_0
   credentialMetadata?: CredentialMetadataV1_0 // NEW in v1.0: claims and display moved here
   vct?: string // For dc+sd-jwt format
   doctype?: string // For mso_mdoc format
@@ -158,7 +158,7 @@ export class CredentialSupportedBuilderV1_0 {
     return this
   }
 
-  addProofTypesSupported(keyProofType: KeyProofType, proofType: ProofTypeV1_0): CredentialSupportedBuilderV1_0 {
+  addProofTypesSupported(keyProofType: keyof ProofTypesV1_0, proofType: ProofTypeV1_0): CredentialSupportedBuilderV1_0 {
     if (!this.proofTypesSupported) {
       this.proofTypesSupported = {}
     }
@@ -166,7 +166,7 @@ export class CredentialSupportedBuilderV1_0 {
     return this
   }
 
-  withProofTypesSupported(proofTypesSupported: ProofTypesSupported): CredentialSupportedBuilderV1_0 {
+  withProofTypesSupported(proofTypesSupported: ProofTypesV1_0): CredentialSupportedBuilderV1_0 {
     this.proofTypesSupported = proofTypesSupported
     return this
   }
@@ -203,8 +203,16 @@ export class CredentialSupportedBuilderV1_0 {
       credentialSupported.credential_signing_alg_values_supported = this.credentialSigningAlgValuesSupported
     }
 
-    if (this.proofTypesSupported) {
-      credentialSupported.proof_types_supported = this.proofTypesSupported
+    // 空オブジェクトはキー不在と同義に正規化する。OID4VCI では「キー不在 = proof を要求しない」だが
+    // proof_types_supported: {} は「対応する proof type がゼロ」とも読めるため、広告しない。
+    if (this.proofTypesSupported && Object.keys(this.proofTypesSupported).length > 0) {
+      for (const [keyProofType, proofType] of Object.entries(this.proofTypesSupported)) {
+        if (!validateProofSigningAlgValues(proofType?.proof_signing_alg_values_supported, keyProofType)) {
+          throw new Error(`proof_types_supported.${keyProofType}.proof_signing_alg_values_supported must be non-empty (OID4VCI 1.0 requirement)`)
+        }
+      }
+      // 検証を通した値が build() 後に呼び出し側から書き換えられないよう、深いコピーを出力する。
+      credentialSupported.proof_types_supported = structuredClone(this.proofTypesSupported)
     }
 
     // NEW in v1.0: credential_metadata

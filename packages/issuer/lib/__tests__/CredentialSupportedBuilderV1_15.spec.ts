@@ -139,6 +139,50 @@ describe('CredentialSupportedBuilderV1_15', () => {
     })
   })
 
+  it('addProofTypesSupported で attestation を設定でき、出力に含まれること', () => {
+    const configuration = baseBuilder()
+      .addProofTypesSupported('attestation', { proof_signing_alg_values_supported: ['ES256'] })
+      .build()
+
+    expect(configuration['UniversityDegree_JWT'].proof_types_supported).toEqual({
+      attestation: { proof_signing_alg_values_supported: ['ES256'] },
+    })
+  })
+
+  it('key_attestations_required を設定でき、出力に含まれること', () => {
+    const configuration = baseBuilder()
+      .addProofTypesSupported('jwt', {
+        proof_signing_alg_values_supported: ['ES256'],
+        key_attestations_required: { key_storage: ['iso_18045_high'], user_authentication: ['iso_18045_moderate'] },
+      })
+      .build()
+
+    expect(configuration['UniversityDegree_JWT'].proof_types_supported).toEqual({
+      jwt: {
+        proof_signing_alg_values_supported: ['ES256'],
+        key_attestations_required: { key_storage: ['iso_18045_high'], user_authentication: ['iso_18045_moderate'] },
+      },
+    })
+  })
+
+  it('attestation の proof_signing_alg_values_supported が空配列の場合はエラーになること', () => {
+    const builder = baseBuilder().addProofTypesSupported('attestation', { proof_signing_alg_values_supported: [] })
+
+    expect(() => builder.build()).toThrow(
+      'proof_types_supported.attestation.proof_signing_alg_values_supported must be non-empty (OID4VCI 1.0 requirement)',
+    )
+  })
+
+  it('型としても不正なキーを受け付けないこと (spec を型検査する構成でのみ評価される)', () => {
+    // addProofTypesSupported のキー型は KeyProofTypeV1_0_15 (enum 由来) なので cwt を受け付けない
+    // @ts-expect-error cwt は v1.0.15 の proof type ではないため、キー型として受け付けない
+    baseBuilder().addProofTypesSupported('cwt', { proof_signing_alg_values_supported: ['ES256'] })
+    // withProofTypesSupported の引数型は ProofTypesV1_0_15 (interface) なので、
+    // オブジェクトリテラルに対する余剰プロパティ検査でのみ弾かれる (変数経由では型検査をすり抜ける)
+    // @ts-expect-error cwt は v1.0.15 の proof type ではないため、オブジェクトリテラルのキーとしても受け付けない
+    baseBuilder().withProofTypesSupported({ cwt: { proof_signing_alg_values_supported: ['ES256'] } })
+  })
+
   it('IssuerMetadataBuilderV1_15 経由で credential_configurations_supported に載ること', () => {
     const metadata = new IssuerMetadataBuilderV1_15()
       .withCredentialIssuer('https://credential-issuer')
