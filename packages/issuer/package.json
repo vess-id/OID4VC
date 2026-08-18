@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@vess-id/oid4vc-common": "^1.0.0",
-    "@vess-id/oid4vci-common": "^1.0.2",
+    "@vess-id/oid4vci-common": "^1.0.8",
     "@sphereon/ssi-express-support": "0.34.1-next.3",
     "@sphereon/ssi-types": "0.34.1-feature.SSISDK.78.280",
     "short-uuid": "^4.2.2",
