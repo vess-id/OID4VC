@@ -4,10 +4,10 @@ import {
   CredentialDefinitionJwtVcJsonLdAndLdpVcV1_0_15,
   CredentialDefinitionJwtVcJsonV1_0_15,
   CredentialsSupportedDisplay,
-  KeyProofType,
+  KeyProofTypeV1_0_15,
   OID4VCICredentialFormat,
-  ProofType,
-  ProofTypesSupported,
+  ProofTypeV1_0_15,
+  ProofTypesV1_0_15,
   TokenErrorResponse,
   validateProofSigningAlgValues,
 } from '@vess-id/oid4vci-common'
@@ -19,7 +19,7 @@ export class CredentialSupportedBuilderV1_15 {
   credentialDefinition?: CredentialDefinitionJwtVcJsonLdAndLdpVcV1_0_15 | CredentialDefinitionJwtVcJsonV1_0_15
   cryptographicBindingMethodsSupported?: ('jwk' | 'cose_key' | 'did' | string)[]
   credentialSigningAlgValuesSupported?: string[]
-  proofTypesSupported?: ProofTypesSupported
+  proofTypesSupported?: ProofTypesV1_0_15
   display?: CredentialsSupportedDisplay[]
   claims?: ClaimsDescriptionV1_0_15[] // Changed to use claims path pointers in v15
   vct?: string // For dc+sd-jwt format
@@ -98,7 +98,7 @@ export class CredentialSupportedBuilderV1_15 {
     return this
   }
 
-  addProofTypesSupported(keyProofType: KeyProofType, proofType: ProofType): CredentialSupportedBuilderV1_15 {
+  addProofTypesSupported(keyProofType: KeyProofTypeV1_0_15, proofType: ProofTypeV1_0_15): CredentialSupportedBuilderV1_15 {
     if (!this.proofTypesSupported) {
       this.proofTypesSupported = {}
     }
@@ -106,7 +106,7 @@ export class CredentialSupportedBuilderV1_15 {
     return this
   }
 
-  withProofTypesSupported(proofTypesSupported: ProofTypesSupported): CredentialSupportedBuilderV1_15 {
+  withProofTypesSupported(proofTypesSupported: ProofTypesV1_0_15): CredentialSupportedBuilderV1_15 {
     this.proofTypesSupported = proofTypesSupported
     return this
   }

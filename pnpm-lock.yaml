@@ -249,8 +249,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(typescript@5.8.3)
       '@vess-id/oid4vci-common':
-        specifier: ^1.0.2
-        version: 1.0.4(encoding@0.1.13)(typescript@5.8.3)
+        specifier: ^1.0.8
+        version: 1.0.8(encoding@0.1.13)(typescript@5.8.3)
       awesome-qr:
         specifier: ^2.1.5-rc.0
         version: 2.1.5-rc.0(encoding@0.1.13)
@@ -268,8 +268,8 @@ importers:
         specifier: ^9.0.8
         version: 9.0.8
       '@vess-id/oid4vci-client':
-        specifier: workspace:^
-        version: link:../client
+        specifier: ^1.0.2
+        version: 1.0.2(encoding@0.1.13)(typescript@5.8.3)
       did-resolver:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1917,7 +1917,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
 
   '@expo/cli@0.7.3':
     resolution: {integrity: sha512-uMGHbAhApqXR2sd1KPhgvpbOhBBnspad8msEqHleT2PHXwKIwTUDzBGO9+jdOAWwCx2MJfw3+asYjzoD3DN9Bg==}
@@ -2691,6 +2691,7 @@ packages:
 
   '@sphereon/kmp-mdoc-core@0.2.0-SNAPSHOT.26':
     resolution: {integrity: sha512-QXJ6R8ENiZV2rPMbn06cw5JKwqUYN1kzVRbYfONqE1PEXx1noQ4md7uxr2zSczi0ubKkNcbyYDNtIMTZIhGzmQ==}
+    bundledDependencies: []
 
   '@sphereon/pex-models@2.3.2':
     resolution: {integrity: sha512-foFxfLkRwcn/MOp/eht46Q7wsvpQGlO7aowowIIb5Tz9u97kYZ2kz6K2h2ODxWuv5CRA7Q0MY8XUBGE2lfOhOQ==}
@@ -3173,8 +3174,16 @@ packages:
     resolution: {integrity: sha512-this4ogWULY0I1sft3joQ2XEHL7Xxp1t102kuerBJ0RKwinPSaqS5oL2CGkMZmoOA4AcqmW6+b0wJ1EJV4GM+g==}
     engines: {node: '>=20'}
 
+  '@vess-id/oid4vci-client@1.0.2':
+    resolution: {integrity: sha512-WpyGeOLer39ltvKVix8bA93srn1P+CuNJF4TCu22huL4Vpin6UUhS+gCIVRs2Bcl9CB/L2TfTDI4fztO/Zzl2Q==}
+    engines: {node: '>=20'}
+
   '@vess-id/oid4vci-common@1.0.4':
     resolution: {integrity: sha512-Zh2vUiuqJMJaWpXSDRK+B808m6ClFsS0hZ2GInoZ1ArdEJZlHHhfxiIfOoCZyeoukzvaOk0F5APC+sMBy8u9dw==}
+    engines: {node: '>=20'}
+
+  '@vess-id/oid4vci-common@1.0.8':
+    resolution: {integrity: sha512-SwYKeMR4S7JPiZ4tgH0R72TjnHfm74nJ4hV36wuLfOZvQuwofLPbPw0zmMDvy/Y9z9jNH1rJcpahP/MHHJUZnQ==}
     engines: {node: '>=20'}
 
   '@vitest/coverage-v8@3.2.4':
@@ -12807,7 +12816,33 @@ snapshots:
       - supports-color
       - typescript
 
+  '@vess-id/oid4vci-client@1.0.2(encoding@0.1.13)(typescript@5.8.3)':
+    dependencies:
+      '@sphereon/ssi-types': 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common': 1.0.0(typescript@5.8.3)
+      '@vess-id/oid4vci-common': 1.0.8(encoding@0.1.13)(typescript@5.8.3)
+      cross-fetch: 4.1.0(encoding@0.1.13)
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+      - typescript
+
   '@vess-id/oid4vci-common@1.0.4(encoding@0.1.13)(typescript@5.8.3)':
+    dependencies:
+      '@sphereon/ssi-types': 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
+      '@vess-id/oid4vc-common': 1.0.0(typescript@5.8.3)
+      cross-fetch: 4.1.0(encoding@0.1.13)
+      debug: 4.4.3
+      jwt-decode: 4.0.0
+      uint8arrays: 3.1.1
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+      - typescript
+
+  '@vess-id/oid4vci-common@1.0.8(encoding@0.1.13)(typescript@5.8.3)':
     dependencies:
       '@sphereon/ssi-types': 0.34.1-feature.SSISDK.78.280(typescript@5.8.3)
       '@vess-id/oid4vc-common': 1.0.0(typescript@5.8.3)

@@ -15,7 +15,7 @@ describe('MemoryIssuerStateManager', () => {
     for (const i of Array.from(Array(3).keys())) {
       const timestamp = +new Date(+new Date() + day * (i - 1))
       const issuerState = new CredentialOfferStateBuilder()
-        .credentialOffer({ credential_offer: { credential_issuer: 'test', credentials: ['test'] } })
+        .credentialOffer({ credential_offer: { credential_issuer: 'test', credential_configuration_ids: ['test'] } })
         .createdAt(timestamp)
         .build()
       await memoryIssuerStateManager.set(String(i), issuerState)

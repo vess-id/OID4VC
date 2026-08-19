@@ -19,6 +19,16 @@ import {
 } from '@vess-id/oid4vci-common'
 import { createAccessTokenResponse } from '../tokens'
 
+/**
+ * OID4VCI 1.0 removed `newCNonce` from the `issueCredential` options (c_nonce is no longer part of the
+ * Credential Response; wallets use the Nonce Endpoint instead). The tests below that still pass it are
+ * `it.skip`-ed pending a rewrite for the Nonce Endpoint flow, and the shape they should take after that
+ * rewrite is not settled yet. Rather than change what those tests assert, their options are declared as
+ * a variable annotated with this alias, so the option object stays fully type-checked -- excess/misspelled
+ * properties and missing required properties included -- and only the one removed property is widened.
+ */
+type LegacyIssueCredentialOpts = Parameters<VcIssuer['issueCredential']>[0] & { newCNonce?: string }
+
 const IDENTIPROOF_ISSUER_URL = 'https://issuer.research.identiproof.io'
 
 const verifiableCredential = {
@@ -216,7 +226,7 @@ describe('VcIssuer', () => {
       status: IssueStatus.ACCESS_TOKEN_CREATED,
     })
 
-    const result = await vcIssuer.issueCredential({
+    const issueOpts: LegacyIssueCredentialOpts = {
       credential: verifiableCredential,
       credentialRequest: {
         credential_configuration_id: 'UniversityDegree_JWT',
@@ -230,7 +240,9 @@ describe('VcIssuer', () => {
         authorizationDetails: authorizationDetails,
       },
       newCNonce: 'new-test-nonce',
-    })
+    }
+
+    const result = await vcIssuer.issueCredential(issueOpts)
 
     expect(result).toEqual({
       c_nonce: 'new-test-nonce',
@@ -343,11 +355,10 @@ describe('VcIssuer', () => {
           },
         ],
       },
-      newCNonce: 'new-test-nonce',
     })
 
     expect(result.credentials).toHaveLength(1)
-    expect(typeof result.credentials[0].credential).toBe('object')
+    expect(typeof result.credentials![0].credential).toBe('object')
   })
 
   it('should generate credential_identifiers in token response and accept them in credential request', async () => {
@@ -385,7 +396,6 @@ describe('VcIssuer', () => {
       },
       {
         credentialOfferSessions: vcIssuer.credentialOfferSessions,
-        cNonces: vcIssuer.cNonces,
         tokenExpiresIn: 300,
         accessTokenSignerCallback: async () => 'mock-access-token',
         accessTokenIssuer: 'test-issuer',
@@ -445,12 +455,11 @@ describe('VcIssuer', () => {
         preAuthorizedCode: 'test-pre-authorized-code',
         authorizationDetails: tokenResponse.authorization_details,
       },
-      newCNonce: 'new-test-nonce',
     })
 
     // Verify credential was issued successfully
     expect(credentialResult.credentials).toHaveLength(1)
-    expect(credentialResult.credentials[0].credential).toBeDefined()
+    expect(credentialResult.credentials![0].credential).toBeDefined()
     expect(credentialResult.notification_id).toBe('43243')
   })
 
@@ -704,22 +713,22 @@ describe('VcIssuer', () => {
       status: IssueStatus.ACCESS_TOKEN_CREATED,
     })
 
-    await expect(
-      vcIssuer.issueCredential({
-        credential: verifiableCredential,
-        credentialRequest: {
-          credential_configuration_id: 'UniversityDegree_JWT',
-          proof: {
-            proof_type: 'jwt',
-            jwt: 'ye.ye.ye',
-          },
+    const issueOpts: LegacyIssueCredentialOpts = {
+      credential: verifiableCredential,
+      credentialRequest: {
+        credential_configuration_id: 'UniversityDegree_JWT',
+        proof: {
+          proof_type: 'jwt',
+          jwt: 'ye.ye.ye',
         },
-        issuerCorrelation: {
-          preAuthorizedCode: 'test-pre-authorized-code',
-        },
-        newCNonce: 'new-test-nonce',
-      }),
-    ).resolves.toEqual({
+      },
+      issuerCorrelation: {
+        preAuthorizedCode: 'test-pre-authorized-code',
+      },
+      newCNonce: 'new-test-nonce',
+    }
+
+    await expect(vcIssuer.issueCredential(issueOpts)).resolves.toEqual({
       c_nonce: 'new-test-nonce',
       c_nonce_expires_in: 300,
       notification_id: '43243',
@@ -965,22 +974,22 @@ describe('VcIssuer without did', () => {
       status: IssueStatus.ACCESS_TOKEN_CREATED,
     })
 
-    await expect(
-      vcIssuer.issueCredential({
-        credential: verifiableCredential_withoutDid,
-        credentialRequest: {
-          credential_configuration_id: 'UniversityDegree_JWT',
-          proof: {
-            proof_type: 'jwt',
-            jwt: 'ye.ye.ye',
-          },
+    const issueOpts: LegacyIssueCredentialOpts = {
+      credential: verifiableCredential_withoutDid,
+      credentialRequest: {
+        credential_configuration_id: 'UniversityDegree_JWT',
+        proof: {
+          proof_type: 'jwt',
+          jwt: 'ye.ye.ye',
         },
-        issuerCorrelation: {
-          preAuthorizedCode: 'test-pre-authorized-code',
-        },
-        newCNonce: 'new-test-nonce',
-      }),
-    ).resolves.toEqual({
+      },
+      issuerCorrelation: {
+        preAuthorizedCode: 'test-pre-authorized-code',
+      },
+      newCNonce: 'new-test-nonce',
+    }
+
+    await expect(vcIssuer.issueCredential(issueOpts)).resolves.toEqual({
       c_nonce: 'new-test-nonce',
       c_nonce_expires_in: 300,
       notification_id: '43243',
