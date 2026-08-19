@@ -28,6 +28,8 @@ jobs:
           version: 10.8.1
       - run: pnpm install
       - run: pnpm build
+      - name: typecheck (includes test files)
+        run: pnpm typecheck
       - name: run CI tests
         env:
           INCLUDE_POSTGRES_TESTS: true

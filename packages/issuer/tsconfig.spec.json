@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  // Type-check-only configuration that additionally covers `lib/__tests__`.
+  // The base config excludes `**/__tests__/**/*` so tests never reach the published
+  // build output; this config re-includes them so CI type-checks them too.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Type check only - never emit anything from this config.
+    // `declaration` / `declarationMap` / `declarationDir` / `composite` are inherited
+    // from the base config on purpose: `noEmit` already suppresses every output, while
+    // keeping them set avoids TS5069 (`declarationDir` requires `declaration`/`composite`).
+    "noEmit": true,
+    // The base pins `tsBuildInfoFile` to `${configDir}/tsconfig.tsbuildinfo`, the exact file
+    // the regular build writes. Use a separate name so the two never clobber each other's
+    // incremental state.
+    "tsBuildInfoFile": "./tsconfig.spec.tsbuildinfo"
+  },
+  // `exclude` is overridden (not merged) by `extends`, so the base list is restated here
+  // in full, minus `**/__tests__/**/*`.
+  "exclude": ["./node_modules", "./dist", "**/dist/**/*", "**/.yalc/**/*", "**/node_modules", "**/vc-status-list-tests/**/*"]
+}
